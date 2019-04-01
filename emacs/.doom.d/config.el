@@ -30,52 +30,53 @@
   (interactive "p*")
   (my-increment-number-decimal (if arg (- arg) -1)))
 
-(map! ;;"s-`" #'other-frame  ; fix frame-switching
- "C-S-w"         #'delete-window
- "C-w"           #'kill-current-buffer
- "M-w"           #'delete-frame
- "C-n"           #'+default/new-buffer
- "M-n"           #'make-frame
- "C-q"           #'delete-frame
- "C-S-q"         #'kill-emacs
- "C-z"           #'undo
- "C-S-z"         #'redo
- "C-s"           #'save-buffer
- "C-S-s"         #'write-file
- "C-o"           #'find-file
- "C-S-o"         #'revert-buffer
- "C-f"           #'isearch-forward
- "C-S-f"         #'isearch-backward
- "M-+" (λ! (text-scale-set 0))
- "M-="           #'text-scale-increase
- "M--"           #'text-scale-decrease
- "C-="           #'my-increment-number-decimal
- "C--"           #'my-decrement-number-decimal
- "C-a"           #'mark-whole-buffer
- "M-a"           #'select-current-line
- "S-<return>"    #'+default/newline-below
- "C-S-<return>"  #'+default/newline-above
- "M-<backspace>" #'doom/backward-kill-to-bol-and-indent
- "M-<left>"      #'doom/backward-to-bol-or-indent
- "M-<right>"     #'doom/forward-to-last-non-comment-or-eol
- "C-<backspace>" #'backward-kill-word
- "C-<left>"      #'backward-word
- "C-<right>"     #'forward-word
- "M-<up>"        #'scroll-down-line
- "M-<down>"      #'scroll-up-line
- "C-<prior>"     #'beginning-of-buffer
- "C-<next>"      #'end-of-buffer
- "M-<next>"      #'next-buffer
- "M-<prior>"     #'previous-buffer
- "C-;"           #'comment-line
- "C-<del>"       #'kill-word
- "C-r"           #'rotate-layout
- "M-m"           #'magit
- "M-e"           #'eshell
- "M-t"           #'ansi-term
- "C-<tab>"       #'next-multiframe-window
- "M-r"           #'neotree
- )
+(map!
+;;  "s-`" #'other-frame  ; fix frame-switching
+;;  "C-S-w"         #'delete-window
+;;  "C-w"           #'kill-current-buffer
+;;  "M-w"           #'delete-frame
+;;  "C-n"           #'+default/new-buffer
+;;  "M-n"           #'make-frame
+;;  "C-q"           #'delete-frame
+;;  "C-S-q"         #'kill-emacs
+;;  "C-z"           #'undo
+;;  "C-S-z"         #'redo
+;;  "C-s"           #'save-buffer
+;;  "C-S-s"         #'write-file
+;;  "C-o"           #'find-file
+;;  "C-S-o"         #'revert-buffer
+;;  "C-f"           #'isearch-forward
+;;  "C-S-f"         #'isearch-backward
+;;  "M-+" (λ! (text-scale-set 0))
+;;  "M-="           #'text-scale-increase
+;;  "M--"           #'text-scale-decrease
+;;  "C-="           #'my-increment-number-decimal
+;;  "C--"           #'my-decrement-number-decimal
+;;  "C-a"           #'mark-whole-buffer
+;;  "M-a"           #'select-current-line
+;;  "S-<return>"    #'+default/newline-below
+;;  "C-S-<return>"  #'+default/newline-above
+;;  "M-<backspace>" #'doom/backward-kill-to-bol-and-indent
+;;  "M-<left>"      #'doom/backward-to-bol-or-indent
+;;  "M-<right>"     #'doom/forward-to-last-non-comment-or-eol
+;;  "C-<backspace>" #'backward-kill-word
+;;  "C-<left>"      #'backward-word
+;;  "C-<right>"     #'forward-word
+;;  "M-<up>"        #'scroll-down-line
+;;  "M-<down>"      #'scroll-up-line
+;;  "C-<prior>"     #'beginning-of-buffer
+;;  "C-<next>"      #'end-of-buffer
+;;  "M-<next>"      #'next-buffer
+;;  "M-<prior>"     #'previous-buffer
+    "C-;"           #'comment-line
+;;  "C-<del>"       #'kill-word
+;;  "C-r"           #'rotate-layout
+;;  "M-m"           #'magit
+;;  "M-e"           #'eshell
+;;  "M-t"           #'ansi-term
+;;  "C-<tab>"       #'next-multiframe-window
+;;  "M-r"           #'neotree
+)
 
 (setq doom-font (font-spec :family "xos4 Terminus" :size 18))
 
@@ -85,33 +86,34 @@
 
 (yas-global-mode 1)
 
-(setq omnisharp-server-executable-path "~/.emacs.d/omnisharp/run")
+(setq omnisharp-server-executable-path "~/.emacs.d/omnisharp-server/run")
 
 (eval-after-load
   'company
   '(add-to-list 'company-backends #'company-omnisharp))
 
-(defun my-csharp-mode-setup ()
-  (omnisharp-mode)
-  (company-mode)
-  (flycheck-mode)
+;; (defun my-csharp-mode-setup ()
+;;   (omnisharp-mode)
+;;   (company-mode)
+;;   (flycheck-mode)
 
-  (setq indent-tabs-mode nil)
-  (setq c-syntactic-indentation t)
-  (c-set-style "ellemtel")
-  (setq c-basic-offset 4)
-  (setq truncate-lines t)
-  (setq tab-width 4)
-  (setq evil-shift-width 4)
+;;   (setq indent-tabs-mode nil)
+;;   (setq c-syntactic-indentation t)
+;;   (c-set-style "ellemtel")
+;;   (setq c-basic-offset 4)
+;;   (setq truncate-lines t)
+;;   (setq tab-width 4)
+;;   (setq evil-shift-width 4)
 
-  ;csharp-mode README.md recommends this too
-  ;(electric-pair-mode 1)       ;; Emacs 24
-  ;(electric-pair-local-mode 1) ;; Emacs 25
+;;   ;csharp-mode README.md recommends this too
+;;   ;(electric-pair-mode 1)       ;; Emacs 24
+;;   ;(electric-pair-local-mode 1) ;; Emacs 25
 
-  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
-  (local-set-key (kbd "C-c C-c") 'recompile))
+;;   (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+;;   (local-set-key (kbd "C-c C-c") 'recompile)
+;;   ;(local-set-key (kbd "C-c C-m") 'company-omnisharp))
 
-(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
+;; (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 
 ;(setq org-support-shift-select t)
 ;(setq org-replace-disputed-keys t)
@@ -133,3 +135,10 @@
 ;(add-to-list 'org-latex-packages-alist '("" "listings" nil))
 (setq org-latex-listings t)
 (setq org-latex-listings-options '(("breaklines" "true")))
+
+(global-auto-complete-mode)
+
+(setq mouse-wheel-scroll-amount '(4 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 4)
