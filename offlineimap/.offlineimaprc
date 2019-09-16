@@ -1,46 +1,24 @@
 [general]
-accounts = asamwow, stout
+accounts = pro-gmail
 starttls = yes
 ssl = yes
 pythonfile = ~/.offlineimap.py
 
-
-
-[Account asamwow]
-localrepository = asamwow-local
-remoterepository = asamwow-remote
+[Account pro-gmail]
+localrepository = pro-gmail-local
+remoterepository = pro-gmail-remote
 postsynchook = ~/bin/notmuch-hook.sh
 
-[Repository asamwow-remote]
+[Repository pro-gmail-remote]
 auth_mechanisms = LOGIN
 type = Gmail
-remoteuser = 118westmaine@gmail.com
-remotepasseval = get_pass("google.com/118westmaine@gmail.com")
+remoteuser = samueljahnke6@gmail.com
+remotepasseval = get_pass("google.com/pro-gmail-app-password")
 remoteport = 993
 ssl_version=tls1_2
 folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent']
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
-[Repository asamwow-local]
+[Repository pro-gmail-local]
 type = Maildir
-localfolders = ~/Mail/asamwow
-
-
-[Account stout]
-localrepository = stout-local
-remoterepository = stout-remote
-postsynchook = ~/bin/notmuch-hook.sh
-
-[Repository stout-remote]
-auth_mechanisms = LOGIN
-type = IMAP
-remoteuser = jahnkes0096@my.uwstout.edu
-remotepasseval = get_pass("stout/jahnkes0096@my.uwstout.edu")
-remotehost = imap-mail.outlook.com
-remoteport = 993
-folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent', 'Clutter', 'Junk Email', 'Archive']
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-
-[Repository stout-local]
-type = Maildir
-localfolders = ~/Mail/stout
+localfolders = ~/Mail/samueljahnke6

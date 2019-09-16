@@ -1,0 +1,17 @@
+emacs
+exfat-utils
+stow
+gimp
+firefox
+gnome-extra
+pass
+seahorse
+networkmanager-openvpn
+transmission-gtk
+cmake
+dmenu
+eog
+terminus-font
+gnome-disk-utility
+notmuch
+offlineimap

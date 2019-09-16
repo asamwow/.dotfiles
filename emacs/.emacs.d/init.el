@@ -13,19 +13,31 @@
 ;;; packages
 (use-package graphene
   :init
-  (setq graphene-default-font "SauceCodePro Nerd Font Mono-12")
-  (setq graphene-variable-pitch-font "xos4 Terminus-12")
-  (setq graphene-fixed-pitch-font "xos4 Terminus-12"))
+  (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
+  (setq graphene-variable-pitch-font "xos4 Terminus-10")
+  (setq graphene-fixed-pitch-font "xos4 Terminus-10"))
 (use-package speed-type)
-(use-package notmuch)
+(use-package password-store)
+(use-package auth-source-pass
+  :init
+  (auth-source-pass-enable)
+  (setq auth-sources '(password-store))
+  (setq auth-source-debug t))
+(use-package notmuch
+  :init
+  (setq mail-user-agent 'message-user-agent)
+  (setq user-mail-address "samueljahnke6@gmail.com"
+        user-full-name "samueljahnke6")
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        message-send-mail-function 'message-smtpmail-send-it)
+  (setq smtpmail-debug-info t)
+  (setq message-default-mail-headers "Cc: \nBcc: \n")
+  (setq message-auto-save-directory "~/mail/draft")
+  (setq message-kill-buffer-on-exit t)
+  (setq message-directory "~/Mail/"))
 (use-package color-theme-sanityinc-tomorrow
   :config
   (color-theme-sanityinc-tomorrow--define-theme night))
-(use-package org-journal
-  :config
-  (setq org-directory "/home/asamwow/Drive")
-  (setq org-journal-dir (concat org-directory "/Journal/"))
-  (setq org-agenda-files (concat org-directory "/Agenda/")))
 (use-package magit)
 (use-package dash)
 (use-package markdown-mode
@@ -45,6 +57,14 @@
   :magic ("%PDF" . pdf-view-mode)
   :config
   (pdf-tools-install :no-query))
+(use-package csharp-mode
+  :init
+  (defun my-csharp-mode-hook ()
+    ;; enable the stuff you want for C# here
+    (electric-pair-mode 1)       ;; Emacs 24
+    (electric-pair-local-mode 1) ;; Emacs 25
+    )
+  (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
 
 ;;; global settings
 (menu-bar-mode -1)
@@ -61,11 +81,18 @@
 (setq clang-format-style-option "file")
 
 ;;; babel
-(add-to-list 'org-babel-load-languages '(python . t))
-(org-babel-do-load-languages
- 'org-babel-load-languages
- org-babel-load-languages)
+;; (add-to-list 'org-babel-load-languages '(python . t))
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  org-babel-load-languages)
 
 ;;; latex
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
+
+
+;;; org-mode
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-support-shift-select t)

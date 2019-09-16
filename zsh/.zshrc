@@ -45,7 +45,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 HOSTNAME="`hostname`"
 LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
-PASSWORD_STORE_DIR=$HOME/.passwords
+PASSWORD_STORE_DIR=$HOME/.password-store
 EDITOR="emacs -nw"
 DEFAULT_USER="asamwow"
 
@@ -80,6 +80,7 @@ alias drivesync='ruby drivesync/drivesync.rb'
 alias pac='sudo pacman'
 alias sys='sudo systemctl'
 alias zshrc='emacs -nw ~/.zshrc'
+alias brightness='xbacklight -set'
 
 ### Bind keys
 #############
@@ -178,6 +179,15 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+#bcpl
+export BCPLROOT=/home/sam/Downloads/bcpl/BCPL/cintcode
+export BCPLHDRS=/home/sam/Downloads/bcpl/BCPL/cintcode/g
+export BCPLPATH=/home/sam/Downloads/bcpl/BCPL/cintcode/cin
+export BCPL64ROOT=/home/sam/Downloads/bcpl/BCPL/cintcode
+export BCPL64PATH=/home/sam/Downloads/bcpl/BCPL/cintcode/cin64
+export BCPL64HDRS=/home/sam/Downloads/bcpl/BCPL/cintcode/g
+export PATH=$PATH:$BCPLROOT/bin
 
 # Hide Default user information, because I know who I am
 # prompt_context() {

@@ -1,4 +1,5 @@
 [global_config]
+  suppress_multiple_term_dialog = True
   title_inactive_bg_color = "#1c232b"
   title_inactive_fg_color = "#888a85"
   title_receive_bg_color = "#2e3436"
@@ -8,11 +9,32 @@
 [layouts]
   [[default]]
     [[[child1]]]
+      command = ""
       parent = window0
+      profile = default
       type = Terminal
     [[[window0]]]
       parent = ""
       type = Window
+  [[hold]]
+    [[[child0]]]
+      fullscreen = False
+      last_active_term = 4e2ae1a5-16b4-404a-9624-6cdb9f6918cf
+      last_active_window = True
+      maximised = False
+      order = 0
+      parent = ""
+      position = 0:0
+      size = 813, 127
+      title = asamwow@verulent:~
+      type = Window
+    [[[terminal1]]]
+      command = ""
+      order = 0
+      parent = child0
+      profile = hold
+      type = Terminal
+      uuid = 4e2ae1a5-16b4-404a-9624-6cdb9f6918cf
 [plugins]
 [profiles]
   [[default]]
@@ -23,5 +45,7 @@
     foreground_color = "#ebdbb2"
     palette = "#282828:#cc241d:#98971a:#d79921:#458588:#b16286:#689d6a:#a89984:#928374:#fb4934:#b8bb26:#fabd2f:#83a598:#d3869b:#8ec07c:#ebdbb2"
     scrollback_lines = 2500
-    scrollbar_position = disabled
+    scrollbar_position = hidden
     show_titlebar = False
+  [[hold]]
+    cursor_color = "#aaaaaa"
