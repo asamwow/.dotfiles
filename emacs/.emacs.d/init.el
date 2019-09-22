@@ -2,7 +2,9 @@
 
 ;;; package management
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
 (package-initialize)
 (eval-when-compile
   (require 'use-package)
@@ -11,6 +13,33 @@
 (load custom-file 'no-error 'no-message)
 
 ;;; packages
+(use-package org
+  :ensure org-plus-contrib
+  ;; The rest of your org-mode configuration
+  :init (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (setq org-support-shift-select t))
+(use-package org-contacts
+  :ensure nil
+  :after org
+  :custom (org-contacts-files '("~/contacts.org")))
+(use-package org-capture
+  :ensure nil
+  :after org
+  :preface
+  (defvar my/org-contacts-template "* %(org-contacts-template-name)
+:PROPERTIES:
+:ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
+:BIRTHDAY: %^{yyyy-mm-dd}
+:EMAIL: %(org-contacts-template-email)
+:NOTE: %^{NOTE}
+:END:" "Template for org-contacts.")
+  :custom
+  (org-capture-templates
+   `(("c" "Contact" entry (file+headline "~/contacts.org" "Friends"),
+      my/org-contacts-template
+      :empty-lines 1))))
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -89,10 +118,3 @@
 ;;; latex
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
-
-
-;;; org-mode
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-(setq org-support-shift-select t)
