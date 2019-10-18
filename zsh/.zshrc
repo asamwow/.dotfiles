@@ -18,6 +18,7 @@ setopt EXTENDED_HISTORY
 # setopt HASH_CMDS
 setopt MENUCOMPLETE
 setopt ALL_EXPORT
+setopt histignorespace
 
 ### Set/unset  shell options
 ############################

@@ -118,3 +118,4 @@
 ;;; latex
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
+(put 'scroll-left 'disabled nil)

@@ -1,3 +1,8 @@
+lightdm
+lightdm-gtk-greeter
+gnome
+gnome-extra
+terminator
 emacs
 exfat-utils
 stow
