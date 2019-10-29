@@ -13,6 +13,7 @@ pass
 seahorse
 networkmanager-openvpn
 transmission-gtk
+make
 cmake
 dmenu
 eog
@@ -21,3 +22,7 @@ gnome-disk-utility
 notmuch
 offlineimap
 aspell-en
+wine-staging
+htop
+ledger
+

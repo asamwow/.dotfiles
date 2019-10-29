@@ -19,7 +19,9 @@
   :init (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (setq org-support-shift-select t))
+  (setq org-support-shift-select t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 (use-package org-contacts
   :ensure nil
   :after org
@@ -89,11 +91,10 @@
 (use-package csharp-mode
   :init
   (defun my-csharp-mode-hook ()
-    ;; enable the stuff you want for C# here
-    (electric-pair-mode 1)       ;; Emacs 24
-    (electric-pair-local-mode 1) ;; Emacs 25
-    )
+    (electric-pair-local-mode 1))
   (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
+(use-package ledger-mode
+  :mode "\\.ledger\\'")
 
 ;;; global settings
 (menu-bar-mode -1)
@@ -110,12 +111,62 @@
 (setq clang-format-style-option "file")
 
 ;;; babel
-;; (add-to-list 'org-babel-load-languages '(python . t))
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  org-babel-load-languages)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   ;; (R . t)
+   ;; (ditaa . t)
+   ;; (dot . t)
+   ;; (emacs-lisp . t)
+   ;; (gnuplot . t)
+   ;; (haskell . nil)
+   ;; (latex . t)
+   (ledger . t)
+   ;; (ocaml . nil)
+   ;; (octave . t)
+   (python . t)
+   ;; (ruby . t)
+   ;; (screen . nil)
+   ;; (sh . t)
+   ;; (sql . nil)
+   ;; (sqlite . t)
+ ))
 
 ;;; latex
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
 (put 'scroll-left 'disabled nil)
+
+;; (eval-after-load 'org
+;;   '(progn
+;;      (defun wicked/org-clock-in-if-starting ()
+;;        "Clock in when the task is marked STARTED."
+;;        (when (and (string= state "STARTED")
+;; 		  (not (string= last-state state)))
+;; 	 (org-clock-in)))
+;;      (add-hook 'org-after-todo-state-change-hook
+;; 	       'wicked/org-clock-in-if-starting)
+;;      (defadvice org-clock-in (after wicked activate)
+;;       "Set this task's status to 'STARTED'."
+;;       (org-todo "STARTED"))
+;;     (defun wicked/org-clock-out-if-waiting ()
+;;       "Clock out when the task is marked WAITING."
+;;       (when (and (string= state "WAITING")
+;;                  (equal (marker-buffer org-clock-marker) (current-buffer))
+;;                  (< (point) org-clock-marker)
+;; 	         (> (save-excursion (outline-next-heading) (point))
+;; 		    org-clock-marker)
+;; 		 (not (string= last-state state)))
+;; 	(org-clock-out)))
+;;     (add-hook 'org-after-todo-state-change-hook
+;; 	      'wicked/org-clock-out-if-waiting)))
+
+(defun my/after-change-hook()
+  "Test function on hook."
+  (message org-state)
+  (when (string= org-state "ASLEEP")
+    
+    (save-buffer)    
+  )
+)
+(add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
