@@ -1,14 +1,9 @@
-lightdm
-lightdm-gtk-greeter
-gnome
-gnome-extra
 terminator
 emacs
 exfat-utils
 stow
 gimp
 firefox
-gnome-extra
 pass
 seahorse
 networkmanager-openvpn
@@ -25,4 +20,4 @@ aspell-en
 wine-staging
 htop
 ledger
-
+base-devel

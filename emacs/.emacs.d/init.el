@@ -19,9 +19,9 @@
   :init (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (setq org-support-shift-select t)
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
+  (setq org-support-shift-select t))
+  ;; (setq org-todo-keywords
+  ;;       '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 (use-package org-contacts
   :ensure nil
   :after org
@@ -165,8 +165,9 @@
   "Test function on hook."
   (message org-state)
   (when (string= org-state "ASLEEP")
-    
-    (save-buffer)    
+    (save-buffer)
+    (shell-command "git commit -m \"hello?\"")
+    (kill-emacs)
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)

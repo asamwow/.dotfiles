@@ -1,3 +1,2 @@
 yay
-runelite-launcher
-nerd-fonts-complete
+pass-git-helper
