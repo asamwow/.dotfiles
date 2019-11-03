@@ -137,37 +137,40 @@
 (setq-default TeX-PDF-mode t)
 (put 'scroll-left 'disabled nil)
 
-;; (eval-after-load 'org
-;;   '(progn
-;;      (defun wicked/org-clock-in-if-starting ()
-;;        "Clock in when the task is marked STARTED."
-;;        (when (and (string= state "STARTED")
-;; 		  (not (string= last-state state)))
-;; 	 (org-clock-in)))
-;;      (add-hook 'org-after-todo-state-change-hook
-;; 	       'wicked/org-clock-in-if-starting)
-;;      (defadvice org-clock-in (after wicked activate)
-;;       "Set this task's status to 'STARTED'."
-;;       (org-todo "STARTED"))
-;;     (defun wicked/org-clock-out-if-waiting ()
-;;       "Clock out when the task is marked WAITING."
-;;       (when (and (string= state "WAITING")
-;;                  (equal (marker-buffer org-clock-marker) (current-buffer))
-;;                  (< (point) org-clock-marker)
-;; 	         (> (save-excursion (outline-next-heading) (point))
-;; 		    org-clock-marker)
-;; 		 (not (string= last-state state)))
-;; 	(org-clock-out)))
-;;     (add-hook 'org-after-todo-state-change-hook
-;; 	      'wicked/org-clock-out-if-waiting)))
+(defun autocommit-schedule-commit (dn shouldPush)
+  "Schedule an autocommit (and push) if one is not already scheduled for the given dir."
+          (message (concat "Committing files in " dn))
+          (shell-command (concat "cd " dn " && git commit -m 'auto-commit'"))
+          (cond ((string= shouldPush "t")
+               (message (concat "pushing files in " dn))
+               (shell-command (concat "cd " dn " && git push -u origin master")))))
+
+(defun autocommit-push-file()
+  "'git add' the modified file and schedule a commit and push in the idle loop."
+  (interactive)
+  (let ((fn (buffer-file-name)))
+    (message "git adding %s" fn)
+    (shell-command (concat "git add " fn))
+    (autocommit-schedule-commit (file-name-directory fn) "t")))
+
+(defun autocommit-file ()
+  "'git add' the modified file and schedule a commit and push in the idle loop."
+  (interactive)
+  (let ((fn (buffer-file-name)))
+    (message "git adding %s" fn)
+    (shell-command (concat "git add " fn))
+    (autocommit-schedule-commit (file-name-directory fn) "nil")))
 
 (defun my/after-change-hook()
   "Test function on hook."
   (message org-state)
   (when (string= org-state "ASLEEP")
     (save-buffer)
-    (kill-emacs)
-    (shell-command "poweroff")
+    (autocommit-schedule-commit "/home/asamwow/Agendas/agenda-sam.org" "t")
+    (shell-command "shutdown -t 10")
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+
+(global-set-key (kbd "<f5>") 'autocommit-file)
+(global-set-key (kbd "<C-f5>") 'autocommit-push-file)
