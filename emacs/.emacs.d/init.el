@@ -25,7 +25,7 @@
 (use-package org-contacts
   :ensure nil
   :after org
-  :custom (org-contacts-files '("~/contacts.org")))
+  :custom (org-contacts-files '("~/Contacts/contacts.org")))
 (use-package org-capture
   :ensure nil
   :after org
@@ -39,7 +39,7 @@
 :END:" "Template for org-contacts.")
   :custom
   (org-capture-templates
-   `(("c" "Contact" entry (file+headline "~/contacts.org" "Friends"),
+   `(("c" "Contact" entry (file+headline "~/Contacts/contacts.org" "Friends"),
       my/org-contacts-template
       :empty-lines 1))))
 (use-package graphene
@@ -137,40 +137,62 @@
 (setq-default TeX-PDF-mode t)
 (put 'scroll-left 'disabled nil)
 
-(defun autocommit-schedule-commit (dn shouldPush)
+;;; auto-commit macro
+(defun autocommit-schedule-commit (dn shouldPush commitMessage)
   "Schedule an autocommit (and push) if one is not already scheduled for the given dir."
           (message (concat "Committing files in " dn))
-          (shell-command (concat "cd " dn " && git commit -m 'auto-commit'"))
+          (shell-command (concat "cd " dn " && git commit -m '" commitMessage "'"))
           (cond ((string= shouldPush "t")
                (message (concat "pushing files in " dn))
                (shell-command (concat "cd " dn " && git push -u origin master")))))
 
-(defun autocommit-push-file()
+(defun commit-and-push-file(commitMessage)
   "'git add' the modified file and schedule a commit and push in the idle loop."
-  (interactive)
   (let ((fn (buffer-file-name)))
     (message "git adding %s" fn)
     (shell-command (concat "git add " fn))
-    (autocommit-schedule-commit (file-name-directory fn) "t")))
+    (autocommit-schedule-commit (file-name-directory fn) "t" commitMessage)))
+
+(defun commit-file (commitMessage)
+  "'git add' the modified file and schedule a commit and push in the idle loop."
+  (let ((fn (buffer-file-name)))
+    (message "git adding %s" fn)
+    (shell-command (concat "git add " fn))
+    (autocommit-schedule-commit (file-name-directory fn) "nil" commitMessage)))
 
 (defun autocommit-file ()
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (interactive)
-  (let ((fn (buffer-file-name)))
-    (message "git adding %s" fn)
-    (shell-command (concat "git add " fn))
-    (autocommit-schedule-commit (file-name-directory fn) "nil")))
+  (commit-file "auto-commit"))
 
+(defun autocommit-and-push-file()
+  "'git add' the modified file and schedule a commit and push in the idle loop."
+  (interactive)
+  (commit-and-push-file "auto-commit-and-push"))
+
+(defun commit-file-prompt ()
+  "promps user for commit message"
+  (interactive)
+  (commit-file (read-string "Enter Commit Message")))
+
+(defun commit-and-push-file-prompt ()
+  "promps user for commit message"
+  (interactive)
+  (commit-and-push-file (read-string "Enter Commit Message")))
+
+(global-set-key (kbd "<f5>") 'autocommit-file)
+(global-set-key (kbd "<C-f5>") 'autocommit-and-push-file)
+(global-set-key (kbd "<f6>") 'commit-file-prompt)
+(global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
+
+;;; sleep macro
 (defun my/after-change-hook()
   "Test function on hook."
   (message org-state)
   (when (string= org-state "ASLEEP")
     (save-buffer)
-    (autocommit-schedule-commit "/home/asamwow/Agendas/agenda-sam.org" "t")
+    (autocommit-push-file)
     (shell-command "shutdown -t 10")
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
-
-(global-set-key (kbd "<f5>") 'autocommit-file)
-(global-set-key (kbd "<C-f5>") 'autocommit-push-file)
