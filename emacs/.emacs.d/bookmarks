@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("contacts.org"
+ (filename . "~/Contacts/contacts.org")
+ (front-context-string . "nah\n   :PROPERTI")
+ (rear-context-string . "   :END:\n\n** Han")
+ (position . 342))
+("org-capture-last-stored"
+ (filename . "~/contacts.org")
+ (front-context-string . "** Lisa\n   :PROP")
+ (rear-context-string . "sword\n   :END:\n\n")
+ (position . 140))
+("agenda-sam"
+ (filename . "~/Agendas/agenda-sam.org")
+ (front-context-string . "DO GYM\n  :PROPER")
+ (rear-context-string . "NTAL STATE\n\n* TO")
+ (position . 109))
+("init.el"
+ (filename . "~/.dotfiles/emacs/.emacs.d/init.el")
+ (front-context-string . ";;;; init.el\n\n;;")
+ (rear-context-string)
+ (position . 1))
+)
