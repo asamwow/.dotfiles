@@ -21,3 +21,5 @@ wine-staging
 htop
 ledger
 base-devel
+dotnet-runtime
+docker
