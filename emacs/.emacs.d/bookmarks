@@ -8,10 +8,10 @@
  (rear-context-string . "   :END:\n\n** Han")
  (position . 342))
 ("org-capture-last-stored"
- (filename . "~/contacts.org")
- (front-context-string . "** Lisa\n   :PROP")
- (rear-context-string . "sword\n   :END:\n\n")
- (position . 140))
+ (filename . "~/Contacts/contacts.org")
+ (front-context-string . "** Mark\n   :PROP")
+ (rear-context-string . "cute.\n   :END:\n\n")
+ (position . 739))
 ("agenda-sam"
  (filename . "~/Agendas/agenda-sam.org")
  (front-context-string . "DO GYM\n  :PROPER")

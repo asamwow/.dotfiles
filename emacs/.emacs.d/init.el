@@ -190,9 +190,29 @@
   "Test function on hook."
   (message org-state)
   (when (string= org-state "ASLEEP")
+    (sleep-for 2)
     (save-buffer)
-    (autocommit-push-file)
+    (autocommit-and-push-file)
     (shell-command "shutdown -t 10")
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+
+;;; ansi term macros
+;; yank in term (kill-ing)
+(defun term-yank-kill-ring ()
+  (interactive)
+  (flet ((insert-for-yank (string) (term-send-raw-string string)))
+    (yank)))
+;; yank-pop un term (kill-ring)
+(defun term-yank-pop-kill-ring ()
+  (interactive)
+  (dotimes (i (- (point) (mark t)))
+    (term-send-backspace))
+  (process-send-string
+   (get-buffer-process (current-buffer))
+   (current-kill 1)))
+;; shorcuts
+(setq term-bind-key-alist
+      '(("C-x C-c" . term-yank-kill-ring)
+        ("C-x C-v" . term-yank-pop-kill-ring)))

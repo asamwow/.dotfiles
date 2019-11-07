@@ -22,4 +22,10 @@ htop
 ledger
 base-devel
 dotnet-runtime
+dotnet-sdk
 docker
+nuget
+nodejs
+gecko-driver
+mono
+audacity
