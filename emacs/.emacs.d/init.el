@@ -19,7 +19,8 @@
   :init (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (setq org-support-shift-select t))
+  (setq org-support-shift-select t)
+  (setq org-clock-persist 'history))
   ;; (setq org-todo-keywords
   ;;       '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 (use-package org-contacts
