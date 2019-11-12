@@ -1,0 +1,2 @@
+git config --global credential.helper /usr/bin/pass-git-helper
+stow stuff
