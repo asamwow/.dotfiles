@@ -29,3 +29,4 @@ nodejs
 gecko-driver
 mono
 audacity
+samba

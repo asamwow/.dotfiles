@@ -43,6 +43,9 @@
    `(("c" "Contact" entry (file+headline "~/Contacts/contacts.org" "Friends"),
       my/org-contacts-template
       :empty-lines 1))))
+(use-package org-alert
+  :init
+  (setq alert-default-style 'libnotify))
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -191,29 +194,10 @@
   "Test function on hook."
   (message org-state)
   (when (string= org-state "ASLEEP")
-    (sleep-for 2)
+    (sit-for 2)
     (save-buffer)
     (autocommit-and-push-file)
     (shell-command "shutdown -t 10")
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
-
-;;; ansi term macros
-;; yank in term (kill-ing)
-(defun term-yank-kill-ring ()
-  (interactive)
-  (flet ((insert-for-yank (string) (term-send-raw-string string)))
-    (yank)))
-;; yank-pop un term (kill-ring)
-(defun term-yank-pop-kill-ring ()
-  (interactive)
-  (dotimes (i (- (point) (mark t)))
-    (term-send-backspace))
-  (process-send-string
-   (get-buffer-process (current-buffer))
-   (current-kill 1)))
-;; shorcuts
-(setq term-bind-key-alist
-      '(("C-x C-c" . term-yank-kill-ring)
-        ("C-x C-v" . term-yank-pop-kill-ring)))
