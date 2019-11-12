@@ -26,7 +26,8 @@ dotnet-sdk
 docker
 nuget
 nodejs
-gecko-driver
+geckodriver
 mono
 audacity
 samba
+scrot
