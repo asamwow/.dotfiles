@@ -32,3 +32,4 @@ audacity
 samba
 scrot
 unixodbc
+clang

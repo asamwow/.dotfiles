@@ -46,7 +46,7 @@
 (use-package org-alert
   :init
   (setq alert-default-style 'libnotify)
-  (setq org-notify-interval 900))
+  (setq org-notify-interval 1800))
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -191,14 +191,17 @@
 (global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
 
 ;;; sleep macro
-(defun my/after-change-hook()
-  "Test function on hook."
-  (message org-state)
-  (when (string= org-state "ASLEEP")
-    (sit-for 2)
-    (save-buffer)
-    (autocommit-and-push-file)
-    (shell-command "shutdown -t 10")
-  )
-)
-(add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+;; (defun my/after-change-hook()
+;;   "Test function on hook."
+;;   (message org-state)
+;;   (when (string= org-state "ASLEEP")
+;;     (sit-for 2)
+;;     (save-buffer)
+;;     (autocommit-and-push-file)
+;;     (shell-command "shutdown -t 10")
+;;   )
+;; )
+;; (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+
+;;; javascript
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))

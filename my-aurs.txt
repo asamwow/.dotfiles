@@ -1,3 +1,4 @@
 yay
 pass-git-helper
 bash-pipes
+nerd-fonts-source-code-pro
