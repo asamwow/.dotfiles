@@ -1,0 +1,24 @@
+[general]
+accounts = pro-gmail
+starttls = yes
+ssl = yes
+pythonfile = ~/.offlineimap.py
+
+[Account pro-gmail]
+localrepository = pro-gmail-local
+remoterepository = pro-gmail-remote
+postsynchook = ~/bin/notmuch-hook.sh
+
+[Repository pro-gmail-remote]
+auth_mechanisms = LOGIN
+type = Gmail
+remoteuser = samueljahnke6@gmail.com
+remotepasseval = get_pass("google.com/pro-gmail-app-password")
+remoteport = 993
+ssl_version=tls1_2
+folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent']
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Repository pro-gmail-local]
+type = Maildir
+localfolders = ~/Mail/samueljahnke6

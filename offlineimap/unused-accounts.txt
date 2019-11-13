@@ -1,0 +1,37 @@
+# [Account asamwow]
+# localrepository = asamwow-local
+# remoterepository = asamwow-remote
+# postsynchook = ~/bin/notmuch-hook.sh
+
+# [Repository asamwow-remote]
+# auth_mechanisms = LOGIN
+# type = Gmail
+# remoteuser = 118westmaine@gmail.com
+# remotepasseval = get_pass("google.com/118westmaine@gmail.com")
+# remoteport = 993
+# ssl_version=tls1_2
+# folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent']
+# sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# [Repository asamwow-local]
+# type = Maildir
+# localfolders = ~/Mail/asamwow
+
+# [Account stout]
+# localrepository = stout-local
+# remoterepository = stout-remote
+# postsynchook = ~/bin/notmuch-hook.sh
+
+# [Repository stout-remote]
+# auth_mechanisms = LOGIN
+# type = IMAP
+# remoteuser = jahnkes0096@my.uwstout.edu
+# remotepasseval = get_pass("stout/jahnkes0096@my.uwstout.edu")
+# remotehost = imap-mail.outlook.com
+# remoteport = 993
+# folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent', 'Clutter', 'Junk Email', 'Archive']
+# sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# [Repository stout-local]
+# type = Maildir
+# localfolders = ~/Mail/stout

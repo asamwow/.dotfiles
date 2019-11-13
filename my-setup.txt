@@ -1,0 +1,18 @@
+mkdir .password-store
+sudo pacman -Syu && sudo pacman -S pass
+gpg --import mhostley.pgp mhostley.asc
+cp secret.gpg .password-store
+rm -rf mhostley.pgp mhostley.asc secret.gpg
+git clone https://github.com/asamwow/.dotfiles.git
+cd .dotfiles
+sudo pacman -S --needed - < my-packages.txt
+stow bin emacs gtk pass-git-helper zsh terminator
+git config --global credential.helper /usr/bin/pass-git-helper
+git config --global user.email "asamwow@github.com"
+git config --global user.name "Samuel Jahnke"
+git clone https://aur.archlinux.org/yay.git
+cd yay && makepkg -si
+yay -S --needed - < my-aurs.txt
+cd .. && rm -rf yay
+cd .. && git clone https://github.com/asamwow/Agendas.git
+sudo chsh -s /usr/bin/zsh asamwow

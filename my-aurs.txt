@@ -1,0 +1,3 @@
+yay
+pass-git-helper
+bash-pipes
