@@ -33,3 +33,5 @@ samba
 scrot
 unixodbc
 clang
+npm
+typescript

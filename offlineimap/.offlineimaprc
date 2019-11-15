@@ -1,10 +1,13 @@
 [general]
-accounts = pro-gmail
+accounts = pro-gmail, hvh
 starttls = yes
 ssl = yes
 pythonfile = ~/.offlineimap.py
+maxsyncaccounts = 1
 
 [Account pro-gmail]
+autorefresh = 0.5
+quick = 10
 localrepository = pro-gmail-local
 remoterepository = pro-gmail-remote
 postsynchook = ~/bin/notmuch-hook.sh
@@ -21,4 +24,27 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 [Repository pro-gmail-local]
 type = Maildir
-localfolders = ~/Mail/samueljahnke6
+localfolders = ~/Mail/pro-gmail
+
+[Account hvh]
+autorefresh = 0.5
+quick = 10
+localrepository = hvh-local
+remoterepository = hvh-remote
+postsynchook = ~/bin/notmuch-hook.sh
+
+[Repository hvh-remote]
+auth_mechanisms = PLAIN
+type = IMAP
+remoteuser = sam.jahnke@hvhprecision.com
+remotehost = outlook.office365.com
+remotepasseval = get_pass("microsoft/sam.jahnke@hvhprecision.com")
+remoteport = 993
+ssl = yes
+readonly = true
+folderfilter = lambda foldername: foldername in ['INBOX', 'Drafts', 'Sent']
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Repository hvh-local]
+type = Maildir
+localfolders = ~/Mail/hvh

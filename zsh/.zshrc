@@ -86,6 +86,8 @@ alias zshrc='emacs -nw ~/.zshrc'
 alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B'
 alias matrix='xscreensaver-command -lock'
+alias search='grep -rnwiI'
+alias linkMakefile='ln ~/web-client-master/makefile .'
 
 ### Bind keys
 #############

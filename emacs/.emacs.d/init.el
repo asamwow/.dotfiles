@@ -62,13 +62,14 @@
 (use-package notmuch
   :init
   (setq mail-user-agent 'message-user-agent)
-  (setq user-mail-address "samueljahnke6@gmail.com"
-        user-full-name "samueljahnke6")
-  (setq smtpmail-smtp-server "smtp.gmail.com"
-        message-send-mail-function 'message-smtpmail-send-it)
+  (setq user-mail-address "sam.jahnke@hvhprecision.com"
+        user-full-name "Samuel Jahnke")
+  (setq smtpmail-smtp-server "smtp.office365.com"
+        message-send-mail-function 'message-smtpmail-send-it
+        smtpmail-smtp-user "sam.jahnke@hvhprecision.com")
   (setq smtpmail-debug-info t)
   (setq message-default-mail-headers "Cc: \nBcc: \n")
-  (setq message-auto-save-directory "~/mail/draft")
+  (setq message-auto-save-directory "~/Mail/draft")
   (setq message-kill-buffer-on-exit t)
   (setq message-directory "~/Mail/"))
 (use-package color-theme-sanityinc-tomorrow
@@ -109,6 +110,11 @@
 ;; (pdf-tools-install) ;;change to this to front load it
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
+
+;;; notmuch notifications
+(add-to-list 'load-path "/home/asamwow/.emacs.d/notmuch-unread/")
+(require 'notmuch-unread)
+(notmuch-unread-mode)
 
 ;;; cc-mode
 ;; (add-hook 'cc-mode 'display-line-numbers-mode)

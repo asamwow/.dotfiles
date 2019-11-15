@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-((".dotfiles"
+((".zshrc"
+ (filename . "~/.dotfiles/zsh/.zshrc")
+ (front-context-string . "################")
+ (rear-context-string)
+ (position . 1))
+("web-client-makefile"
+ (filename . "~/web-client-master/makefile")
+ (front-context-string . "WEB_DB_KEY=`pass")
+ (rear-context-string)
+ (position . 1))
+(".dotfiles"
  (filename . "~/.dotfiles/")
  (front-context-string . "bin\n  -rw-r--r--")
  (rear-context-string . "96 Nov 12 07:38 ")
