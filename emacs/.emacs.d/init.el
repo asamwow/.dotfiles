@@ -101,6 +101,7 @@
   (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
 (use-package ledger-mode
   :mode "\\.ledger\\'")
+(use-package git-timemachine)
 
 ;;; global settings
 (menu-bar-mode -1)
