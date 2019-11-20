@@ -61,12 +61,12 @@
   (setq auth-source-debug t))
 (use-package notmuch
   :init
-  (setq mail-user-agent 'message-user-agent)
+  ;; (setq mail-user-agent 'message-user-agent)
   (setq user-mail-address "sam.jahnke@hvhprecision.com"
         user-full-name "Samuel Jahnke")
-  (setq smtpmail-smtp-server "smtp.office365.com"
-        message-send-mail-function 'message-smtpmail-send-it
-        smtpmail-smtp-user "sam.jahnke@hvhprecision.com")
+  ;; (setq smtpmail-smtp-server "smtp.office365.com"
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+        ;; smtpmail-smtp-user "sam.jahnke@hvhprecision.com")
   (setq smtpmail-debug-info t)
   (setq message-default-mail-headers "Cc: \nBcc: \n")
   (setq message-auto-save-directory "~/Mail/draft")
@@ -98,7 +98,14 @@
   :init
   (defun my-csharp-mode-hook ()
     (electric-pair-local-mode 1))
-  (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
+  (add-hook 'csharp-mode-hook 'omnisharp-mode))
+(use-package omnisharp
+  :init
+  (eval-after-load
+      'company
+    '(add-to-list 'company-backends 'company-omnisharp))
+  (add-hook 'csharp-mode-hook #'company-mode)
+  (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run"))
 (use-package ledger-mode
   :mode "\\.ledger\\'")
 (use-package git-timemachine)
@@ -212,3 +219,25 @@
 
 ;;; javascript
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
+
+;;; msmtp
+(setq message-sendmail-f-is-evil 't)
+(setq sendmail-program "/usr/bin/msmtp")
+
+(defun cg-feed-msmtp ()
+  (if (message-mail-p)
+      (save-excursion
+    (let* ((from
+        (save-restriction
+          (message-narrow-to-headers)
+          (message-fetch-field "from")))
+           (account
+        (cond
+         ;; I use email address as account label in ~/.msmtprc
+         ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
+         ;; Add more string-match lines for your email accounts
+         ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
+      (setq message-sendmail-extra-arguments (list '"-a" account))))))
+
+(setq message-sendmail-envelope-from 'header)
+(add-hook 'message-send-mail-hook 'cg-feed-msmtp)
