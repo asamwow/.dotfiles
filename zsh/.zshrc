@@ -210,5 +210,3 @@ export PATH=$PATH:$BCPLROOT/bin
 #   RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
 #   prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
 # }
-
-[[ $TERM != "screen.xterm-256color" ]] && exec screen -q

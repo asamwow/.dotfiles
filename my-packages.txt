@@ -36,4 +36,3 @@ clang
 npm
 typescript
 msmtp
-screen
