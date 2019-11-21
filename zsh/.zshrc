@@ -40,7 +40,7 @@ zle -N history-beginning-search-forward-end history-search-end
 
 ### Set variables
 #################
-PATH="/usr/local/bin:/usr/local/sbin/:/home/asamwow/.emacs.d/bin/:$PATH"
+PATH="/usr/local/bin:/usr/local/sbin/:/home/asamwow/.emacs.d/bin/:/home/asamwow/.dotnet/tools:$PATH"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
@@ -210,3 +210,5 @@ export PATH=$PATH:$BCPLROOT/bin
 #   RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
 #   prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
 # }
+
+[[ $TERM != "screen.xterm-256color" ]] && exec screen -q

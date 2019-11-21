@@ -46,7 +46,7 @@
 (use-package org-alert
   :init
   (setq alert-default-style 'libnotify)
-  (setq org-notify-interval 1800))
+  (setq org-alert-interval 1800))
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -105,10 +105,12 @@
       'company
     '(add-to-list 'company-backends 'company-omnisharp))
   (add-hook 'csharp-mode-hook #'company-mode)
-  (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run"))
+  (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
+  (setq omnisharp-debug t))
 (use-package ledger-mode
   :mode "\\.ledger\\'")
 (use-package git-timemachine)
+(use-package undo-tree)
 
 ;;; global settings
 (menu-bar-mode -1)
