@@ -29,9 +29,9 @@
  (position . 739))
 ("agenda-sam"
  (filename . "~/Agendas/agenda-sam.org")
- (front-context-string . " HVH\n\n** TODO St")
- (rear-context-string . "nd chest\n    \n\n*")
- (position . 1864))
+ (front-context-string . "#+TITLE:Sam's Ag")
+ (rear-context-string)
+ (position . 1))
 ("init.el"
  (filename . "~/.dotfiles/emacs/.emacs.d/init.el")
  (front-context-string . ";;;; init.el\n\n;;")

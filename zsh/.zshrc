@@ -40,7 +40,7 @@ zle -N history-beginning-search-forward-end history-search-end
 
 ### Set variables
 #################
-PATH="/usr/local/bin:/usr/local/sbin/:/home/asamwow/.emacs.d/bin/:/home/asamwow/.dotnet/tools:$PATH"
+PATH="/usr/local/bin:/usr/local/sbin/:/home/asamwow/.emacs.d/bin/:$PATH"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
@@ -51,6 +51,11 @@ EDITOR="emacs -nw"
 DEFAULT_USER="asamwow"
 ASPNETCORE_ENVIRONMENT="Development"
 REPO_URL="https://gitlab.com/hvh/client-access-web-dashboards.git"
+DOTNET_ROOT="/opt/dotnet"
+DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
+MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
+PATH="$DOTNET_ROOT:/home/asamwow/.dotnet/tools:$PATH"
+
 
 ### Load colors
 ###############

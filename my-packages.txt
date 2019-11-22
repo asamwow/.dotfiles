@@ -24,10 +24,8 @@ base-devel
 dotnet-runtime
 dotnet-sdk
 docker
-nuget
 nodejs
 geckodriver
-mono
 audacity
 samba
 scrot
