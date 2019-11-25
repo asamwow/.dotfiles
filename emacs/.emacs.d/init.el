@@ -111,6 +111,10 @@
   :mode "\\.ledger\\'")
 (use-package git-timemachine)
 (use-package undo-tree)
+(use-package plantuml-mode
+  :init
+  (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar))
 
 ;;; global settings
 (menu-bar-mode -1)
