@@ -1,0 +1,2 @@
+blankerprg pipes -f 20 -r 2000 -B
+idle 60 blanker

@@ -45,7 +45,12 @@
       :empty-lines 1))))
 (use-package org-alert
   :init
+<<<<<<< HEAD
   (setq alert-default-style 'libnotify))
+=======
+  (setq alert-default-style 'libnotify)
+  (setq org-alert-interval 1800))
+>>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -99,6 +104,22 @@
   (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
 (use-package ledger-mode
   :mode "\\.ledger\\'")
+(use-package omnisharp
+  :init
+  (eval-after-load
+      'company
+    '(add-to-list 'company-backends 'company-omnisharp))
+  (add-hook 'csharp-mode-hook #'company-mode)
+  (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
+  (setq omnisharp-debug t))
+(use-package ledger-mode
+  :mode "\\.ledger\\'")
+(use-package git-timemachine)
+(use-package undo-tree)
+(use-package plantuml-mode
+  :init
+  (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
+  (setq plantuml-default-exec-mode 'jar))
 
 ;;; global settings
 (menu-bar-mode -1)
@@ -109,6 +130,14 @@
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
 
+<<<<<<< HEAD
+=======
+;;; notmuch notifications
+(add-to-list 'load-path "/home/asamwow/.emacs.d/notmuch-unread/")
+(require 'notmuch-unread)
+(notmuch-unread-mode)
+
+>>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
 ;;; cc-mode
 ;; (add-hook 'cc-mode 'display-line-numbers-mode)
 (setq c-default-style "linux" c-basic-offset 3)
@@ -190,6 +219,7 @@
 (global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
 
 ;;; sleep macro
+<<<<<<< HEAD
 (defun my/after-change-hook()
   "Test function on hook."
   (message org-state)
@@ -201,3 +231,41 @@
   )
 )
 (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+=======
+;; (defun my/after-change-hook()
+;;   "Test function on hook."
+;;   (message org-state)
+;;   (when (string= org-state "ASLEEP")
+;;     (sit-for 2)
+;;     (save-buffer)
+;;     (autocommit-and-push-file)
+;;     (shell-command "shutdown -t 10")
+;;   )
+;; )
+;; (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
+
+;;; javascript
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
+
+;;; msmtp
+(setq message-sendmail-f-is-evil 't)
+(setq sendmail-program "/usr/bin/msmtp")
+
+(defun cg-feed-msmtp ()
+  (if (message-mail-p)
+      (save-excursion
+    (let* ((from
+        (save-restriction
+          (message-narrow-to-headers)
+          (message-fetch-field "from")))
+           (account
+        (cond
+         ;; I use email address as account label in ~/.msmtprc
+         ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
+         ;; Add more string-match lines for your email accounts
+         ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
+      (setq message-sendmail-extra-arguments (list '"-a" account))))))
+
+(setq message-sendmail-envelope-from 'header)
+(add-hook 'message-send-mail-hook 'cg-feed-msmtp)
+>>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9

@@ -49,6 +49,13 @@ LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;3
 PASSWORD_STORE_DIR=$HOME/.password-store
 EDITOR="emacs -nw"
 DEFAULT_USER="asamwow"
+ASPNETCORE_ENVIRONMENT="Development"
+REPO_URL="https://gitlab.com/hvh/client-access-web-dashboards.git"
+DOTNET_ROOT="/opt/dotnet"
+DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
+MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
+PATH="$DOTNET_ROOT:/home/asamwow/.dotnet/tools:$PATH"
+
 
 ### Load colors
 ###############
@@ -82,6 +89,10 @@ alias pac='sudo pacman'
 alias sys='sudo systemctl'
 alias zshrc='emacs -nw ~/.zshrc'
 alias brightness='xbacklight -set'
+alias pipes='pipes -f 20 -r 2000 -B'
+alias matrix='xscreensaver-command -lock'
+alias search='grep -rnwiI'
+alias linkWebClient='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el .'
 
 ### Bind keys
 #############
@@ -97,6 +108,7 @@ bindkey "^[[B" history-beginning-search-forward-end
 bindkey "^r" history-incremental-search-backward
 bindkey ' ' magic-space    # also do history expansion on space
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
+bindkey '\e[3~' delete-char
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
 

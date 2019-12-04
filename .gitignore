@@ -1,0 +1,11 @@
+emacs/.emacs.d/.graphene-geometry
+emacs/.emacs.d/auto-save-list/
+emacs/.emacs.d/custom.el
+emacs/.emacs.d/elpa/
+emacs/.emacs.d/ido.last
+emacs/.emacs.d/smex-items
+emacs/.emacs.d/speed-type/
+emacs/.emacs.d/transient/
+emacs/.emacs.d/%backup%~
+emacs/.emacs.d/session.*
+emacs/.emacs.d/tramp
