@@ -19,9 +19,9 @@
  (position . 231))
 ("contacts.org"
  (filename . "~/Contacts/contacts.org")
- (front-context-string . "nah\n   :PROPERTI")
- (rear-context-string . "   :END:\n\n** Han")
- (position . 342))
+ (front-context-string . "\n  :PROPERTIES:\n")
+ (rear-context-string)
+ (position . 12))
 ("org-capture-last-stored"
  (filename . "~/Contacts/contacts.org")
  (front-context-string . "** Mark\n   :PROP")

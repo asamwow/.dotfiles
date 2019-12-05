@@ -49,8 +49,12 @@
   (setq alert-default-style 'libnotify))
 =======
   (setq alert-default-style 'libnotify)
+<<<<<<< HEAD
   (setq org-alert-interval 1800))
 >>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
+=======
+  (setq org-alert-interval 900))
+>>>>>>> updated ya
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -63,22 +67,13 @@
   (auth-source-pass-enable)
   (setq auth-sources '(password-store))
   (setq auth-source-debug t))
-(use-package notmuch
-  :init
-  (setq mail-user-agent 'message-user-agent)
-  (setq user-mail-address "samueljahnke6@gmail.com"
-        user-full-name "samueljahnke6")
-  (setq smtpmail-smtp-server "smtp.gmail.com"
-        message-send-mail-function 'message-smtpmail-send-it)
-  (setq smtpmail-debug-info t)
-  (setq message-default-mail-headers "Cc: \nBcc: \n")
-  (setq message-auto-save-directory "~/mail/draft")
-  (setq message-kill-buffer-on-exit t)
-  (setq message-directory "~/Mail/"))
+(use-package notmuch)
 (use-package color-theme-sanityinc-tomorrow
   :config
   (color-theme-sanityinc-tomorrow--define-theme night))
-(use-package magit)
+(use-package magit
+  :init
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 (use-package dash)
 (use-package markdown-mode
  :commands (markdown-mode gfm-mode)
@@ -130,14 +125,11 @@
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
 
-<<<<<<< HEAD
-=======
 ;;; notmuch notifications
 (add-to-list 'load-path "/home/asamwow/.emacs.d/notmuch-unread/")
 (require 'notmuch-unread)
 (notmuch-unread-mode)
 
->>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
 ;;; cc-mode
 ;; (add-hook 'cc-mode 'display-line-numbers-mode)
 (setq c-default-style "linux" c-basic-offset 3)
@@ -247,7 +239,7 @@
 ;;; javascript
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
 
-;;; msmtp
+;;; mail
 (setq message-sendmail-f-is-evil 't)
 (setq sendmail-program "/usr/bin/msmtp")
 
@@ -265,7 +257,22 @@
          ;; Add more string-match lines for your email accounts
          ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
       (setq message-sendmail-extra-arguments (list '"-a" account))))))
-
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
+<<<<<<< HEAD
 >>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
+=======
+(setq user-mail-address "sam.jahnke@hvhprecision.com")
+(setq user-full-name "Samuel Jahnke")
+(setq message-send-mail-function 'message-send-mail-with-sendmail)
+(setq message-default-mail-headers "Cc: \nBcc: \n")
+(setq message-auto-save-directory "~/Mail/draft")
+(setq message-kill-buffer-on-exit t)
+(setq message-directory "~/Mail/")
+(setq message-signature "\
+Sincerely,
+Samuel Jahnke. HVH Precision.
+(507) 399-6195
+Sent from Emacs!
+")
+>>>>>>> updated ya
