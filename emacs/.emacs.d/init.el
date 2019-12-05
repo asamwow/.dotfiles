@@ -45,16 +45,8 @@
       :empty-lines 1))))
 (use-package org-alert
   :init
-<<<<<<< HEAD
-  (setq alert-default-style 'libnotify))
-=======
   (setq alert-default-style 'libnotify)
-<<<<<<< HEAD
-  (setq org-alert-interval 1800))
->>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
-=======
   (setq org-alert-interval 900))
->>>>>>> updated ya
 (use-package graphene
   :init
   (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
@@ -211,19 +203,6 @@
 (global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
 
 ;;; sleep macro
-<<<<<<< HEAD
-(defun my/after-change-hook()
-  "Test function on hook."
-  (message org-state)
-  (when (string= org-state "ASLEEP")
-    (sit-for 2)
-    (save-buffer)
-    (autocommit-and-push-file)
-    (shell-command "shutdown -t 10")
-  )
-)
-(add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
-=======
 ;; (defun my/after-change-hook()
 ;;   "Test function on hook."
 ;;   (message org-state)
@@ -257,11 +236,9 @@
          ;; Add more string-match lines for your email accounts
          ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
       (setq message-sendmail-extra-arguments (list '"-a" account))))))
+
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
-<<<<<<< HEAD
->>>>>>> 0f0a38cf359387a6f495bfef4af8bffb79abc7b9
-=======
 (setq user-mail-address "sam.jahnke@hvhprecision.com")
 (setq user-full-name "Samuel Jahnke")
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
@@ -275,4 +252,3 @@ Samuel Jahnke. HVH Precision.
 (507) 399-6195
 Sent from Emacs!
 ")
->>>>>>> updated ya
