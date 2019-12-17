@@ -51,6 +51,7 @@ EDITOR="emacs -nw"
 DEFAULT_USER="asamwow"
 ASPNETCORE_ENVIRONMENT="Development"
 REPO_URL="https://gitlab.com/hvh/client-access-web-dashboards.git"
+PATTERNS_URL="https://gitlab.com/hvh/hvh-pattern-library.git"
 DOTNET_ROOT="/opt/dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
@@ -92,7 +93,8 @@ alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
 alias matrix='xscreensaver-command -lock'
 alias search='grep -rnwiI'
-alias linkWebClient='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el .'
+alias linkWebClient='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el . && ln ~/web-client-master/Web/wwwroot/js/models/.dir-locals.el ./Web/wwwroot/js/models/'
+alias linkPatternLibrary='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el .'
 
 ### Bind keys
 #############

@@ -34,3 +34,4 @@ clang
 npm
 typescript
 msmtp
+docker-compose
