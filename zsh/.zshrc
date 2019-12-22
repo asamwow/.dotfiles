@@ -56,6 +56,7 @@ DOTNET_ROOT="/opt/dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
 PATH="$DOTNET_ROOT:/home/asamwow/.dotnet/tools:$PATH"
+XDG_CONFIG_HOME="$HOME/.config"
 
 
 ### Load colors
