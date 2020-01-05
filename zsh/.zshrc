@@ -96,6 +96,7 @@ alias matrix='xscreensaver-command -lock'
 alias search='grep -rnwiI'
 alias linkWebClient='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el . && ln ~/web-client-master/Web/wwwroot/js/models/.dir-locals.el ./Web/wwwroot/js/models/'
 alias linkPatternLibrary='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el .'
+alias pull-system-usage='git --git-dir=/home/asamwow/.password-store/.git/ pull && git --git-dir=/home/asamwow/.dotfiles/.git/ pull && git --git-dir=/home/asamwow/.agenda/.git/ pull'
 
 ### Bind keys
 #############
