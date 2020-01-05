@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("ledger"
+(("bookmarks"
+ (filename . "~/.dotfiles/emacs/.emacs.d/bookmarks")
+ (front-context-string . "(\"org-capture-la")
+ (rear-context-string . "position . 12))\n")
+ (position . 953))
+("ledger"
  (filename . "~/Ledger/ledger.ledger")
  (front-context-string . "include carPayme")
  (rear-context-string)
@@ -33,7 +38,7 @@
  (rear-context-string . "cute.\n   :END:\n\n")
  (position . 739))
 ("agenda-sam"
- (filename . "~/Agendas/agenda-sam.org")
+ (filename . "~/.agenda/agenda-sam.org")
  (front-context-string . "#+TITLE:Sam's Ag")
  (rear-context-string)
  (position . 1))
