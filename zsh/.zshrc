@@ -40,7 +40,7 @@ zle -N history-beginning-search-forward-end history-search-end
 
 ### Set variables
 #################
-PATH="/usr/local/bin:/usr/local/sbin/:/home/asamwow/.emacs.d/bin/:$PATH"
+PATH="/usr/local/bin:/usr/local/sbin/:$HOME/.emacs.d/bin/:$PATH"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
@@ -56,7 +56,7 @@ HVH_UTILS_GIT="https://gitlab.com/hvh/hvh-utils.git"
 DOTNET_ROOT="/opt/dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
-PATH="$DOTNET_ROOT:/home/asamwow/.dotnet/tools:$PATH"
+PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
 XDG_CONFIG_HOME="$HOME/.config"
 
 
@@ -85,7 +85,7 @@ unsetopt ALL_EXPORT
 alias ll='ls -al'
 alias ls='ls --color=auto '
 alias ec='emacs -nw'
-alias hearthstone='env WINEPREFIX="/home/asamwow/.wine" /usr/bin/wine C:\\\\windows\\\\command\\\\start.exe /Unix /home/asamwow/.wine/dosdevices/c:/users/Public/Desktop/Hearthstone.lnk'
+alias hearthstone='env WINEPREFIX="$HOME/.wine" /usr/bin/wine C:\\\\windows\\\\command\\\\start.exe /Unix $HOME/.wine/dosdevices/c:/users/Public/Desktop/Hearthstone.lnk'
 alias set-cpu-frequency='sudo cpupower frequency-set -f 1.40GHz'
 alias drivesync='ruby drivesync/drivesync.rb'
 alias pac='sudo pacman'
@@ -98,7 +98,7 @@ alias search='grep -rnwiI'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
 alias merge-web-client-essentials='git merge origin/TESTING-makefile -m "merged makefile, DO NOT MERGE" && git merge origin/TESTING-emacs-dir-locals -m "merged emacs dir locals, DO NOT MERGE"'
-alias pull-system-usage='git --git-dir=/home/asamwow/.password-store/.git/ pull && git --git-dir=/home/asamwow/.dotfiles/.git/ pull && git --git-dir=/home/asamwow/.agenda/.git/ pull && git --git-dir=/home/asamwow/.ledger/.git/ pull && git --git-dir=/home/asamwow/.contacts/.git/ pull'
+alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ pull && git --git-dir=$HOME/.dotfiles/.git/ pull && git --git-dir=$HOME/.agenda/.git/ pull && git --git-dir=$HOME/.ledger/.git/ pull && git --git-dir=$HOME/.contacts/.git/ pull'
 alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
 
 ### Bind keys
