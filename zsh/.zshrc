@@ -99,6 +99,7 @@ alias remove-all-docker-containers='sudo docker container rm -f `sudo docker con
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
 alias merge-web-client-essentials='git merge origin/TESTING-makefile -m "merged makefile, DO NOT MERGE" && git merge origin/TESTING-emacs-dir-locals -m "merged emacs dir locals, DO NOT MERGE"'
 alias pull-system-usage='git --git-dir=/home/asamwow/.password-store/.git/ pull && git --git-dir=/home/asamwow/.dotfiles/.git/ pull && git --git-dir=/home/asamwow/.agenda/.git/ pull && git --git-dir=/home/asamwow/.ledger/.git/ pull && git --git-dir=/home/asamwow/.contacts/.git/ pull'
+alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
 
 ### Bind keys
 #############
