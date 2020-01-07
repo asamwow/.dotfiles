@@ -50,8 +50,9 @@ PASSWORD_STORE_DIR=$HOME/.password-store
 EDITOR="emacs -nw"
 DEFAULT_USER="asamwow"
 ASPNETCORE_ENVIRONMENT="Development"
-REPO_URL="https://gitlab.com/hvh/client-access-web-dashboards.git"
-PATTERNS_URL="https://gitlab.com/hvh/hvh-pattern-library.git"
+WEB_CLIENT_GIT="https://gitlab.com/hvh/client-access-web-dashboards.git"
+PATTERNS_GIT="https://gitlab.com/hvh/hvh-pattern-library.git"
+HVH_UTILS_GIT="https://gitlab.com/hvh/hvh-utils.git"
 DOTNET_ROOT="/opt/dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
@@ -94,9 +95,10 @@ alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
 alias matrix='xscreensaver-command -lock'
 alias search='grep -rnwiI'
-alias linkWebClient='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el . && ln ~/web-client-master/Web/wwwroot/js/models/.dir-locals.el ./Web/wwwroot/js/models/'
-alias linkPatternLibrary='ln ~/web-client-master/makefile . && ln ~/web-client-master/.dir-locals.el .'
-alias pull-system-usage='git --git-dir=/home/asamwow/.password-store/.git/ pull && git --git-dir=/home/asamwow/.dotfiles/.git/ pull && git --git-dir=/home/asamwow/.agenda/.git/ pull'
+alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
+alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
+alias merge-web-client-essentials='git merge origin/TESTING-makefile -m "merged makefile, DO NOT MERGE" && git merge origin/TESTING-emacs-dir-locals -m "merged emacs dir locals, DO NOT MERGE"'
+alias pull-system-usage='git --git-dir=/home/asamwow/.password-store/.git/ pull && git --git-dir=/home/asamwow/.dotfiles/.git/ pull && git --git-dir=/home/asamwow/.agenda/.git/ pull && git --git-dir=/home/asamwow/.ledger/.git/ pull && git --git-dir=/home/asamwow/.contacts/.git/ pull'
 
 ### Bind keys
 #############
@@ -115,6 +117,8 @@ bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 bindkey '\e[3~' delete-char
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
+bindkey '^X' kill-region
+bindkey '^V' yank
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
 
