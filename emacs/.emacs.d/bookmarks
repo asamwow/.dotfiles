@@ -8,7 +8,7 @@
  (rear-context-string . "position . 12))\n")
  (position . 953))
 ("ledger"
- (filename . "~/Ledger/ledger.ledger")
+ (filename . "~/.ledger/ledger.ledger")
  (front-context-string . "include carPayme")
  (rear-context-string)
  (position . 1))

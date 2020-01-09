@@ -26,7 +26,7 @@
 (use-package org-contacts
   :ensure nil
   :after org
-  :custom (org-contacts-files '("~/Contacts/contacts.org")))
+  :custom (org-contacts-files '("~/.contacts/contacts.org")))
 (use-package org-capture
   :ensure nil
   :after org

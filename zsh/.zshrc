@@ -93,13 +93,21 @@ alias sys='sudo systemctl'
 alias zshrc='emacs -nw ~/.zshrc'
 alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
-alias matrix='xscreensaver-command -lock'
+alias lock='xscreensaver-command -lock'
 alias search='grep -rnwiI'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
-alias merge-web-client-essentials='git merge origin/TESTING-makefile -m "merged makefile, DO NOT MERGE" && git merge origin/TESTING-emacs-dir-locals -m "merged emacs dir locals, DO NOT MERGE"'
-alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ pull && git --git-dir=$HOME/.dotfiles/.git/ pull && git --git-dir=$HOME/.agenda/.git/ pull && git --git-dir=$HOME/.ledger/.git/ pull && git --git-dir=$HOME/.contacts/.git/ pull'
+alias merge-web-client-essentials='git merge origin/testing/makefile --squash &&
+                                   git commit -m "merged testing/makefile, DO NOT MERGE" &&
+                                   git merge origin/testing/emacs-dir-locals --squash &&
+                                   git commit -m "merged testing/emacs-dir-locals, DO NOT MERGE"'
+alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ pull &&
+                         git --git-dir=$HOME/.dotfiles/.git/ pull &&
+                         git --git-dir=$HOME/.agenda/.git/ pull &&
+                         git --git-dir=$HOME/.ledger/.git/ pull &&
+                         git --git-dir=$HOME/.contacts/.git/ pull'
 alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
+alias rebase="git fetch;git stash;git rebase origin/development;git stash pop"
 
 ### Bind keys
 #############
