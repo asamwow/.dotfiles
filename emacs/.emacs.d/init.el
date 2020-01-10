@@ -116,6 +116,7 @@
 ;; (pdf-tools-install) ;;change to this to front load it
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
+(c-set-offset 'case-label '+)
 
 ;;; notmuch notifications
 (add-to-list 'load-path "/home/asamwow/.emacs.d/notmuch-unread/")
