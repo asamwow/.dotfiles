@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("bookmarks"
+(("journal"
+ (filename . "~/.contacts/journal.org")
+ (front-context-string . "#+TITLE:Sam's Jo")
+ (rear-context-string)
+ (position . 1))
+("agenda-hvh"
+ (filename . "~/.agenda/agenda-hvh.org")
+ (front-context-string . "nalysts meeting\n")
+ (rear-context-string . "3:11]\n\n\n* TODO A")
+ (position . 4142))
+("bookmarks"
  (filename . "~/.dotfiles/emacs/.emacs.d/bookmarks")
  (front-context-string . "(\"org-capture-la")
  (rear-context-string . "position . 12))\n")
@@ -28,7 +38,7 @@
  (rear-context-string . "96 Nov 12 07:38 ")
  (position . 231))
 ("contacts.org"
- (filename . "~/Contacts/contacts.org")
+ (filename . "~/.contacts/contacts.org")
  (front-context-string . "\n  :PROPERTIES:\n")
  (rear-context-string)
  (position . 12))
@@ -37,11 +47,6 @@
  (front-context-string . "** Mark\n   :PROP")
  (rear-context-string . "cute.\n   :END:\n\n")
  (position . 739))
-("agenda-sam"
- (filename . "~/.agenda/agenda-sam.org")
- (front-context-string . "#+TITLE:Sam's Ag")
- (rear-context-string)
- (position . 1))
 ("init.el"
  (filename . "~/.dotfiles/emacs/.emacs.d/init.el")
  (front-context-string . ";;;; init.el\n\n;;")
