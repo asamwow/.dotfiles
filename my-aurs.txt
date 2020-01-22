@@ -5,4 +5,4 @@ nerd-fonts-source-code-pro
 mycli
 pgcli
 neofetch
-
+font-manager

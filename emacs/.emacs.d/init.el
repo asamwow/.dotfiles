@@ -121,11 +121,8 @@
 (defvar notmuch-unread-mode-line-string "")
 (setq global-mode-string (append global-mode-string 'notmuch-unread-mode-line-string))
 (defun notmuch-unread-count ()
-  (let ((count
-   (replace-regexp-in-string
-    "\n" ""
-    (notmuch-command-to-string "count" "tag:inbox"))))
-    (setq notmuch-unread-mode-line-string (format " ✉ %d" (string-to-number count)))))
+  (let ((inboxCount (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count" "tag:inbox")))))
+  (if (eq inboxCount 0) (setq notmuch-unread-mode-line-string (format "  %d" (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count"))))) (setq notmuch-unread-mode-line-string (format "  %d" inboxCount)))))
 (run-at-time nil 10 'notmuch-unread-count)
 
 ;;; cc-mode
@@ -229,7 +226,7 @@ Sent from Emacs!
 (defun my-shorten-vc-mode-line (string)
   (cond
    ((string-prefix-p "Git" string)
-    (concat "Git" (substring string 3 (min 23 (length string)))))
+    (concat " " (substring string 4 (min 23 (length string)))))
    (t
     string)))
 (advice-add 'vc-git-mode-line-string :filter-return 'my-shorten-vc-mode-line)
