@@ -6,7 +6,7 @@ rm -rf mhostley.pgp mhostley.asc secret.gpg
 git clone https://github.com/asamwow/.dotfiles.git
 cd .dotfiles
 sudo pacman -S --needed - < my-packages.txt
-stow bin emacs gtk pass-git-helper zsh terminator
+stow bin emacs gtk pass-git-helper zsh terminator ledger offlineimap system notmuch
 git config --global credential.helper /usr/bin/pass-git-helper
 git config --global user.email "asamwow@github.com"
 git config --global user.name "Samuel Jahnke"
@@ -14,5 +14,11 @@ git clone https://aur.archlinux.org/yay.git
 cd yay && makepkg -si
 yay -S --needed - < my-aurs.txt
 cd .. && rm -rf yay
-cd .. && git clone https://github.com/asamwow/Agendas.git
+cd ~
+git clone https://github.com/asamwow/Agendas.git .agenda
+git clone https://github.com/asamwow/.contacts
+git clone https://github.com/asamwow/.ledger
+rm -rf .password-store
+git clone https://github.com/asamwow/.password-store
 sudo chsh -s /usr/bin/zsh asamwow
+
