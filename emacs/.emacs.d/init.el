@@ -15,7 +15,6 @@
 ;;; packages
 (use-package org
   :ensure org-plus-contrib
-  ;; The rest of your org-mode configuration
   :init (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -118,13 +117,18 @@
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
 (c-set-offset 'case-label '+)
 
-;;; notmuch notifications
-(add-to-list 'load-path "/home/asamwow/.emacs.d/notmuch-unread/")
-(require 'notmuch-unread)
-(notmuch-unread-mode)
+;;; notmuch notifications based from notmuch-unread-mode
+(defvar notmuch-unread-mode-line-string "")
+(setq global-mode-string (append global-mode-string 'notmuch-unread-mode-line-string))
+(defun notmuch-unread-count ()
+  (let ((count
+   (replace-regexp-in-string
+    "\n" ""
+    (notmuch-command-to-string "count" "tag:inbox"))))
+    (setq notmuch-unread-mode-line-string (format " ✉ %d" (string-to-number count)))))
+(run-at-time nil 10 'notmuch-unread-count)
 
 ;;; cc-mode
-;; (add-hook 'cc-mode 'display-line-numbers-mode)
 (setq c-default-style "linux" c-basic-offset 3)
 (setq clang-format-style-option "file")
 
@@ -132,22 +136,8 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
-   ;; (R . t)
-   ;; (ditaa . t)
-   ;; (dot . t)
-   ;; (emacs-lisp . t)
-   ;; (gnuplot . t)
-   ;; (haskell . nil)
-   ;; (latex . t)
    (ledger . t)
-   ;; (ocaml . nil)
-   ;; (octave . t)
    (python . t)
-   ;; (ruby . t)
-   ;; (screen . nil)
-   ;; (sh . t)
-   ;; (sql . nil)
-   ;; (sqlite . t)
  ))
 
 ;;; latex
@@ -163,61 +153,42 @@
           (cond ((string= shouldPush "t")
                (message (concat "pushing files in " dn))
                (shell-command (concat "cd " dn " && git push -u origin master")))))
-
 (defun commit-and-push-file(commitMessage)
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (let ((fn (buffer-file-name)))
     (message "git adding %s" fn)
     (shell-command (concat "git add " fn))
     (autocommit-schedule-commit (file-name-directory fn) "t" commitMessage)))
-
 (defun commit-file (commitMessage)
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (let ((fn (buffer-file-name)))
     (message "git adding %s" fn)
     (shell-command (concat "git add " fn))
     (autocommit-schedule-commit (file-name-directory fn) "nil" commitMessage)))
-
 (defun autocommit-file ()
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (interactive)
   (commit-file "auto-commit"))
-
 (defun autocommit-and-push-file()
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (interactive)
   (commit-and-push-file "auto-commit-and-push"))
-
 (defun commit-file-prompt ()
   "promps user for commit message"
   (interactive)
   (commit-file (read-string "Enter Commit Message")))
-
 (defun commit-and-push-file-prompt ()
   "promps user for commit message"
   (interactive)
   (commit-and-push-file (read-string "Enter Commit Message")))
-
 (global-set-key (kbd "<f5>") 'autocommit-file)
 (global-set-key (kbd "<C-f5>") 'autocommit-and-push-file)
 (global-set-key (kbd "<f6>") 'commit-file-prompt)
 (global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
 
-;;; sleep macro
-;; (defun my/after-change-hook()
-;;   "Test function on hook."
-;;   (message org-state)
-;;   (when (string= org-state "ASLEEP")
-;;     (sit-for 2)
-;;     (save-buffer)
-;;     (autocommit-and-push-file)
-;;     (shell-command "shutdown -t 10")
-;;   )
-;; )
-;; (add-hook 'org-after-todo-state-change-hook 'my/after-change-hook)
-
 ;;; javascript
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
 
 ;;; mail
 (setq message-sendmail-f-is-evil 't)
@@ -253,3 +224,12 @@ Samuel Jahnke. HVH Precision.
 (507) 399-6195
 Sent from Emacs!
 ")
+
+;;; Shorten Git in modeline
+(defun my-shorten-vc-mode-line (string)
+  (cond
+   ((string-prefix-p "Git" string)
+    (concat "Git" (substring string 3 (min 23 (length string)))))
+   (t
+    string)))
+(advice-add 'vc-git-mode-line-string :filter-return 'my-shorten-vc-mode-line)

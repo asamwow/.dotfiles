@@ -95,6 +95,7 @@ alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
 alias lock='xscreensaver-command -lock'
 alias search='grep -rnwiI'
+alias gitlog='git log --oneline'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
 alias merge-makefile='git merge origin/testing/makefile --squash &&
