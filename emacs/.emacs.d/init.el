@@ -64,7 +64,8 @@
   (color-theme-sanityinc-tomorrow--define-theme night))
 (use-package magit
   :init
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  (global-set-key (kbd "C-c m") 'magit))
 (use-package dash)
 (use-package markdown-mode
  :commands (markdown-mode gfm-mode)
