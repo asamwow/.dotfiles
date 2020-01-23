@@ -120,17 +120,21 @@
 
 ;;; notmuch notifications based from notmuch-unread-mode
 (defvar notmuch-unread-mode-line-string "")
+(defvar notmuch-unread-email-count nil)
 (defconst my-mode-line-map (make-sparse-keymap))
 (defun notmuch-unread-count ()
-  (let ((inboxCount (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count" "tag:inbox")))))
-    (if (eq inboxCount 0) (setq notmuch-unread-mode-line-string (format "  %d" (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count"))))) (setq notmuch-unread-mode-line-string (format "  %d" inboxCount))))
+  (setq notmuch-unread-email-count (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count" "tag:inbox"))))
+  (if (eq notmuch-unread-email-count 0) (setq notmuch-unread-mode-line-string (format "  %d" (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count"))))) (setq notmuch-unread-mode-line-string (format "  %d" inboxCount)))
   (force-mode-line-update))
 (run-at-time nil 10 'notmuch-unread-count)
+(defun notmuch-open-emails ()
+  (interactive)
+  (if (eq notmuch-unread-email-count 0) (notmuch-search "*") (notmuch-search "tag:deleted")))
 (setq global-mode-string 
       (append global-mode-string (list '(:eval (propertize notmuch-unread-mode-line-string 'help-echo "notmuch emails" 'mouse-face 'mode-line-highlight 'local-map my-mode-line-map)))))
  (define-key my-mode-line-map 
    (vconcat [mode-line down-mouse-1])
-   (cons "hello" 'notmuch))
+   (cons "hello" 'notmuch-open-emails))
 
 ;;; cc-mode
 (setq c-default-style "linux" c-basic-offset 3)
