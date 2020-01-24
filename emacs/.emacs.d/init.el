@@ -20,82 +20,55 @@
   (global-set-key (kbd "C-c c") 'org-capture)
   (setq org-support-shift-select t)
   (setq org-clock-persist 'history))
-  ;; (setq org-todo-keywords
-  ;;       '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 (use-package org-contacts
   :ensure nil
   :after org
   :custom (org-contacts-files '("~/.contacts/contacts.org")))
 (use-package org-capture
   :ensure nil
-  :after org
-  :preface
-  (defvar my/org-contacts-template "* %(org-contacts-template-name)
-:PROPERTIES:
-:ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
-:BIRTHDAY: %^{yyyy-mm-dd}
-:EMAIL: %(org-contacts-template-email)
-:NOTE: %^{NOTE}
-:END:" "Template for org-contacts.")
-  :custom
-  (org-capture-templates
-   `(("c" "Contact" entry (file+headline "~/Contacts/contacts.org" "Friends"),
-      my/org-contacts-template
-      :empty-lines 1))))
+  :after org)
 (use-package org-alert
-  :init
-  (setq alert-default-style 'libnotify)
+  :init (setq alert-default-style 'libnotify)
   (setq org-alert-interval 900))
 (use-package graphene
-  :init
-  (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
+  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
   (setq graphene-variable-pitch-font "xos4 Terminus-10")
   (setq graphene-fixed-pitch-font "xos4 Terminus-10"))
 (use-package speed-type)
 (use-package password-store)
 (use-package auth-source-pass
-  :init
-  (auth-source-pass-enable)
+  :init (auth-source-pass-enable)
   (setq auth-sources '(password-store))
   (setq auth-source-debug t))
 (use-package notmuch)
 (use-package color-theme-sanityinc-tomorrow
-  :config
-  (color-theme-sanityinc-tomorrow--define-theme night))
+  :config (color-theme-sanityinc-tomorrow--define-theme night))
 (use-package magit
-  :init
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  :init (setq magit-display-buffer-function
+              #'magit-display-buffer-fullframe-status-v1)
   (global-set-key (kbd "C-c m") 'magit))
 (use-package dash)
 (use-package markdown-mode
- :commands (markdown-mode gfm-mode)
- :mode (("README\\.md\\'" . gfm-mode)
-        ("\\.md\\'" . markdown-mode)
-        ("\\.markdown\\'" . markdown-mode))
- :init (setq markdown-command "multimarkdown"))
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
 (use-package clang-format
-  :init
-  (global-set-key (kbd "C-c i") 'clang-format-region)
+  :init (global-set-key (kbd "C-c i") 'clang-format-region)
   (global-set-key (kbd "C-c u") 'clang-format-buffer))
 (use-package glsl-mode)
 (use-package pandoc-mode)
 (use-package pdf-tools
   :load-path "/home/asamwow/.emacs.d/pdf-tools/lisp"
   :magic ("%PDF" . pdf-view-mode)
-  :config
-  (pdf-tools-install :no-query))
-(use-package csharp-mode
-  :init
-  (defun my-csharp-mode-hook ()
-    (electric-pair-local-mode 1))
-  (add-hook 'csharp-mode-hook 'my-csharp-mode-hook))
+  :config (pdf-tools-install :no-query))
+(use-package csharp-mode)
 (use-package ledger-mode
   :mode "\\.ledger\\'")
 (use-package omnisharp
-  :init
-  (eval-after-load
-      'company
-    '(add-to-list 'company-backends 'company-omnisharp))
+  :init (eval-after-load 'company
+          '(add-to-list 'company-backends 'company-omnisharp))
   (add-hook 'csharp-mode-hook #'company-mode)
   (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
   (setq omnisharp-debug t))
@@ -103,52 +76,87 @@
   :mode "\\.ledger\\'")
 (use-package git-timemachine)
 (use-package undo-tree)
+(use-package aggressive-indent
+  :init (global-set-key (kbd "C-c C-=") 'aggressive-indent-mode))
+(use-package rainbow-delimiters)
+(use-package column-enforce-mode
+  :init (setq column-enforce-column 80))
+(use-package diminish
+  :init (diminish 'flycheck-mode)
+  (diminish 'company-mode)
+  (diminish 'column-enforce-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'smartparens-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'aggressive-indent-mode))
 (use-package plantuml-mode
-  :init
-  (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
+  :init (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
   (setq plantuml-default-exec-mode 'jar))
 
-;;; global settings
+;;; essential global modes
 (menu-bar-mode -1)
 (cua-mode 1)
+
+;;; essential minor modes
+(add-hook 'text-mode-hook #'custom-text-mode-hook)
+(add-hook 'emacs-lisp-mode-hook #'custom-text-mode-hook)
+(add-hook 'org-mode-hook #'custom-text-mode-hook)
+(add-hook 'csharp-mode-hook #'custom-text-mode-hook)
+(add-hook 'python-mode-hook #'custom-text-mode-hook)
+(add-hook 'js-mode-hook #'custom-text-mode-hook)
+(defun custom-text-mode-hook ()
+  (column-enforce-mode 1)
+  (rainbow-delimiters-mode 1)
+  (aggressive-indent-mode 1))
+
+;;; essential settings
 (setq scroll-preserve-screen-position t)
-;; (pdf-loader-install)
-;; (pdf-tools-install) ;;change to this to front load it
+(setq-default fill-column 80)
+
+;;; Company Mode
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
-(c-set-offset 'case-label '+)
 
 ;;; notmuch notifications based from notmuch-unread-mode
 (defvar notmuch-unread-mode-line-string "")
 (defvar notmuch-unread-email-count nil)
 (defconst my-mode-line-map (make-sparse-keymap))
 (defun notmuch-unread-count ()
-  (setq notmuch-unread-email-count (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count" "tag:inbox"))))
+  (setq notmuch-unread-email-count
+        (string-to-number(replace-regexp-in-string
+                          "\n" "" (notmuch-command-to-string
+                                   "count" "tag:inbox"))))
   (if (eq notmuch-unread-email-count 0)
-      (setq notmuch-unread-mode-line-string (format "  %d" (string-to-number(replace-regexp-in-string "\n" "" (notmuch-command-to-string "count")))))
-      (setq notmuch-unread-mode-line-string (format "  %d" notmuch-unread-email-count)))
+      (setq notmuch-unread-mode-line-string
+            (format "  %d" (string-to-number(replace-regexp-in-string
+                                              "\n" "" (notmuch-command-to-string
+                                                       "count")))))
+    (setq notmuch-unread-mode-line-string
+          (format "  %d" notmuch-unread-email-count)))
   (force-mode-line-update))
 (run-at-time nil 5 'notmuch-unread-count)
 (defun notmuch-open-emails ()
   (interactive)
-  (if (eq notmuch-unread-email-count 0) (notmuch-search "*") (notmuch-search "tag:inbox")))
-(setq global-mode-string 
-      (append global-mode-string (list '(:eval (propertize notmuch-unread-mode-line-string 'help-echo "notmuch emails" 'mouse-face 'mode-line-highlight 'local-map my-mode-line-map)))))
- (define-key my-mode-line-map 
-   (vconcat [mode-line down-mouse-1])
-   (cons "hello" 'notmuch-open-emails))
+  (if (eq notmuch-unread-email-count 0)
+      (notmuch-search "*")
+    (notmuch-search "tag:inbox")))
+(setq global-mode-string
+      (append global-mode-string (list '(:eval (propertize
+                                                notmuch-unread-mode-line-string
+                                                'help-echo "notmuch emails"
+                                                'mouse-face 'mode-line-highlight
+                                                'local-map my-mode-line-map)))))
+(define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
+  (cons "hello" 'notmuch-open-emails))
 
 ;;; cc-mode
 (setq c-default-style "linux" c-basic-offset 3)
 (setq clang-format-style-option "file")
+(c-set-offset 'case-label '+)
 
 ;;; babel
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (ledger . t)
-   (python . t)
- ))
+(org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
+                                                         (python . t)))
 
 ;;; latex
 (setq-default TeX-engine 'xetex)
@@ -157,12 +165,13 @@
 
 ;;; auto-commit macro
 (defun autocommit-schedule-commit (dn shouldPush commitMessage)
-  "Schedule an autocommit (and push) if one is not already scheduled for the given dir."
-          (message (concat "Committing files in " dn))
-          (shell-command (concat "cd " dn " && git commit -m '" commitMessage "'"))
-          (cond ((string= shouldPush "t")
-               (message (concat "pushing files in " dn))
-               (shell-command (concat "cd " dn " && git push -u origin master")))))
+  "Schedule an autocommit (and push) if one is not already
+scheduled for the given dir."
+  (message (concat "Committing files in " dn))
+  (shell-command (concat "cd " dn " && git commit -m '" commitMessage "'"))
+  (cond ((string= shouldPush "t")
+         (message (concat "pushing files in " dn))
+         (shell-command (concat "cd " dn " && git push -u origin master")))))
 (defun commit-and-push-file(commitMessage)
   "'git add' the modified file and schedule a commit and push in the idle loop."
   (let ((fn (buffer-file-name)))
@@ -207,17 +216,13 @@
 (defun cg-feed-msmtp ()
   (if (message-mail-p)
       (save-excursion
-    (let* ((from
-        (save-restriction
-          (message-narrow-to-headers)
-          (message-fetch-field "from")))
-           (account
-        (cond
-         ;; I use email address as account label in ~/.msmtprc
-         ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
-         ;; Add more string-match lines for your email accounts
-         ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
-      (setq message-sendmail-extra-arguments (list '"-a" account))))))
+        (let* ((from (save-restriction (message-narrow-to-headers)
+                                       (message-fetch-field "from")))
+               (account (cond
+                         ;; I use email address as account label in ~/.msmtprc
+                         ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
+                         ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
+          (setq messag-sendmail-extra-arguments (list '"-a" account))))))
 
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
@@ -237,9 +242,12 @@ Sent from Emacs!
 
 ;;; Shorten Git in modeline
 (defun my-shorten-vc-mode-line (string)
-  (cond
-   ((string-prefix-p "Git" string)
-    (concat " " (substring string 4 (min 23 (length string)))))
-   (t
-    string)))
-(advice-add 'vc-git-mode-line-string :filter-return 'my-shorten-vc-mode-line)
+  (cond ((string-prefix-p "Git" string)
+         (concat " " (substring string 4 (min 23 (length string)))))
+        (t string)))
+(advice-add 'vc-git-mode-line-string
+            :filter-return 'my-shorten-vc-mode-line)
+
+;;; delete trailing whitespaces on save
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
