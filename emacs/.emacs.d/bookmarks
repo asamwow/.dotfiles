@@ -33,7 +33,7 @@
  (rear-context-string)
  (position . 1))
 ("web-client-makefile"
- (filename . "~/web-client-master/makefile")
+ (filename . "~/web-client-development/makefile")
  (front-context-string . "WEB_DB_KEY=`pass")
  (rear-context-string)
  (position . 1))
