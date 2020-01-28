@@ -84,11 +84,10 @@
 (use-package diminish
   :init (diminish 'flycheck-mode)
   (diminish 'company-mode)
-  (diminish 'column-enforce-mode)
   (diminish 'eldoc-mode)
   (diminish 'smartparens-mode)
   (diminish 'visual-line-mode)
-  (diminish 'aggressive-indent-mode))
+  (diminish 'column-enforce-mode))
 (use-package plantuml-mode
   :init (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
   (setq plantuml-default-exec-mode 'jar))
@@ -107,7 +106,8 @@
 (add-hook 'js-mode-hook #'custom-text-mode-hook)
 (defun custom-text-mode-hook ()
   (column-enforce-mode 1)
-  (rainbow-delimiters-mode 1))
+  (rainbow-delimiters-mode 1)
+  (column-enforce-mode))
 
 ;;; essential settings
 (setq scroll-preserve-screen-position t)
