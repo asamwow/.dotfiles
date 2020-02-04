@@ -153,6 +153,9 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^X'      kill-region
 bindkey '^V'      yank
+
+# Completion Styles
+#############
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
 
@@ -162,8 +165,6 @@ zstyle ':completion:*' menu select=1 _complete _ignored _approximate
 zstyle -e ':completion:*:approximate:*' max-errors \
     'reply=( $(( ($#PREFIX+$#SUFFIX)/2 )) numeric )'
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-
-# Completion Styles
 
 # list of completers to use
 zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
