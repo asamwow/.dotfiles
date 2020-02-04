@@ -138,21 +138,21 @@ alias rebase="git fetch;git stash;git rebase origin/development;git stash pop"
 #############
 autoload -U compinit
 compinit
-bindkey "^?" backward-delete-char
-bindkey '^[OH' beginning-of-line
-bindkey '^[OF' end-of-line
-bindkey '^[[5~' up-line-or-history
-bindkey '^[[6~' down-line-or-history
-bindkey "^[[A" history-beginning-search-backward-end
-bindkey "^[[B" history-beginning-search-forward-end
-bindkey "^r" history-incremental-search-backward
-bindkey ' ' magic-space    # also do history expansion on space
-bindkey '^I' complete-word # complete on tab, leave expansion to _expand
-bindkey '\e[3~' delete-char
+bindkey '^?'      backward-delete-char
+bindkey '^[OH'    beginning-of-line
+bindkey '^[OF'    end-of-line
+bindkey '^[[5~'   up-line-or-history
+bindkey '^[[6~'   down-line-or-history
+bindkey '^[[A'    history-beginning-search-backward-end
+bindkey '^[[B'    history-beginning-search-forward-end
+bindkey '^r'      history-incremental-search-backward
+bindkey ' '       magic-space    # also do history expansion on space
+bindkey '^I'      complete-word # complete on tab, leave expansion to _expand
+bindkey '\e[3~'   delete-char
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
-bindkey '^X' kill-region
-bindkey '^V' yank
+bindkey '^X'      kill-region
+bindkey '^V'      yank
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
 
