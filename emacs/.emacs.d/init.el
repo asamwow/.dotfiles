@@ -80,9 +80,11 @@
   :init (global-set-key (kbd "C-c C-=") 'global-aggressive-indent-mode))
 (use-package rainbow-delimiters)
 (use-package column-enforce-mode
-  :init (setq column-enforce-column 80))
+  :init (setq column-enforce-column 80)
+  (global-set-key (kbd "C-c C-`") 'column-enforce-mode))
 (use-package diminish
-  :init (diminish 'flycheck-mode)
+  :config
+  (diminish 'flycheck-mode)
   (diminish 'company-mode)
   (diminish 'eldoc-mode)
   (diminish 'smartparens-mode)
@@ -95,19 +97,23 @@
 ;;; essential global modes
 (menu-bar-mode -1)
 (cua-mode 1)
-(global-aggressive-indent-mode)
 
 ;;; essential minor modes
-(add-hook 'text-mode-hook #'custom-text-mode-hook)
-(add-hook 'emacs-lisp-mode-hook #'custom-text-mode-hook)
-(add-hook 'org-mode-hook #'custom-text-mode-hook)
-(add-hook 'csharp-mode-hook #'custom-text-mode-hook)
-(add-hook 'python-mode-hook #'custom-text-mode-hook)
-(add-hook 'js-mode-hook #'custom-text-mode-hook)
 (defun custom-text-mode-hook ()
-  (column-enforce-mode 1)
   (rainbow-delimiters-mode 1)
-  (column-enforce-mode))
+  (electric-indent-mode 0)
+  (aggressive-indent-mode 1))
+(add-hook 'emacs-lisp-mode-hook #'custom-text-mode-hook)
+(add-hook 'csharp-mode-hook #'custom-text-mode-hook)
+(add-hook 'js-mode-hook #'custom-text-mode-hook)
+(defun python-hook ()
+  (custom-text-mode-hook)
+  (aggressive-indent-mode 0))
+(add-hook 'python-mode-hook #'python-hook)
+(defun org-hook ()
+  (custom-text-mode-hook)
+  (column-enforce-mode 1))
+(add-hook 'org-mode-hook #'org-hook)
 
 ;;; essential settings
 (setq scroll-preserve-screen-position t)

@@ -98,6 +98,8 @@ alias search='grep -rnwiI'
 alias gitlog='git log --oneline'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
+alias merge-silence-cohort='git merge origin/testing/silent-cohort-creation --squash &&
+                            git commit -m "merged silence cohort creation, DO NOT MERGE"'
 alias merge-makefile='git merge origin/testing/makefile --squash &&
                       git commit -m "merged testing/makefile, DO NOT MERGE"'
 alias merge-dir-locals='git merge origin/testing/emacs-dir-locals --squash &&

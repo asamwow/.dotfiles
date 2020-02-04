@@ -14,9 +14,9 @@
  (position . 1))
 ("agenda-hvh"
  (filename . "~/.agenda/agenda-hvh.org")
- (front-context-string . "nalysts meeting\n")
- (rear-context-string . "3:11]\n\n\n* TODO A")
- (position . 4142))
+ (front-context-string . "#+TITLE:Work Age")
+ (rear-context-string)
+ (position . 1))
 ("bookmarks"
  (filename . "~/.dotfiles/emacs/.emacs.d/bookmarks")
  (front-context-string . "(\"org-capture-la")
@@ -33,7 +33,7 @@
  (rear-context-string)
  (position . 1))
 ("web-client-makefile"
- (filename . "~/web-client-development/makefile")
+ (filename . "~/web-client-makefile/makefile")
  (front-context-string . "WEB_DB_KEY=`pass")
  (rear-context-string)
  (position . 1))
