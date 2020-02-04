@@ -107,30 +107,30 @@ alias merge-dir-locals='git merge origin/testing/emacs-dir-locals --squash &&
 alias merge-my-patches='git merge origin/testing/sams-local-patches --squash &&
                         git commit -m "merged testing/sams-local-patches, DO NOT MERGE"'
 alias merge-development-essentials='merge-makefile && merge-dir-locals && merge-my-patches'
-alias pull-system-usage='git --git-dir=   $HOME/.password-store/.git/ \
-                             --work-tree= $HOME/.password-store/ pull &&
-                         git --git-dir=   $HOME/.dotfiles/.git/ \
-                             --work-tree= $HOME/.dotfiles/ pull &&
-                         git --git-dir=   $HOME/.agenda/.git/ \
-                             --work-tree= $HOME/.agenda/ pull &&
-                         git --git-dir=   $HOME/.ledger/.git/ \
-                             --work-tree= $HOME/.ledger/ pull &&
-                         git --git-dir=   $HOME/.contacts/.git/ \
-                             --work-tree= $HOME/.contacts/ pull
-                         git --git-dir=   $HOME/.offlineimap/.git/ \
-                             --work-tree= $HOME/.offlineimap/ pull'
-alias view-system-usage='git --git-dir=   $HOME/.password-store/.git/ \
-                             --work-tree= $HOME/.password-store/ status &&
-                         git --git-dir=   $HOME/.dotfiles/.git/ \
-                             --work-tree= $HOME/.dotfiles/ status &&
-                         git --git-dir=   $HOME/.agenda/.git/ \
-                             --work-tree= $HOME/.agenda/ status &&
-                         git --git-dir=   $HOME/.ledger/.git/ \
-                             --work-tree= $HOME/.ledger/ status &&
-                         git --git-dir=   $HOME/.contacts/.git/ \
-                             --work-tree= $HOME/.contacts/ status
-                         git --git-dir=   $HOME/.offlineimap/.git/ \
-                             --work-tree= $HOME/.offlineimap/ status'
+alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ \
+                             --work-tree=$HOME/.password-store/ pull &&
+                         git --git-dir=$HOME/.dotfiles/.git/ \
+                             --work-tree=$HOME/.dotfiles/ pull &&
+                         git --git-dir=$HOME/.agenda/.git/ \
+                             --work-tree=$HOME/.agenda/ pull &&
+                         git --git-dir=$HOME/.ledger/.git/ \
+                             --work-tree=$HOME/.ledger/ pull &&
+                         git --git-dir=$HOME/.contacts/.git/ \
+                             --work-tree=$HOME/.contacts/ pull
+                         git --git-dir=$HOME/.offlineimap/.git/ \
+                             --work-tree=$HOME/.offlineimap/ pull'
+alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
+                             --work-tree=$HOME/.password-store/ status &&
+                         git --git-dir=$HOME/.dotfiles/.git/ \
+                             --work-tree=$HOME/.dotfiles/ status &&
+                         git --git-dir=$HOME/.agenda/.git/ \
+                             --work-tree=$HOME/.agenda/ status &&
+                         git --git-dir=$HOME/.ledger/.git/ \
+                             --work-tree=$HOME/.ledger/ status &&
+                         git --git-dir=$HOME/.contacts/.git/ \
+                             --work-tree=$HOME/.contacts/ status
+                         git --git-dir=$HOME/.offlineimap/.git/ \
+                             --work-tree=$HOME/.offlineimap/ status'
 alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
 alias rebase="git fetch;git stash;git rebase origin/development;git stash pop"
 
