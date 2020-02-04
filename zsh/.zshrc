@@ -116,7 +116,9 @@ alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ \
                          git --git-dir=$HOME/.ledger/.git/ \
                              --work-tree=$HOME/.ledger/ pull &&
                          git --git-dir=$HOME/.contacts/.git/ \
-                             --work-tree=$HOME/.contacts/ pull'
+                             --work-tree=$HOME/.contacts/ pull
+                         git --git-dir=$HOME/.offlineimap/.git/ \
+                             --work-tree=$HOME/.offlineimap/ pull'
 alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
                              --work-tree=$HOME/.password-store/ status &&
                          git --git-dir=$HOME/.dotfiles/.git/ \
@@ -126,7 +128,9 @@ alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
                          git --git-dir=$HOME/.ledger/.git/ \
                              --work-tree=$HOME/.ledger/ status &&
                          git --git-dir=$HOME/.contacts/.git/ \
-                             --work-tree=$HOME/.contacts/ status'
+                             --work-tree=$HOME/.contacts/ status
+                         git --git-dir=$HOME/.offlineimap/.git/ \
+                             --work-tree=$HOME/.offlineimap/ status'
 alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
 alias rebase="git fetch;git stash;git rebase origin/development;git stash pop"
 
