@@ -77,7 +77,7 @@
 (use-package git-timemachine)
 (use-package undo-tree)
 (use-package aggressive-indent
-  :init (global-set-key (kbd "C-c C-=") 'global-aggressive-indent-mode))
+  :init (global-set-key (kbd "C-c C-=") 'aggressive-indent-mode))
 (use-package rainbow-delimiters)
 (use-package column-enforce-mode
   :init (setq column-enforce-column 80)
@@ -97,23 +97,29 @@
 ;;; essential global modes
 (menu-bar-mode -1)
 (cua-mode 1)
+(global-visual-line-mode 0)
+(setq-default truncate-lines t)
+(setq truncate-partial-width-windows t)
 
 ;;; essential minor modes
-(defun custom-text-mode-hook ()
+(defun custom-text-hook ()
+  (electric-indent-mode 0))
+(add-hook 'sql-mode-hook #'custom-text-hook)
+(defun custom-coding-hook ()
+  (custom-text-hook)
   (rainbow-delimiters-mode 1)
-  (electric-indent-mode 0)
   (aggressive-indent-mode 1))
-(add-hook 'emacs-lisp-mode-hook #'custom-text-mode-hook)
-(add-hook 'csharp-mode-hook #'custom-text-mode-hook)
-(add-hook 'js-mode-hook #'custom-text-mode-hook)
-(defun python-hook ()
-  (custom-text-mode-hook)
+(add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
+(add-hook 'csharp-mode-hook #'custom-coding-hook)
+(add-hook 'js-mode-hook #'custom-coding-hook)
+(defun custom-python-hook ()
+  (custom-coding-hook)
   (aggressive-indent-mode 0))
-(add-hook 'python-mode-hook #'python-hook)
-(defun org-hook ()
-  (custom-text-mode-hook)
+(add-hook 'python-mode-hook #'custom-python-hook)
+(defun custom-org-hook ()
+  (custom-coding-hook)
   (column-enforce-mode 1))
-(add-hook 'org-mode-hook #'org-hook)
+(add-hook 'org-mode-hook #'custom-org-hook)
 
 ;;; essential settings
 (setq scroll-preserve-screen-position t)
@@ -254,6 +260,14 @@ Sent from Emacs!
 (advice-add 'vc-git-mode-line-string
             :filter-return 'my-shorten-vc-mode-line)
 
-;;; delete trailing whitespaces on save
+;;; delete trailing whitespaces on save and use unix line endings
+(defun delete-carrage-returns ()
+  (interactive)
+  (save-excursion
+    (goto-char 0)
+    (while (search-forward "\r" nil :noerror)
+      (replace-match ""))))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          'delete-carrage-returns)
