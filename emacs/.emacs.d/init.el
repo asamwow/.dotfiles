@@ -207,11 +207,11 @@ scheduled for the given dir."
 (defun commit-file-prompt ()
   "promps user for commit message"
   (interactive)
-  (commit-file (read-string "Enter Commit Message")))
+  (commit-file (read-string "Enter Commit Message: ")))
 (defun commit-and-push-file-prompt ()
   "promps user for commit message"
   (interactive)
-  (commit-and-push-file (read-string "Enter Commit Message")))
+  (commit-and-push-file (read-string "Enter Commit Message: ")))
 (global-set-key (kbd "<f5>") 'autocommit-file)
 (global-set-key (kbd "<C-f5>") 'autocommit-and-push-file)
 (global-set-key (kbd "<f6>") 'commit-file-prompt)
