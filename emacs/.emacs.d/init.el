@@ -90,20 +90,33 @@
   (diminish 'smartparens-mode)
   (diminish 'visual-line-mode)
   (diminish 'column-enforce-mode))
-(use-package plantuml-mode
-  :init (setq plantuml-jar-path "/home/asamwow/Downloads/plantuml.jar")
-  (setq plantuml-default-exec-mode 'jar))
+(use-package js2-mode)
+(setq package-check-signature 'allow-unsigned)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(use-package gnu-elpa-keyring-update)
+;; (use-package org-tempo)
 
-;;; essential global modes
+;; only use plant uml if you have the jar
+(let ((plantumljarpath (format "%s/Downloads/plantuml.jar" (getenv "HOME"))))
+  (if (file-exists-p plantumljarpath)
+      (use-package plantuml-mode
+        :init (setq plantuml-jar-path plantumljarpath)
+        (setq plantuml-default-exec-mode 'jar))))
+
+
+
+;;; set global defaults
 (menu-bar-mode -1)
 (cua-mode 1)
 (global-visual-line-mode 0)
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows t)
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 
-;;; essential minor modes
+;;; minor mode hooks
 (defun custom-text-hook ()
-  (electric-indent-mode 0))
+  (electric-indent-mode 0)
+  (abbrev-mode 1))
 (add-hook 'sql-mode-hook #'custom-text-hook)
 (defun custom-coding-hook ()
   (custom-text-hook)
@@ -111,7 +124,8 @@
   (aggressive-indent-mode 1))
 (add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
 (add-hook 'csharp-mode-hook #'custom-coding-hook)
-(add-hook 'js-mode-hook #'custom-coding-hook)
+(add-hook 'js2-mode-hook #'custom-coding-hook)
+(add-hook 'javascript-mode-hook #'custom-coding-hook)
 (defun custom-python-hook ()
   (custom-coding-hook)
   (aggressive-indent-mode 0))
@@ -168,7 +182,8 @@
 
 ;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
-                                                         (python . t)))
+                                                         (python . t)
+                                                         (shell . t)))
 
 ;;; latex
 (setq-default TeX-engine 'xetex)
@@ -219,6 +234,7 @@ scheduled for the given dir."
 
 ;;; javascript
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
 
 ;;; mail
@@ -271,3 +287,13 @@ Sent from Emacs!
           'delete-trailing-whitespace)
 (add-hook 'before-save-hook
           'delete-carrage-returns)
+
+
+;;; increment number at point
+(defun increment-number-at-point ()
+  (interactive)
+  (skip-chars-backward "0-9")
+  (or (looking-at "[0-9]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+(global-set-key (kbd "C-c +") 'increment-number-at-point)
