@@ -46,7 +46,8 @@
 (use-package magit
   :init (setq magit-display-buffer-function
               #'magit-display-buffer-fullframe-status-v1)
-  (global-set-key (kbd "C-c m") 'magit))
+  (global-set-key (kbd "C-c m") 'magit)
+  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell))
 (use-package dash)
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
@@ -132,8 +133,11 @@
 (add-hook 'python-mode-hook #'custom-python-hook)
 (defun custom-org-hook ()
   (custom-coding-hook)
-  (column-enforce-mode 1))
+  (auto-fill-mode 1))
 (add-hook 'org-mode-hook #'custom-org-hook)
+(defun custom-message-hook ()
+  (flyspell-mode 1))
+(add-hook 'notmuch-message-mode-hook #'custom-message-hook)
 
 ;;; essential settings
 (setq scroll-preserve-screen-position t)
