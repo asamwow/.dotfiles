@@ -131,8 +131,9 @@ alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
                              --work-tree=$HOME/.contacts/ status
                          git --git-dir=$HOME/.offlineimap/.git/ \
                              --work-tree=$HOME/.offlineimap/ status'
-alias git-update-and-push="git add -u && git commit -m 'updated' && git push"
-alias rebase="git fetch;git stash;git rebase origin/development;git stash pop"
+alias gitupdate="git add -u && git commit -m 'updated' && git push"
+alias gitrebase="git fetch;git stash;git rebase origin/development;git stash pop"
+alias gitpush="git push -u origin HEAD"
 
 ### Bind keys
 #############

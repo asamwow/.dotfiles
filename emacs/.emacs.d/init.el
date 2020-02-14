@@ -73,8 +73,6 @@
   (add-hook 'csharp-mode-hook #'company-mode)
   (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
   (setq omnisharp-debug t))
-(use-package ledger-mode
-  :mode "\\.ledger\\'")
 (use-package git-timemachine)
 (use-package undo-tree)
 (use-package aggressive-indent
@@ -90,7 +88,8 @@
   (diminish 'eldoc-mode)
   (diminish 'smartparens-mode)
   (diminish 'visual-line-mode)
-  (diminish 'column-enforce-mode))
+  (diminish 'column-enforce-mode)
+  (diminish 'abbrev-mode))
 (use-package js2-mode)
 (setq package-check-signature 'allow-unsigned)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
@@ -111,8 +110,10 @@
 (cua-mode 1)
 (global-visual-line-mode 0)
 (setq-default truncate-lines t)
+(setq-default auto-hscroll-mode t)
 (setq truncate-partial-width-windows t)
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
+(setq vc-follow-symlinks t)
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -127,6 +128,7 @@
 (add-hook 'csharp-mode-hook #'custom-coding-hook)
 (add-hook 'js2-mode-hook #'custom-coding-hook)
 (add-hook 'javascript-mode-hook #'custom-coding-hook)
+(add-hook 'ledger-mode-hook #'custom-coding-hook)
 (defun custom-python-hook ()
   (custom-coding-hook)
   (aggressive-indent-mode 0))
@@ -147,41 +149,10 @@
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
 
-;;; notmuch notifications based from notmuch-unread-mode
-(defvar notmuch-unread-mode-line-string "")
-(defvar notmuch-unread-email-count nil)
-(defconst my-mode-line-map (make-sparse-keymap))
-(defun notmuch-unread-count ()
-  (setq notmuch-unread-email-count
-        (string-to-number(replace-regexp-in-string
-                          "\n" "" (notmuch-command-to-string
-                                   "count" "tag:inbox"))))
-  (if (eq notmuch-unread-email-count 0)
-      (setq notmuch-unread-mode-line-string
-            (format "  %d" (string-to-number(replace-regexp-in-string
-                                              "\n" "" (notmuch-command-to-string
-                                                       "count")))))
-    (setq notmuch-unread-mode-line-string
-          (format "  %d" notmuch-unread-email-count)))
-  (force-mode-line-update))
-(run-at-time nil 5 'notmuch-unread-count)
-(defun notmuch-open-emails ()
-  (interactive)
-  (if (eq notmuch-unread-email-count 0)
-      (notmuch-search "*")
-    (notmuch-search "tag:inbox")))
-(setq global-mode-string
-      (append global-mode-string (list '(:eval (propertize
-                                                notmuch-unread-mode-line-string
-                                                'help-echo "notmuch emails"
-                                                'mouse-face 'mode-line-highlight
-                                                'local-map my-mode-line-map)))))
-(define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
-  (cons "hello" 'notmuch-open-emails))
-
 ;;; cc-mode
 (setq c-default-style "linux" c-basic-offset 3)
 (setq clang-format-style-option "file")
+(setq c-default-style "bsd")
 (c-set-offset 'case-label '+)
 
 ;;; babel
@@ -241,6 +212,36 @@ scheduled for the given dir."
 (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
 
+;;; Shorten Git in modeline
+(defun my-shorten-vc-mode-line (string)
+  (cond ((string-prefix-p "Git" string)
+         (concat " " (substring string 4 (min 23 (length string)))))
+        (t string)))
+(advice-add 'vc-git-mode-line-string
+            :filter-return 'my-shorten-vc-mode-line)
+
+;;; delete trailing whitespaces on save and use unix line endings
+(defun delete-carrage-returns ()
+  (interactive)
+  (save-excursion
+    (goto-char 0)
+    (while (search-forward "\r" nil :noerror)
+      (replace-match ""))))
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          'delete-carrage-returns)
+
+
+;;; increment number at point
+(defun increment-number-at-point ()
+  (interactive)
+  (skip-chars-backward "0-9")
+  (or (looking-at "[0-9]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
+(global-set-key (kbd "C-c +") 'increment-number-at-point)
+
 ;;; mail
 (setq message-sendmail-f-is-evil 't)
 (setq sendmail-program "/usr/bin/msmtp")
@@ -272,32 +273,34 @@ Samuel Jahnke. HVH Precision.
 Sent from Emacs!
 ")
 
-;;; Shorten Git in modeline
-(defun my-shorten-vc-mode-line (string)
-  (cond ((string-prefix-p "Git" string)
-         (concat " " (substring string 4 (min 23 (length string)))))
-        (t string)))
-(advice-add 'vc-git-mode-line-string
-            :filter-return 'my-shorten-vc-mode-line)
-
-;;; delete trailing whitespaces on save and use unix line endings
-(defun delete-carrage-returns ()
+;;; notmuch notifications based from notmuch-unread-mode
+(defvar notmuch-unread-mode-line-string "")
+(defvar notmuch-unread-email-count nil)
+(defconst my-mode-line-map (make-sparse-keymap))
+(defun notmuch-unread-count ()
+  (setq notmuch-unread-email-count
+        (string-to-number(replace-regexp-in-string
+                          "\n" "" (notmuch-command-to-string
+                                   "count" "tag:inbox"))))
+  (if (eq notmuch-unread-email-count 0)
+      (setq notmuch-unread-mode-line-string
+            (format "  %d" (string-to-number(replace-regexp-in-string
+                                              "\n" "" (notmuch-command-to-string
+                                                       "count")))))
+    (setq notmuch-unread-mode-line-string
+          (format "  %d" notmuch-unread-email-count)))
+  (force-mode-line-update))
+(run-at-time nil 5 'notmuch-unread-count)
+(defun notmuch-open-emails ()
   (interactive)
-  (save-excursion
-    (goto-char 0)
-    (while (search-forward "\r" nil :noerror)
-      (replace-match ""))))
-(add-hook 'before-save-hook
-          'delete-trailing-whitespace)
-(add-hook 'before-save-hook
-          'delete-carrage-returns)
-
-
-;;; increment number at point
-(defun increment-number-at-point ()
-  (interactive)
-  (skip-chars-backward "0-9")
-  (or (looking-at "[0-9]+")
-      (error "No number at point"))
-  (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
-(global-set-key (kbd "C-c +") 'increment-number-at-point)
+  (if (eq notmuch-unread-email-count 0)
+      (notmuch-search "*")
+    (notmuch-search "tag:inbox")))
+(setq global-mode-string
+      (append global-mode-string (list '(:eval (propertize
+                                                notmuch-unread-mode-line-string
+                                                'help-echo "notmuch emails"
+                                                'mouse-face 'mode-line-highlight
+                                                'local-map my-mode-line-map)))))
+(define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
+  (cons "hello" 'notmuch-open-emails))
