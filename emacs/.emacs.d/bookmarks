@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("agenda-sam"
+(("planck-keymap"
+ (filename . "~/qmk_firmware/keyboards/planck/keymaps/samuel/README.org")
+ (front-context-string . "#+Title: Samuel'")
+ (rear-context-string)
+ (position . 1))
+("agenda-sam"
  (filename . "~/.agenda/agenda-sam.org")
  (front-context-string . "#+TITLE:Sam's Ag")
  (rear-context-string)
