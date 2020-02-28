@@ -68,11 +68,11 @@
 (use-package ledger-mode
   :mode "\\.ledger\\'")
 (use-package omnisharp
-  :init (eval-after-load 'company
-          '(add-to-list 'company-backends 'company-omnisharp))
-  (add-hook 'csharp-mode-hook #'company-mode)
-  (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
-  (setq omnisharp-debug t))
+:init (eval-after-load 'company
+'(add-to-list 'company-backends 'company-omnisharp))
+(add-hook 'csharp-mode-hook #'company-mode)
+(setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
+(setq omnisharp-debug t))
 (use-package git-timemachine)
 (use-package undo-tree)
 (use-package aggressive-indent
@@ -91,9 +91,7 @@
   (diminish 'column-enforce-mode)
   (diminish 'abbrev-mode))
 (use-package js2-mode)
-(setq package-check-signature 'allow-unsigned)
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-(use-package gnu-elpa-keyring-update)
+(use-package vue-mode)
 ;; (use-package org-tempo)
 
 ;; only use plant uml if you have the jar
@@ -103,7 +101,8 @@
         :init (setq plantuml-jar-path plantumljarpath)
         (setq plantuml-default-exec-mode 'jar))))
 
-
+(add-to-list 'load-path "/home/asamwow/csharp-mode/")
+(require 'csharp-mode)
 
 ;;; set global defaults
 (menu-bar-mode -1)
@@ -125,7 +124,6 @@
   (rainbow-delimiters-mode 1)
   (aggressive-indent-mode 1))
 (add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
-(add-hook 'csharp-mode-hook #'custom-coding-hook)
 (add-hook 'js2-mode-hook #'custom-coding-hook)
 (add-hook 'javascript-mode-hook #'custom-coding-hook)
 (add-hook 'ledger-mode-hook #'custom-coding-hook)
@@ -141,6 +139,49 @@
   (flyspell-mode 1))
 (add-hook 'notmuch-message-mode-hook #'custom-message-hook)
 
+;;; cc-mode AaronL’s C-style from wiki (edited)
+(setq-default c-indent-level 4         ; A TAB is equivilent to four spaces
+              c-argdecl-indent 0       ; Do not indent argument decl's extra
+              c-tab-always-indent t
+              backward-delete-function nil) ; DO NOT expand tabs when deleting
+(c-add-style "my-c-style" '((c-continued-statement-offset 4))) ; If a statement continues on the next line, indent the continuation by 4
+(defun custom-c-mode-hook ()
+  (custom-coding-hook)
+  (c-set-style "my-c-style")
+  (c-set-offset 'substatement-open '0) ; brackets should be at same indentation level as the statements they open
+  (c-set-offset 'inline-open '0)
+  (c-set-offset 'block-open '+)
+  (c-set-offset 'brace-list-open '+)   ; all "opens" should be indented by the c-indent-level
+  (c-set-offset 'case-label '+))       ; indent case labels by c-indent-level, too
+(add-hook 'c-mode-hook 'custom-c-mode-hook)
+(add-hook 'c++-mode-hook 'custom-c-mode-hook)
+(defun custom-csharp-mode-hook ()
+  (custom-c-mode-hook))
+(add-hook 'csharp-mode-hook #'custom-csharp-mode-hook)
+(defun custom-csharp-indent-hook ()
+  (if (eq major-mode 'csharp-mode)
+      (save-excursion
+        (previous-line)
+        (let ((line (thing-at-point 'line)))
+          (if (string-match "\\(^[^//\n]*new \\([^{\n]\\)*\\((\\w*)\\)?[^;\n,}{]$\\)\\|\\(=> *\\(new\\)?$\\)\\|\\(new$\\)" line)
+              (progn
+                (let ((isDotFunction (string-match "\\(^ +\\.\\|\\( *\\w* *(\\( *\\w *\\)*new\\)\\)\\|\\(=>$\\)" line)))
+                  (setq indent -4)
+                  (forward-line)
+                  (let ((line2 (thing-at-point 'line)))
+                    (if (string-match "^[^//\n]*{" line2)
+                        (progn
+                          (if isDotFunction
+                              (setq indent -8))
+                          (if (string-match "=> *new$" line)
+                              (decrease-indent-at-point (+ indent 4))
+                            (decrease-indent-at-point indent))))))))))))
+(defun decrease-indent-at-point (indent)
+  (indent-rigidly(line-beginning-position) (line-end-position) indent))
+(add-hook 'c-special-indent-hook #'custom-csharp-indent-hook)
+
+
+
 ;;; essential settings
 (setq scroll-preserve-screen-position t)
 (setq-default fill-column 80)
@@ -148,12 +189,6 @@
 ;;; Company Mode
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
-
-;;; cc-mode
-(setq c-default-style "linux" c-basic-offset 3)
-(setq clang-format-style-option "file")
-(setq c-default-style "bsd")
-(c-set-offset 'case-label '+)
 
 ;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
@@ -255,7 +290,7 @@ scheduled for the given dir."
                          ;; I use email address as account label in ~/.msmtprc
                          ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
                          ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
-          (setq messag-sendmail-extra-arguments (list '"-a" account))))))
+          (setq message-sendmail-extra-arguments (list '"-a" account))))))
 
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)

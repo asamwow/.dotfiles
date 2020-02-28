@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("planck-keymap"
+(("CohortController.cs"
+ (filename . "~/web-client-514/Web/Areas/Analytics/Controllers/CohortController.cs")
+ (front-context-string . "                ")
+ (rear-context-string . "Result(message)\n")
+ (position . 6410))
+("planck-keymap"
  (filename . "~/qmk_firmware/keyboards/planck/keymaps/samuel/README.org")
  (front-context-string . "#+Title: Samuel'")
  (rear-context-string)
