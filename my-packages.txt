@@ -37,3 +37,4 @@ msmtp
 docker-compose
 bspwm
 sxhkd
+vlc
