@@ -40,7 +40,7 @@ zle -N history-beginning-search-forward-end history-search-end
 
 ### Set variables
 #################
-PATH="/usr/local/bin:/usr/local/sbin/:$HOME/.emacs.d/bin/:$PATH"
+PATH="/usr/local/bin:/usr/local/sbin/:$HOME/.emacs.d/bin/:$HOME/.snowsql:$PATH"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
@@ -98,13 +98,13 @@ alias search='grep -rnwiI'
 alias gitlog='git log --oneline'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
-alias merge-silence-cohort='git merge origin/testing/silent-cohort-creation --squash &&
+alias merge-silence-cohort='git merge testing/silent-cohort-creation --squash &&
                             git commit -m "merged silence cohort creation, DO NOT MERGE"'
-alias merge-makefile='git merge origin/testing/makefile --squash &&
+alias merge-makefile='git merge testing/makefile --squash &&
                       git commit -m "merged testing/makefile, DO NOT MERGE"'
-alias merge-dir-locals='git merge origin/testing/emacs-dir-locals --squash &&
+alias merge-dir-locals='git merge testing/emacs-dir-locals --squash &&
                         git commit -m "merged testing/emacs-dir-locals, DO NOT MERGE"'
-alias merge-my-patches='git merge origin/testing/sams-local-patches --squash &&
+alias merge-my-patches='git merge testing/sams-local-patches --squash &&
                         git commit -m "merged testing/sams-local-patches, DO NOT MERGE"'
 alias merge-development-essentials='merge-makefile && merge-dir-locals && merge-my-patches'
 alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ \
@@ -152,6 +152,8 @@ bindkey '^I'      complete-word # complete on tab, leave expansion to _expand
 bindkey '\e[3~'   delete-char
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
+bindkey '^H'      backward-delete-word
+bindkey '^['      delete-word
 bindkey '^X'      kill-region
 bindkey '^V'      yank
 

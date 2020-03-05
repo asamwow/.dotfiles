@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("CohortController.cs"
+(("cypress"
+ (filename . "~/web-client-development/Testing/cypress/")
+ (front-context-string . ".\n  drwxr-xr-x 4")
+ (rear-context-string . "96 Mar  4 07:29 ")
+ (position . 155))
+("CohortController.cs"
  (filename . "~/web-client-514/Web/Areas/Analytics/Controllers/CohortController.cs")
  (front-context-string . "                ")
  (rear-context-string . "Result(message)\n")
@@ -43,7 +48,7 @@
  (rear-context-string)
  (position . 1))
 ("web-client-makefile"
- (filename . "~/web-client-makefile/makefile")
+ (filename . "~/web-client-development/makefile")
  (front-context-string . "WEB_DB_KEY=`pass")
  (rear-context-string)
  (position . 1))
