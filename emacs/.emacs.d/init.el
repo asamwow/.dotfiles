@@ -113,6 +113,9 @@
 (setq truncate-partial-width-windows t)
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 (setq vc-follow-symlinks t)
+(setq scroll-preserve-screen-position t)
+(setq-default fill-column 80)
+(setq explicit-shell-file-name "/bin/zsh")
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -158,33 +161,7 @@
 (defun custom-csharp-mode-hook ()
   (custom-c-mode-hook))
 (add-hook 'csharp-mode-hook #'custom-csharp-mode-hook)
-(defun custom-csharp-indent-hook ()
-  (if (eq major-mode 'csharp-mode)
-      (save-excursion
-        (previous-line)
-        (let ((line (thing-at-point 'line)))
-          (if (string-match "\\(^[^//\n]*new \\([^{\n]\\)*\\((\\w*)\\)?[^;\n,}{]$\\)\\|\\(=> *\\(new\\)?$\\)\\|\\(new$\\)" line)
-              (progn
-                (let ((isDotFunction (string-match "\\(^ +\\.\\|\\( *\\w* *(\\( *\\w *\\)*new\\)\\)\\|\\(=>$\\)" line)))
-                  (setq indent -4)
-                  (forward-line)
-                  (let ((line2 (thing-at-point 'line)))
-                    (if (string-match "^[^//\n]*{" line2)
-                        (progn
-                          (if isDotFunction
-                              (setq indent -8))
-                          (if (string-match "=> *new$" line)
-                              (decrease-indent-at-point (+ indent 4))
-                            (decrease-indent-at-point indent))))))))))))
-(defun decrease-indent-at-point (indent)
-  (indent-rigidly(line-beginning-position) (line-end-position) indent))
-(add-hook 'c-special-indent-hook #'custom-csharp-indent-hook)
 
-
-
-;;; essential settings
-(setq scroll-preserve-screen-position t)
-(setq-default fill-column 80)
 
 ;;; Company Mode
 (setq company-idle-delay 10000)
