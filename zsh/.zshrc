@@ -134,6 +134,7 @@ alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
 alias gitupdate="git add -u && git commit -m 'updated' && git push"
 alias gitrebase="git fetch;git stash;git rebase origin/development;git stash pop"
 alias gitpush="git push -u origin HEAD"
+alias gitsubmodules = "git submodule update --init --recursive"
 
 ### Bind keys
 #############
