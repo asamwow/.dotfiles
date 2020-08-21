@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("cypress"
+(("tetris-city"
+ (filename . "~/TetrisCity/Assets/Scripts/GameManager.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("StationController.cs"
+ (filename . "~/sight/Controllers/StationController.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("agenda-sight"
+ (filename . "~/.agenda/agenda-sight.org")
+ (front-context-string . "#+TITLE:Sight Ag")
+ (rear-context-string)
+ (position . 1))
+("cypress"
  (filename . "~/web-client-development/Testing/cypress/")
  (front-context-string . ".\n  drwxr-xr-x 4")
  (rear-context-string . "96 Mar  4 07:29 ")

@@ -53,7 +53,7 @@ ASPNETCORE_ENVIRONMENT="Development"
 WEB_CLIENT_GIT="https://gitlab.com/hvh/client-access-web-dashboards.git"
 PATTERNS_GIT="https://gitlab.com/hvh/hvh-pattern-library.git"
 HVH_UTILS_GIT="https://gitlab.com/hvh/hvh-utils.git"
-DOTNET_ROOT="/opt/dotnet"
+DOTNET_ROOT="$HOME/.dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
 PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
@@ -134,7 +134,8 @@ alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
 alias gitupdate="git add -u && git commit -m 'updated' && git push"
 alias gitrebase="git fetch;git stash;git rebase origin/development;git stash pop"
 alias gitpush="git push -u origin HEAD"
-alias gitsubmodules = "git submodule update --init --recursive"
+alias gitsubmodules="git submodule update --init --recursive"
+alias lol="leagueoflegends"
 
 ### Bind keys
 #############
@@ -264,3 +265,13 @@ export PATH=$PATH:$BCPLROOT/bin
 #   RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
 #   prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
 # }
+
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
+
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
+export GNUPGHOME="$HOME/.gnupg"

@@ -31,7 +31,7 @@
   :init (setq alert-default-style 'libnotify)
   (setq org-alert-interval 900))
 (use-package graphene
-  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-11")
+  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-13")
   (setq graphene-variable-pitch-font "xos4 Terminus-10")
   (setq graphene-fixed-pitch-font "xos4 Terminus-10"))
 (use-package speed-type)
@@ -116,6 +116,7 @@
 (setq scroll-preserve-screen-position t)
 (setq-default fill-column 80)
 (setq explicit-shell-file-name "/bin/zsh")
+(setq ring-bell-function 'ignore)
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -125,7 +126,7 @@
 (defun custom-coding-hook ()
   (custom-text-hook)
   (rainbow-delimiters-mode 1)
-  (aggressive-indent-mode 1))
+  (aggressive-indent-mode 0))
 (add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
 (add-hook 'js2-mode-hook #'custom-coding-hook)
 (add-hook 'javascript-mode-hook #'custom-coding-hook)
@@ -142,11 +143,8 @@
   (flyspell-mode 1))
 (add-hook 'notmuch-message-mode-hook #'custom-message-hook)
 
-;;; cc-mode AaronL’s C-style from wiki (edited)
-(setq-default c-indent-level 4         ; A TAB is equivilent to four spaces
-              c-argdecl-indent 0       ; Do not indent argument decl's extra
-              c-tab-always-indent t
-              backward-delete-function nil) ; DO NOT expand tabs when deleting
+(setq c-basic-offset 4
+      c-tab-always-indent t)
 (c-add-style "my-c-style" '((c-continued-statement-offset 4))) ; If a statement continues on the next line, indent the continuation by 4
 (defun custom-c-mode-hook ()
   (custom-coding-hook)
@@ -159,7 +157,8 @@
 (add-hook 'c-mode-hook 'custom-c-mode-hook)
 (add-hook 'c++-mode-hook 'custom-c-mode-hook)
 (defun custom-csharp-mode-hook ()
-  (custom-c-mode-hook))
+  (custom-c-mode-hook)
+  (setq c-basic-offset 3))
 (add-hook 'csharp-mode-hook #'custom-csharp-mode-hook)
 
 
@@ -285,34 +284,34 @@ Samuel Jahnke. HVH Precision.
 Sent from Emacs!
 ")
 
-;;; notmuch notifications based from notmuch-unread-mode
-(defvar notmuch-unread-mode-line-string "")
-(defvar notmuch-unread-email-count nil)
-(defconst my-mode-line-map (make-sparse-keymap))
-(defun notmuch-unread-count ()
-  (setq notmuch-unread-email-count
-        (string-to-number(replace-regexp-in-string
-                          "\n" "" (notmuch-command-to-string
-                                   "count" "tag:inbox"))))
-  (if (eq notmuch-unread-email-count 0)
-      (setq notmuch-unread-mode-line-string
-            (format "  %d" (string-to-number(replace-regexp-in-string
-                                              "\n" "" (notmuch-command-to-string
-                                                       "count")))))
-    (setq notmuch-unread-mode-line-string
-          (format "  %d" notmuch-unread-email-count)))
-  (force-mode-line-update))
-(run-at-time nil 5 'notmuch-unread-count)
-(defun notmuch-open-emails ()
-  (interactive)
-  (if (eq notmuch-unread-email-count 0)
-      (notmuch-search "*")
-    (notmuch-search "tag:inbox")))
-(setq global-mode-string
-      (append global-mode-string (list '(:eval (propertize
-                                                notmuch-unread-mode-line-string
-                                                'help-echo "notmuch emails"
-                                                'mouse-face 'mode-line-highlight
-                                                'local-map my-mode-line-map)))))
-(define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
-  (cons "hello" 'notmuch-open-emails))
+;; ;;; notmuch notifications based from notmuch-unread-mode
+;; (defvar notmuch-unread-mode-line-string "")
+;; (defvar notmuch-unread-email-count nil)
+;; (defconst my-mode-line-map (make-sparse-keymap))
+;; (defun notmuch-unread-count ()
+;;   (setq notmuch-unread-email-count
+;;         (string-to-number(replace-regexp-in-string
+;;                           "\n" "" (notmuch-command-to-string
+;;                                    "count" "tag:inbox"))))
+;;   (if (eq notmuch-unread-email-count 0)
+;;       (setq notmuch-unread-mode-line-string
+;;             (format "  %d" (string-to-number(replace-regexp-in-string
+;;                                               "\n" "" (notmuch-command-to-string
+;;                                                        "count")))))
+;;     (setq notmuch-unread-mode-line-string
+;;           (format "  %d" notmuch-unread-email-count)))
+;;   (force-mode-line-update))
+;; (run-at-time nil 5 'notmuch-unread-count)
+;; (defun notmuch-open-emails ()
+;;   (interactive)
+;;   (if (eq notmuch-unread-email-count 0)
+;;       (notmuch-search "*")
+;;     (notmuch-search "tag:inbox")))
+;; (setq global-mode-string
+;;       (append global-mode-string (list '(:eval (propertize
+;;                                                 notmuch-unread-mode-line-string
+;;                                                 'help-echo "notmuch emails"
+;;                                                 'mouse-face 'mode-line-highlight
+;;                                                 'local-map my-mode-line-map)))))
+;; (define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
+;;   (cons "hello" 'notmuch-open-emails))
