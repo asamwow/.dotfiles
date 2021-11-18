@@ -12,6 +12,9 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "right bracket" "\\b", "]"),
     ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
+    ("\\b" "and boy" "\\b", ";"),
+    ("\\b" "exclamation point" "\\b", "!"),
+    ("\\b" "question mark" "\\b", "?"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -29,13 +32,23 @@ WORD_REPLACE = {
     "linux": "Linux",
     "get": "git",
     "the": "", # HACK
+    "and": "end",
+
+    # symbols
     "space": " ",
     "dash": "-",
     "quotes": "\"",
     "perrin": "(",
     "bracket": "[",
     "curly": "{",
+    "slash": "/",
+    "colon": ":",
+    "apostrophe": "'",
+    "comma": ",",
+    "dot": ".",
+    "diary": "dired",
 
+    # nato phonetic
     "alpha": "a",
     "bravo": "b",
     "charlie": "c",
@@ -117,7 +130,7 @@ def nerd_dictation_macro_process(command):
         return emacs_command("sp-beginning-of-sexp")
     if (args[0] == "beginning"):
         return [pressKey("control+a")]
-    if (args[0] == "end"):
+    if (args[0] == "and"):
         return [pressKey("control+e")]
     if (args[0] == "next"):
         return [pressKey("control+n")]
@@ -127,8 +140,6 @@ def nerd_dictation_macro_process(command):
         return [pressKey("control+c")]
     if (args[0] == "cancel"):
         return [pressKey("control+g")]
-    if (args[0] == "repeater"):
-        return [pressKey("control+u")]
     if (args[0] == "enter"):
         return [pressKey("enter")]
     if (args[0] == "copy"):
@@ -160,11 +171,17 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "test"):
             if (args[1] == "test"):
                 return [("festival", "--tts", "/home/dvorak/.config/nerd-dictation/greeting.txt")]
+        if (args[0] == "control"):
+            if (args[1] == "you"):
+                return [pressKey("control+u")]
         if (args[0] == "command"):
             return emacs_command(handle_text(text_block, "-"))
         if (args[0] == "save"):
             if (args[1] == "buffer"):
                 return emacs_command("save-buffer")
+        if (args[0] == "revert"):
+            if (args[1] == "buffer"):
+                return emacs_command("revert-buffer")
         if (args[0] == "scroll"):
             if (args[1] == "up"):
                 return emacs_command("scroll-down")
