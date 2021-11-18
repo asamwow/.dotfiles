@@ -8,7 +8,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "key word" "\\b", "keyword"),
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
-    ("\\b" "right perrin" "\\b", ")"),
+    ("\\b" "right boy" "\\b", ")"),
     ("\\b" "right bracket" "\\b", "]"),
     ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
@@ -47,6 +47,10 @@ WORD_REPLACE = {
     "comma": ",",
     "dot": ".",
     "diary": "dired",
+    "tilda": "~",
+    "tick": "`",
+    "equals": "=",
+    "plus": "+",
 
     # nato phonetic
     "alpha": "a",
@@ -157,9 +161,7 @@ def nerd_dictation_macro_process(command):
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
         return emacs_cmd
     if (args[0] == "tab"):
-        return [
-            pressKey("Tab"),
-        ]
+        return [pressKey("Tab")]
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = ""
@@ -182,6 +184,20 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "revert"):
             if (args[1] == "buffer"):
                 return emacs_command("revert-buffer")
+        if (args[0] == "mark"):
+            if (args[1] == "thing"):
+                emacs_cmd = emacs_command("mark-whole-sexp")
+                return emacs_cmd
+            if (args[1] == "and"):
+                return emacs_command("mark-sexp")
+        if (args[0] == "kill"):
+            if (args[1] == "line"):
+                return emacs_command("kill-line")
+        if (args[0] == "other"):
+            if (args[1] == "window"):
+                return emacs_command("other-window")
+            if (args[1] == "buffer"):
+                return emacs_command("other-buffer")
         if (args[0] == "scroll"):
             if (args[1] == "up"):
                 return emacs_command("scroll-down")
@@ -196,21 +212,23 @@ def nerd_dictation_macro_process(command):
             if (args[1] == "line"):
                 return emacs_command("newline-anywhere")
         if (args[0] == "dashed"):
-            return [
-                typeText(handle_text(text_block, "-")),
-            ]
+            return [typeText(handle_text(text_block, "-"))]
         if (args[0] == "close"):
-            return [
-                typeText(handle_text(text_block, "")),
-            ]
+            return [typeText(handle_text(text_block, ""))]
+        if (args[0] == "dotted"):
+            return [typeText(handle_text(text_block, "."))]
+        if (args[0] == "snake"):
+            return [typeText(handle_text(text_block, "_"))]
+        if (args[0] == "camel"):
+            return [typeText(handle_text(text_block, "", caps="camel"))]
+        if (args[0] == "pascal"):
+            return [typeText(handle_text(text_block, "", caps="pascal"))]
     return None
-
-
 
 def nerd_dictation_process(text):
     return handle_text(text, " ");
 
-def handle_text(text, seperator):
+def handle_text(text, seperator, caps=None):
 
     for match, replacement in TEXT_REPLACE_REGEX:
         text = match.sub(replacement, text)
@@ -234,6 +252,12 @@ def handle_text(text, seperator):
 
     # Strip any words that were replaced with empty strings.
     words[:] = [w for w in words if w]
+
+    for i in range(0, len(words)):
+        if caps == "camel" and i != 0:
+            words[i] = words[i].capitalize()
+        if caps == "pascal":
+            words[i] = words[i].capitalize()
 
     if seperator == "":
         text_block = ""

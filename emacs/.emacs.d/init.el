@@ -317,3 +317,12 @@ Sent from Emacs!
 ;;                                                 'local-map my-mode-line-map)))))
 ;; (define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
 ;;   (cons "hello" 'notmuch-open-emails))
+
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
+
+(defun mark-whole-sexp ()
+  "mark entire expression"
+  ( interactive)(beginning-of-sexp)
+  (mark-sexp))
