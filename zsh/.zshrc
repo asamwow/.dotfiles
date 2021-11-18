@@ -131,11 +131,14 @@ alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
                              --work-tree=$HOME/.contacts/ status
                          git --git-dir=$HOME/.offlineimap/.git/ \
                              --work-tree=$HOME/.offlineimap/ status'
-alias gitupdate="git add -u && git commit -m 'updated' && git push"
-alias gitrebase="git fetch;git stash;git rebase origin/development;git stash pop"
 alias gitpush="git push -u origin HEAD"
 alias gitsubmodules="git submodule update --init --recursive"
-alias lol="leagueoflegends"
+alias gs="git status"
+alias gd="git diff"
+alias gr="git reset --hard HEAD"
+alias ghead="git diff \"HEAD^\" HEAD"
+alias gl="git log"
+alias gb="git branch"
 
 ### Bind keys
 #############
