@@ -1,8 +1,28 @@
-;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("tetris-city"
+(("Index.cshtml"
+ (filename . "~/boundaries-server/Views/Home/Index.cshtml")
+ (front-context-string . "                ")
+ (rear-context-string . "           <li>\n")
+ (position . 1449))
+("EntropicEditorViewModel.cs"
+ (filename . "~/boundaries-server/Models/EntropicEditorViewModel.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("ChunkTickService.cs"
+ (filename . "~/boundaries-server/Services/ChunkTickService.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("runescape.org"
+ (filename . "~/.contacts/runescape.org")
+ (front-context-string . "iUseDvorak\n118we")
+ (rear-context-string)
+ (position . 1))
+("tetris-city"
  (filename . "~/TetrisCity/Assets/Scripts/GameManager.cs")
  (front-context-string . "using System;\nus")
  (rear-context-string)

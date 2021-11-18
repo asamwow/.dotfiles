@@ -31,7 +31,7 @@
   :init (setq alert-default-style 'libnotify)
   (setq org-alert-interval 900))
 (use-package graphene
-  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-13")
+  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-10")
   (setq graphene-variable-pitch-font "xos4 Terminus-10")
   (setq graphene-fixed-pitch-font "xos4 Terminus-10"))
 (use-package speed-type)
@@ -42,7 +42,8 @@
   (setq auth-source-debug t))
 (use-package notmuch)
 (use-package color-theme-sanityinc-tomorrow
-  :config (color-theme-sanityinc-tomorrow--define-theme night))
+  :config (color-theme-sanityinc-tomorrow--define-theme night)
+  :init (color-theme-sanityinc-tomorrow-night))
 (use-package magit
   :init (setq magit-display-buffer-function
               #'magit-display-buffer-fullframe-status-v1)
