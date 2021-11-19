@@ -16,6 +16,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "question mark" "\\b", "?"),
     ("\\b" "less than" "\\b", "<"),
     ("\\b" "greater than" "\\b", ">"),
+    ("\\b" "d fun" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -33,6 +34,7 @@ WORD_REPLACE = {
     "linux": "Linux",
     "get": "git",
     "the": "", # HACK
+    "huh": "", # HACK
     "and": "end",
     "diary": "dired",
 
@@ -135,7 +137,7 @@ def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
     ends_in_stop = False
-    if args[0] == "the" and len(args) > 1:
+    if (args[0] == "the" or args[0] == "huh") and len(args) > 1:
         args = args[1:]
     for i in range(1, len(args)):
         if args[i] == "stop" and i == len(args)-1:
