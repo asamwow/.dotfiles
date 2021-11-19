@@ -137,6 +137,45 @@ def emacs_command(text):
         pressKey("enter"),
     ]
 
+def process_single_word_macro(macro):
+    if (macro == "expand" or macro == "enhance"):
+        return emacs_command("er/expand-region")
+    if (macro == "snap"):
+        return emacs_command("sp-beginning-of-sexp")
+    if (macro == "beginning"):
+        return [pressKey("control+a")]
+    if (macro == "and" or macro == "end"):
+        return [pressKey("control+e")]
+    if (macro == "next"):
+        return [pressKey("control+n")]
+    if (macro == "previous"):
+        return [pressKey("control+p")]
+    if (macro == "lead"):
+        return [pressKey("control+c")]
+    if (macro == "quit"):
+        return [pressKey("control+g")]
+    if (macro == "cancel"):
+        return emacs_command("exit-minibuffer")
+    if (macro == "stop"):
+        return [pressKey("enter")]
+    if (macro == "copy"):
+        return emacs_command("kill-ring-save")
+    if (macro == "paste"):
+        return emacs_command("yank")
+    if (macro == "cut"):
+        return emacs_command("cua-cut-region")
+    if (macro == "undo" or macro == "fuck"):
+        return emacs_command("undo")
+    if (macro == "toss"):
+        return emacs_command("revert-buffer-no-confirm")
+    if (macro == "chomp" or macro == "champ" or macro == "chump"):
+        return [pressKey("alt+BackSpace")]
+    if (macro == "back"):
+        return [pressKey("BackSpace")]
+    if (macro == "tab"):
+        return [pressKey("Tab")]
+    return None
+
 def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
@@ -150,40 +189,15 @@ def nerd_dictation_macro_process(command):
             text_block += args[i]
             if i != len(args)-1:
                 text_block += " "
-    if (args[0] == "expand"):
-        return emacs_command("er/expand-region")
-    if (args[0] == "snap"):
-        return emacs_command("sp-beginning-of-sexp")
-    if (args[0] == "beginning"):
-        return [pressKey("control+a")]
-    if (args[0] == "and" or args[0] == "end"):
-        return [pressKey("control+e")]
-    if (args[0] == "next"):
-        return [pressKey("control+n")]
-    if (args[0] == "previous"):
-        return [pressKey("control+p")]
-    if (args[0] == "lead"):
-        return [pressKey("control+c")]
-    if (args[0] == "quit"):
-        return [pressKey("control+g")]
-    if (args[0] == "cancel"):
-        return emacs_command("exit-minibuffer")
-    if (args[0] == "stop"):
-        return [pressKey("enter")]
-    if (args[0] == "copy"):
-        return emacs_command("kill-ring-save")
-    if (args[0] == "paste"):
-        return emacs_command("yank")
-    if (args[0] == "cut"):
-        return emacs_command("cua-cut-region")
-    if (args[0] == "undo"):
-        return emacs_command("undo")
-    if (args[0] == "toss"):
-        return emacs_command("revert-buffer-no-confirm")
-    if (args[0] == "chomp" or args[0] == "champ" or args[0] == "chump"):
-        return [pressKey("alt+BackSpace")]
-    if (args[0] == "back"):
-        return [pressKey("BackSpace")]
+    compound_macro = process_single_word_macro(args[0])
+    if compound_macro != None:
+        if ends_in_stop:
+            text_block += " stop"
+        sub_macro = nerd_dictation_macro_process(text_block)
+        if sub_macro != None:
+            for cmd in sub_macro:
+                compound_macro.append(cmd)
+        return compound_macro
     if (args[0] == "search" or args[0] == "forward"):
         emacs_cmd = [pressKey("control+s")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
@@ -196,8 +210,6 @@ def nerd_dictation_macro_process(command):
         if ends_in_stop:
             emacs_cmd.append(pressKey("enter"))
         return emacs_cmd
-    if (args[0] == "tab"):
-        return [pressKey("Tab")]
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = ""

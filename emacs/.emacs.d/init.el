@@ -94,6 +94,7 @@
 (use-package js2-mode)
 (use-package vue-mode)
 (use-package expand-region)
+(use-package google-this)
 ;; (use-package org-tempo)
 
 ;; only use plant uml if you have the jar
