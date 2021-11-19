@@ -12,9 +12,10 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "right bracket" "\\b", "]"),
     ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
-    ("\\b" "and boy" "\\b", ";"),
     ("\\b" "exclamation point" "\\b", "!"),
     ("\\b" "question mark" "\\b", "?"),
+    ("\\b" "less than" "\\b", "<"),
+    ("\\b" "greater than" "\\b", ">"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -33,6 +34,7 @@ WORD_REPLACE = {
     "get": "git",
     "the": "", # HACK
     "and": "end",
+    "diary": "dired",
 
     # symbols
     "space": " ",
@@ -45,12 +47,18 @@ WORD_REPLACE = {
     "colon": ":",
     "apostrophe": "'",
     "comma": ",",
+    "semi": ";",
     "dot": ".",
-    "diary": "dired",
     "tilda": "~",
     "tick": "`",
     "equals": "=",
-    "plus": "+",
+    "asterisk": "*",
+    "carrot": "^",
+    "amp": "&",
+    "pipe": "|",
+    "at": "@",
+    "hash": "#",
+    "percent": "%",
 
     # nato phonetic
     "alpha": "a",
@@ -124,17 +132,23 @@ def emacs_command(text):
 def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
+    ends_in_stop = False
+    if args[0] == "the" and len(args) > 1:
+        args = args[1:]
     for i in range(1, len(args)):
-        text_block += args[i]
-        if i != len(args)-1:
-            text_block += " "
+        if args[i] == "stop" and i == len(args)-1:
+            ends_in_stop = True
+        else:
+            text_block += args[i]
+            if i != len(args)-1:
+                text_block += " "
     if (args[0] == "expand"):
         return emacs_command("er/expand-region")
     if (args[0] == "snap"):
         return emacs_command("sp-beginning-of-sexp")
     if (args[0] == "beginning"):
         return [pressKey("control+a")]
-    if (args[0] == "and"):
+    if (args[0] == "and" or args[0] == "end"):
         return [pressKey("control+e")]
     if (args[0] == "next"):
         return [pressKey("control+n")]
@@ -144,21 +158,33 @@ def nerd_dictation_macro_process(command):
         return [pressKey("control+c")]
     if (args[0] == "cancel"):
         return [pressKey("control+g")]
-    if (args[0] == "enter"):
+    if (args[0] == "stop"):
         return [pressKey("enter")]
     if (args[0] == "copy"):
         return emacs_command("kill-ring-save")
     if (args[0] == "paste"):
         return emacs_command("yank")
+    if (args[0] == "cut"):
+        return emacs_command("cua-cut-region")
     if (args[0] == "undo"):
         return emacs_command("undo")
+    if (args[0] == "toss"):
+        return emacs_command("revert-buffer-no-confirm")
+    if (args[0] == "chomp" or args[0] == "champ" or args[0] == "chump"):
+        return [pressKey("alt+BackSpace")]
+    if (args[0] == "back"):
+        return [pressKey("BackSpace")]
     if (args[0] == "search"):
         emacs_cmd = [pressKey("control+s")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
+        if ends_in_stop:
+            emacs_cmd.append(pressKey("enter"))
         return emacs_cmd
     if (args[0] == "backward" or args[0] == "backwards"):
         emacs_cmd = [pressKey("control+r")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
+        if ends_in_stop:
+            emacs_cmd.append(pressKey("enter"))
         return emacs_cmd
     if (args[0] == "tab"):
         return [pressKey("Tab")]
@@ -181,9 +207,6 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "save"):
             if (args[1] == "buffer"):
                 return emacs_command("save-buffer")
-        if (args[0] == "revert"):
-            if (args[1] == "buffer"):
-                return emacs_command("revert-buffer")
         if (args[0] == "mark"):
             if (args[1] == "thing"):
                 emacs_cmd = emacs_command("mark-whole-sexp")
@@ -198,27 +221,30 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("other-window")
             if (args[1] == "buffer"):
                 return emacs_command("other-buffer")
+            if (args[1] == "client"):
+                return [pressKey("alt+Tab")]
         if (args[0] == "scroll"):
             if (args[1] == "up"):
                 return emacs_command("scroll-down")
             if (args[1] == "down"):
                 return emacs_command("scroll-up")
-        if (args[0] == "alt"):
-            if (args[1] == "tab"):
-                return [pressKey("alt+Tab")]
-            if (args[1] == "back"):
-                return [pressKey("alt+BackSpace")]
         if (args[0] == "new"):
             if (args[1] == "line"):
                 return emacs_command("newline-anywhere")
         if (args[0] == "dashed"):
             return [typeText(handle_text(text_block, "-"))]
+        if (args[0] == "bashed"):
+            return [typeText(handle_text(text_block, "-", caps="caps"))]
         if (args[0] == "close"):
             return [typeText(handle_text(text_block, ""))]
         if (args[0] == "dotted"):
             return [typeText(handle_text(text_block, "."))]
         if (args[0] == "snake"):
             return [typeText(handle_text(text_block, "_"))]
+        if (args[0] == "bake"):
+            return [typeText(handle_text(text_block, "_", caps="caps"))]
+        if (args[0] == "caps"):
+            return [typeText(handle_text(text_block, " ", caps="caps"))]
         if (args[0] == "camel"):
             return [typeText(handle_text(text_block, "", caps="camel"))]
         if (args[0] == "pascal"):
@@ -258,6 +284,8 @@ def handle_text(text, seperator, caps=None):
             words[i] = words[i].capitalize()
         if caps == "pascal":
             words[i] = words[i].capitalize()
+        if caps == "caps":
+            words[i] = words[i].upper()
 
     if seperator == "":
         text_block = ""
