@@ -9,6 +9,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
     ("\\b" "right boy" "\\b", ")"),
+    ("\\b" "end boy" "\\b", ")"),
     ("\\b" "right bracket" "\\b", "]"),
     ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
@@ -17,7 +18,6 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "less than" "\\b", "<"),
     ("\\b" "greater than" "\\b", ">"),
     ("\\b" "d fun" "\\b", "defun"),
-    ("\\b" "define" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -40,6 +40,7 @@ WORD_REPLACE = {
     "diary": "dired",
     "quad": "4",
     "quand": "4",
+    "define": "defun",
 
     # symbols
     "space": " ",
