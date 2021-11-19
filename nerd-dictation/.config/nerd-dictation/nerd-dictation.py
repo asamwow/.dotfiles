@@ -47,6 +47,7 @@ WORD_REPLACE = {
     "colon": ":",
     "apostrophe": "'",
     "comma": ",",
+    "karma": ",",
     "semi": ";",
     "dot": ".",
     "tilda": "~",
@@ -59,6 +60,7 @@ WORD_REPLACE = {
     "at": "@",
     "hash": "#",
     "percent": "%",
+    "underscore": "_",
 
     # nato phonetic
     "alpha": "a",
@@ -237,6 +239,8 @@ def nerd_dictation_macro_process(command):
             return [typeText(handle_text(text_block, "-", caps="caps"))]
         if (args[0] == "close"):
             return [typeText(handle_text(text_block, ""))]
+        if (args[0] == "fat"):
+            return [typeText(handle_text(text_block, "", caps="caps"))]
         if (args[0] == "dotted"):
             return [typeText(handle_text(text_block, "."))]
         if (args[0] == "snake"):
