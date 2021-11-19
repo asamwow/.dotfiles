@@ -326,3 +326,6 @@ Sent from Emacs!
   "mark entire expression"
   ( interactive)(beginning-of-sexp)
   (mark-sexp))
+
+(defun find-file-from-home ()
+(interactive)(find-file "~/"))
