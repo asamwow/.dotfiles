@@ -17,6 +17,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "less than" "\\b", "<"),
     ("\\b" "greater than" "\\b", ">"),
     ("\\b" "d fun" "\\b", "defun"),
+    ("\\b" "define" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -37,12 +38,14 @@ WORD_REPLACE = {
     "huh": "", # HACK
     "and": "end",
     "diary": "dired",
+    "quad": "4",
+    "quand": "4",
 
     # symbols
     "space": " ",
     "dash": "-",
     "quotes": "\"",
-    "perrin": "(",
+    "boy": "(",
     "bracket": "[",
     "curly": "{",
     "slash": "/",
@@ -160,8 +163,10 @@ def nerd_dictation_macro_process(command):
         return [pressKey("control+p")]
     if (args[0] == "lead"):
         return [pressKey("control+c")]
-    if (args[0] == "cancel"):
+    if (args[0] == "quit"):
         return [pressKey("control+g")]
+    if (args[0] == "cancel"):
+        return emacs_command("exit-minibuffer")
     if (args[0] == "stop"):
         return [pressKey("enter")]
     if (args[0] == "copy"):
@@ -178,7 +183,7 @@ def nerd_dictation_macro_process(command):
         return [pressKey("alt+BackSpace")]
     if (args[0] == "back"):
         return [pressKey("BackSpace")]
-    if (args[0] == "search"):
+    if (args[0] == "search" or args[0] == "forward"):
         emacs_cmd = [pressKey("control+s")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
         if ends_in_stop:
@@ -200,13 +205,13 @@ def nerd_dictation_macro_process(command):
             return [
                 typeText(text_block),
             ]
-        if (args[0] == "test"):
-            if (args[1] == "test"):
+        if (args[0] == "test" or args[0] == "tests"):
+            if (args[1] == "test" or args[1] == "tests"):
                 return [("festival", "--tts", "/home/dvorak/.config/nerd-dictation/greeting.txt")]
         if (args[0] == "control"):
             if (args[1] == "you"):
                 return [pressKey("control+u")]
-        if (args[0] == "command"):
+        if (args[0] == "command" or args[0] == "commands" or args[0] == "com"):
             return emacs_command(handle_text(text_block, "-"))
         if (args[0] == "save"):
             if (args[1] == "buffer"):
