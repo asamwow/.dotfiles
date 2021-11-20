@@ -243,10 +243,6 @@ def nerd_dictation_macro_process(command):
         for emacs_function in EMACS_COMMANDS:
             if command == emacs_function:
                 return emacs_command("-".join(args))
-        if (args[0] == "test" or args[0] == "tests"):
-            if (args[1] == "test" or args[1] == "tests"):
-                print("I am listening")
-                return []
         if (args[0] == "control"):
             if (args[1] == "you"):
                 return [pressKey("control+u")]
