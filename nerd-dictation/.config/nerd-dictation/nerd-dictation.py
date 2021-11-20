@@ -1,7 +1,20 @@
 # User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
 import re
 
-# -----------------------------------------------------------------------------
+# Emacs Commands that are dictated one to one
+EMACS_COMMANDS = [
+    "learn replacement",
+    "bookmark jump",
+    "bookmark set",
+    "learn emacs command",
+    "scroll up",
+    "scroll down",
+    "kill line",
+    "other window",
+    "other buffer",
+    "save buffer",
+]
+
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
@@ -24,12 +37,11 @@ TEXT_REPLACE_REGEX = tuple(
     for (match, replacement) in TEXT_REPLACE_REGEX
 )
 
-
-# -----------------------------------------------------------------------------
 # Replace Single Words
 
-# VOSK-API doesn't use capitals anywhere so they have to be explicit added in.
 WORD_REPLACE = {
+    "kama":",",
+    "cancer":"cancel",
     "i": "I",
     "api": "API",
     "linux": "Linux",
@@ -53,6 +65,8 @@ WORD_REPLACE = {
     "colon": ":",
     "apostrophe": "'",
     "comma": ",",
+    "come": ",",
+    "coma": ",",
     "karma": ",",
     "semi": ";",
     "dot": ".",
@@ -108,7 +122,6 @@ WORD_REPLACE_REGEX = tuple(
 )
 
 
-# -----------------------------------------------------------------------------
 # Main Processing Function
 
 def pressKey(key):
@@ -123,7 +136,6 @@ def typeText(text):
         "xdotool",
         "type",
         "--clearmodifiers",
-        # Use a value higher than twelve so the characters don't get skipped (tsk!).
         "--delay",
         "10",
         "--",
@@ -150,12 +162,16 @@ def process_single_word_macro(macro):
         return [pressKey("control+n")]
     if (macro == "previous"):
         return [pressKey("control+p")]
+    if (macro == "quit" or macro == "exit"):
+        return [
+            pressKey("control+g"),
+            pressKey("control+g"),
+            pressKey("control+g"),
+        ]
     if (macro == "lead"):
         return [pressKey("control+c")]
-    if (macro == "quit"):
-        return [pressKey("control+g")]
     if (macro == "cancel"):
-        return emacs_command("exit-minibuffer")
+        return [pressKey("control+g")]
     if (macro == "stop"):
         return [pressKey("enter")]
     if (macro == "copy"):
@@ -168,7 +184,13 @@ def process_single_word_macro(macro):
         return emacs_command("undo")
     if (macro == "toss"):
         return emacs_command("revert-buffer-no-confirm")
+    if (macro == "kill"):
+        return emacs_command("kill-line")
     if (macro == "chomp" or macro == "champ" or macro == "chump"):
+        return [pressKey("alt+f")]
+    if (macro == "poop"):
+        return [pressKey("alt+b")]
+    if (macro == "slap"):
         return [pressKey("alt+BackSpace")]
     if (macro == "back"):
         return [pressKey("BackSpace")]
@@ -218,38 +240,26 @@ def nerd_dictation_macro_process(command):
             return [
                 typeText(text_block),
             ]
+        for emacs_function in EMACS_COMMANDS:
+            if command == emacs_function:
+                return emacs_command("-".join(args))
         if (args[0] == "test" or args[0] == "tests"):
             if (args[1] == "test" or args[1] == "tests"):
-                return [("festival", "--tts", "/home/dvorak/.config/nerd-dictation/greeting.txt")]
+                print("I am listening")
+                return []
         if (args[0] == "control"):
             if (args[1] == "you"):
                 return [pressKey("control+u")]
         if (args[0] == "command" or args[0] == "commands" or args[0] == "com"):
             return emacs_command(handle_text(text_block, "-"))
-        if (args[0] == "save"):
-            if (args[1] == "buffer"):
-                return emacs_command("save-buffer")
         if (args[0] == "mark"):
             if (args[1] == "thing"):
-                emacs_cmd = emacs_command("mark-whole-sexp")
-                return emacs_cmd
+                return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if (args[0] == "kill"):
-            if (args[1] == "line"):
-                return emacs_command("kill-line")
         if (args[0] == "other"):
-            if (args[1] == "window"):
-                return emacs_command("other-window")
-            if (args[1] == "buffer"):
-                return emacs_command("other-buffer")
             if (args[1] == "client"):
                 return [pressKey("alt+Tab")]
-        if (args[0] == "scroll"):
-            if (args[1] == "up"):
-                return emacs_command("scroll-down")
-            if (args[1] == "down"):
-                return emacs_command("scroll-up")
         if (args[0] == "new"):
             if (args[1] == "line"):
                 return emacs_command("newline-anywhere")

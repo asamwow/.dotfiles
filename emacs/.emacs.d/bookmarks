@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Index.cshtml"
+(("nerd-dictation.py"
+ (filename . "~/.dotfiles/nerd-dictation/.config/nerd-dictation/nerd-dictation.py")
+ (front-context-string . "# User configura")
+ (rear-context-string)
+ (position . 1))
+("nerd-dictation"
+ (filename . "~/nerd-dictation/nerd-dictation")
+ (front-context-string . "#!/usr/bin/env p")
+ (rear-context-string)
+ (position . 1))
+("Index.cshtml"
  (filename . "~/boundaries-server/Views/Home/Index.cshtml")
  (front-context-string . "                ")
  (rear-context-string . "           <li>\n")
