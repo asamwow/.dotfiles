@@ -232,9 +232,10 @@ def nerd_dictation_macro_process(command):
         if ends_in_stop:
             text_block += "stop"
         sub_macro = nerd_dictation_macro_process(text_block)
-        if sub_macro != None:
-            for cmd in sub_macro:
-                compound_macro.append(cmd)
+        if sub_macro == None:
+            sub_macro = [typeText(handle_text(text_block, " "))]
+        for cmd in sub_macro:
+            compound_macro.append(cmd)
         return compound_macro
     if (args[0] == "search"):
         emacs_cmd = [pressKey("control+s")]
