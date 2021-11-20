@@ -40,6 +40,8 @@ TEXT_REPLACE_REGEX = tuple(
 # Replace Single Words
 
 WORD_REPLACE = {
+    "da":".",
+    "dont":".",
     "kama":",",
     "cancer":"cancel",
     "i": "I",
