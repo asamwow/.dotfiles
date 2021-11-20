@@ -3,6 +3,10 @@ import re
 
 # Emacs Commands that are dictated one to one
 EMACS_COMMANDS = [
+    "find file",
+    "switch buffer",
+    "query replace",
+    "newline anywhere",
     "learn replacement",
     "bookmark jump",
     "bookmark set",
@@ -18,6 +22,9 @@ EMACS_COMMANDS = [
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
+    ("\\b" "kit end" "\\b", "git add"),
+    ("\\b" "kit and" "\\b", "git add"),
+    ("\\b" "git end" "\\b", "git add"),
     ("\\b" "key word" "\\b", "keyword"),
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
@@ -40,13 +47,13 @@ TEXT_REPLACE_REGEX = tuple(
 # Replace Single Words
 
 WORD_REPLACE = {
+    "kit":"git",
+    "arx":"args",
+    "arcs":"args",
     "da":".",
     "dont":".",
     "kama":",",
     "cancer":"cancel",
-    "i": "I",
-    "api": "API",
-    "linux": "Linux",
     "get": "git",
     "the": "", # HACK
     "huh": "", # HACK
@@ -196,7 +203,11 @@ def process_single_word_macro(macro):
         return [pressKey("alt+BackSpace")]
     if (macro == "back"):
         return [pressKey("BackSpace")]
-    if (macro == "tab"):
+    if (macro == "backward" or macro == "backwards"):
+        return [pressKey("control+b")]
+    if (macro == "forward"):
+        return [pressKey("control+f")]
+    if (macro == "tab" or macro == "indent"):
         return [pressKey("Tab")]
     return None
 
@@ -222,13 +233,13 @@ def nerd_dictation_macro_process(command):
             for cmd in sub_macro:
                 compound_macro.append(cmd)
         return compound_macro
-    if (args[0] == "search" or args[0] == "forward"):
+    if (args[0] == "search"):
         emacs_cmd = [pressKey("control+s")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
         if ends_in_stop:
             emacs_cmd.append(pressKey("enter"))
         return emacs_cmd
-    if (args[0] == "backward" or args[0] == "backwards"):
+    if (args[0] == "reverse"):
         emacs_cmd = [pressKey("control+r")]
         emacs_cmd.append(typeText(handle_text(text_block, " ")))
         if ends_in_stop:
@@ -236,9 +247,7 @@ def nerd_dictation_macro_process(command):
         return emacs_cmd
     if (len(args) > 1):
         if (args[0] == "quote"):
-            text_block = ""
-            for word in args[1:]:
-                text_block += word + " "
+            text_block = " ".join(args[1:])
             return [
                 typeText(text_block),
             ]
@@ -251,11 +260,15 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "command" or args[0] == "commands" or args[0] == "com"):
             return emacs_command(handle_text(text_block, "-"))
         if (args[0] == "mark"):
+            if args[1]  == "point":
+                return emacs_command("cua-set-mark")
             if (args[1] == "thing"):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
         if (args[0] == "other"):
+            if (args[1] == "position"):
+                return emacs_command("cua-exchange-point-and-mark")
             if (args[1] == "client"):
                 return [pressKey("alt+Tab")]
         if (args[0] == "new"):
