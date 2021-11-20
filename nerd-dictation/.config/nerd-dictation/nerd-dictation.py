@@ -22,9 +22,12 @@ EMACS_COMMANDS = [
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
+    ("\\b" "get end" "\\b", "git add"),
+    ("\\b" "get and" "\\b", "git add"),
     ("\\b" "kit end" "\\b", "git add"),
     ("\\b" "kit and" "\\b", "git add"),
     ("\\b" "git end" "\\b", "git add"),
+    ("\\b" "git and" "\\b", "git add"),
     ("\\b" "key word" "\\b", "keyword"),
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
@@ -227,7 +230,7 @@ def nerd_dictation_macro_process(command):
     compound_macro = process_single_word_macro(args[0])
     if compound_macro != None:
         if ends_in_stop:
-            text_block += " stop"
+            text_block += "stop"
         sub_macro = nerd_dictation_macro_process(text_block)
         if sub_macro != None:
             for cmd in sub_macro:
