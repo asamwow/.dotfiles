@@ -33,6 +33,9 @@ EMACS_COMMANDS = [
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
+    ("\\b" "se[ae] [ae]nd" "\\b", "&&"),
+    ("\\b" "se[ae] equal.?" "\\b", "=="),
+    ("\\b" "se[ae] not" "\\b", "!="),
     ("\\b" "get end" "\\b", "git add"),
     ("\\b" "get and" "\\b", "git add"),
     ("\\b" "kit end" "\\b", "git add"),
@@ -105,6 +108,7 @@ WORD_REPLACE = {
     "asterisk": "*",
     "carrot": "^",
     "amp": "&",
+    "sand": "&&",
     "cn": "&&",
     "cnn": "&&",
     "san": "&&",
@@ -295,11 +299,6 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if (args[0] == "sea"):
-            if (args[1] == "and"):
-                return [typeText("&&")]
-            if (args[1] == "or" or args[1] == "her"):
-                return [typeText("||")]
         if (args[0] == "other"):
             if (args[1] == "position"):
                 return emacs_command("cua-exchange-point-and-mark")
