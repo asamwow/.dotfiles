@@ -300,6 +300,16 @@ def nerd_dictation_macro_process(command):
             return [typeText(handle_text(text_block, "", caps="camel"))]
         if (args[0] == "pascal"):
             return [typeText(handle_text(text_block, "", caps="pascal"))]
+        if ends_in_space:
+            return [
+                typeText(handle_text(args[0] + " " + text_block, " ")),
+                typeText(" "),
+            ]
+        if ends_in_stop:
+            return [
+                typeText(handle_text(args[0] + " " + text_block, " ")),
+                pressKey("enter"),
+            ]
     return None
 
 def nerd_dictation_process(text):
@@ -326,10 +336,6 @@ def handle_text(text, seperator, caps=None):
                     break
 
         words[i] = w
-
-        if words[i] == "space" and i > 0:
-            words[i-1] += " "
-            words.pop(i)
 
     # Strip any words that were replaced with empty strings.
     words[:] = [w for w in words if w]
