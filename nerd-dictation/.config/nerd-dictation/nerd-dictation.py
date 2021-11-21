@@ -210,8 +210,14 @@ def process_single_word_macro(macro):
         return [pressKey("control+b")]
     if (macro == "forward"):
         return [pressKey("control+f")]
+    if (macro == "com"):
+        return [pressKey("alt+x")]
     if (macro == "tab" or macro == "indent"):
         return [pressKey("Tab")]
+    if (macro == "search"):
+        return [pressKey("control+s")]
+    if (macro == "reverse"):
+        return [pressKey("control+r")]
     return None
 
 def nerd_dictation_macro_process(command):
@@ -229,26 +235,14 @@ def nerd_dictation_macro_process(command):
                 text_block += " "
     compound_macro = process_single_word_macro(args[0])
     if compound_macro != None:
-        if ends_in_stop:
-            text_block += "stop"
         sub_macro = nerd_dictation_macro_process(text_block)
         if sub_macro == None:
             sub_macro = [typeText(handle_text(text_block, " "))]
         for cmd in sub_macro:
             compound_macro.append(cmd)
+        if ends_in_stop:
+            compound_macro.append(pressKey("enter"))
         return compound_macro
-    if (args[0] == "search"):
-        emacs_cmd = [pressKey("control+s")]
-        emacs_cmd.append(typeText(handle_text(text_block, " ")))
-        if ends_in_stop:
-            emacs_cmd.append(pressKey("enter"))
-        return emacs_cmd
-    if (args[0] == "reverse"):
-        emacs_cmd = [pressKey("control+r")]
-        emacs_cmd.append(typeText(handle_text(text_block, " ")))
-        if ends_in_stop:
-            emacs_cmd.append(pressKey("enter"))
-        return emacs_cmd
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = " ".join(args[1:])
@@ -261,7 +255,7 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "control"):
             if (args[1] == "you"):
                 return [pressKey("control+u")]
-        if (args[0] == "command" or args[0] == "commands" or args[0] == "com"):
+        if (args[0] == "command" or args[0] == "commands"):
             return emacs_command(handle_text(text_block, "-"))
         if (args[0] == "mark"):
             if args[1]  == "point":
