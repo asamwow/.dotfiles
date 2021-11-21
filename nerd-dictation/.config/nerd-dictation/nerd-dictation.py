@@ -205,6 +205,9 @@ def process_single_word_macro(macro):
         return [pressKey("alt+b")]
     if (macro == "slap"):
         return [pressKey("alt+BackSpace")]
+    if (macro == "backpack"):
+        return [pressKey("alt+BackSpace"),
+                pressKey("alt+BackSpace")]
     if (macro == "back"):
         return [pressKey("BackSpace")]
     if (macro == "backward" or macro == "backwards"):
