@@ -33,6 +33,7 @@ EMACS_COMMANDS = [
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
+    ("\\b" "and of" "\\b", "end of"),
     ("\\b" "se[ae] [ae]nd" "\\b", "&&"),
     ("\\b" "se[ae] equal.?" "\\b", "=="),
     ("\\b" "se[ae] not" "\\b", "!="),
@@ -41,7 +42,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
     ("\\b" "right boy" "\\b", ")"),
-    ("\\b" "end boy" "\\b", ")"),
+    ("\\b" "[ea]nd boy" "\\b", ")"),
     ("\\b" "right bracket" "\\b", "]"),
     ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
@@ -69,7 +70,6 @@ WORD_REPLACE = {
     "get": "git",
     "the": "", # HACK
     "huh": "", # HACK
-    "and": "end",
     "diary": "dired",
     "quad": "4",
     "quand": "4",
