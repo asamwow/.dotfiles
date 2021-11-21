@@ -179,6 +179,31 @@
 (setq-default TeX-PDF-mode t)
 (put 'scroll-left 'disabled nil)
 
+;;; javascript
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
+
+;;; Shorten Git in modeline
+(defun my-shorten-vc-mode-line (string)
+  (cond ((string-prefix-p "Git" string)
+         (concat " " (substring string 4 (min 23 (length string)))))
+        (t string)))
+(advice-add 'vc-git-mode-line-string
+            :filter-return 'my-shorten-vc-mode-line)
+
+;;; delete trailing whitespaces on save and use unix line endings
+(defun delete-carrage-returns ()
+  (interactive)
+  (save-excursion
+    (goto-char 0)
+    (while (search-forward "\r" nil :noerror)
+      (replace-match ""))))
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          'delete-carrage-returns)
+
 ;;; auto-commit macro
 (defun autocommit-schedule-commit (dn shouldPush commitMessage)
   "Schedule an autocommit (and push) if one is not already
@@ -216,36 +241,6 @@ scheduled for the given dir."
   "promps user for commit message"
   (interactive)
   (commit-and-push-file (read-string "Enter Commit Message: ")))
-(global-set-key (kbd "<f5>") 'autocommit-file)
-(global-set-key (kbd "<C-f5>") 'autocommit-and-push-file)
-(global-set-key (kbd "<f6>") 'commit-file-prompt)
-(global-set-key (kbd "<C-f6>") 'commit-and-push-file-prompt)
-
-;;; javascript
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
-
-;;; Shorten Git in modeline
-(defun my-shorten-vc-mode-line (string)
-  (cond ((string-prefix-p "Git" string)
-         (concat " " (substring string 4 (min 23 (length string)))))
-        (t string)))
-(advice-add 'vc-git-mode-line-string
-            :filter-return 'my-shorten-vc-mode-line)
-
-;;; delete trailing whitespaces on save and use unix line endings
-(defun delete-carrage-returns ()
-  (interactive)
-  (save-excursion
-    (goto-char 0)
-    (while (search-forward "\r" nil :noerror)
-      (replace-match ""))))
-(add-hook 'before-save-hook
-          'delete-trailing-whitespace)
-(add-hook 'before-save-hook
-          'delete-carrage-returns)
-
 
 ;;; increment number at point
 (defun increment-number-at-point ()
@@ -255,69 +250,6 @@ scheduled for the given dir."
       (error "No number at point"))
   (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
 (global-set-key (kbd "C-c +") 'increment-number-at-point)
-
-;;; mail
-(setq message-sendmail-f-is-evil 't)
-(setq sendmail-program "/usr/bin/msmtp")
-
-(defun cg-feed-msmtp ()
-  (if (message-mail-p)
-      (save-excursion
-        (let* ((from (save-restriction (message-narrow-to-headers)
-                                       (message-fetch-field "from")))
-               (account (cond
-                         ;; I use email address as account label in ~/.msmtprc
-                         ((string-match "samueljahnke6@gmail.com" from) "pro-gmail")
-                         ((string-match "sam.jahnke@hvhprecision.com" from) "hvh"))))
-          (setq message-sendmail-extra-arguments (list '"-a" account))))))
-
-(setq message-sendmail-envelope-from 'header)
-(add-hook 'message-send-mail-hook 'cg-feed-msmtp)
-(setq user-mail-address "sam.jahnke@hvhprecision.com")
-(setq user-full-name "Samuel Jahnke")
-(setq message-send-mail-function 'message-send-mail-with-sendmail)
-(setq message-default-mail-headers "Cc: \nBcc: \n")
-(setq message-auto-save-directory "~/Mail/draft")
-(setq message-kill-buffer-on-exit t)
-(setq message-directory "~/Mail/")
-(setq message-signature "\
-Sincerely,
-Samuel Jahnke. HVH Precision.
-(507) 399-6195
-Sent from Emacs!
-")
-
-;; ;;; notmuch notifications based from notmuch-unread-mode
-;; (defvar notmuch-unread-mode-line-string "")
-;; (defvar notmuch-unread-email-count nil)
-;; (defconst my-mode-line-map (make-sparse-keymap))
-;; (defun notmuch-unread-count ()
-;;   (setq notmuch-unread-email-count
-;;         (string-to-number(replace-regexp-in-string
-;;                           "\n" "" (notmuch-command-to-string
-;;                                    "count" "tag:inbox"))))
-;;   (if (eq notmuch-unread-email-count 0)
-;;       (setq notmuch-unread-mode-line-string
-;;             (format "  %d" (string-to-number(replace-regexp-in-string
-;;                                               "\n" "" (notmuch-command-to-string
-;;                                                        "count")))))
-;;     (setq notmuch-unread-mode-line-string
-;;           (format "  %d" notmuch-unread-email-count)))
-;;   (force-mode-line-update))
-;; (run-at-time nil 5 'notmuch-unread-count)
-;; (defun notmuch-open-emails ()
-;;   (interactive)
-;;   (if (eq notmuch-unread-email-count 0)
-;;       (notmuch-search "*")
-;;     (notmuch-search "tag:inbox")))
-;; (setq global-mode-string
-;;       (append global-mode-string (list '(:eval (propertize
-;;                                                 notmuch-unread-mode-line-string
-;;                                                 'help-echo "notmuch emails"
-;;                                                 'mouse-face 'mode-line-highlight
-;;                                                 'local-map my-mode-line-map)))))
-;; (define-key my-mode-line-map (vconcat [mode-line down-mouse-1])
-;;   (cons "hello" 'notmuch-open-emails))
 
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
