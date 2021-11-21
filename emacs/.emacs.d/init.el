@@ -168,6 +168,7 @@
 ;;; Company Mode
 (setq company-idle-delay 10000)
 (global-set-key (kbd "C-c C-<tab>") 'company-complete)
+(global-set-key (kbd "<RET>") 'default-indent-new-line)
 
 ;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
