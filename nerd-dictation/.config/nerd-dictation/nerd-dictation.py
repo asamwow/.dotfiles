@@ -230,11 +230,14 @@ def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
     ends_in_stop = False
+    ends_in_space = False
     if (args[0] == "the" or args[0] == "huh") and len(args) > 1:
         args = args[1:]
     for i in range(1, len(args)):
         if args[i] == "stop" and i == len(args)-1:
             ends_in_stop = True
+        elif args[i] == "space" and i == len(args)-1:
+            ends_in_space = True
         else:
             text_block += args[i]
             if i != len(args)-1:
@@ -248,6 +251,8 @@ def nerd_dictation_macro_process(command):
             compound_macro.append(cmd)
         if ends_in_stop:
             compound_macro.append(pressKey("enter"))
+        if ends_in_space:
+            compound_macro.append(typeText(" "))
         return compound_macro
     if (len(args) > 1):
         if (args[0] == "quote"):
@@ -321,6 +326,10 @@ def handle_text(text, seperator, caps=None):
                     break
 
         words[i] = w
+
+        if words[i] == "space" and i > 0:
+            words[i-1] += " "
+            words.pop(i)
 
     # Strip any words that were replaced with empty strings.
     words[:] = [w for w in words if w]
