@@ -1,6 +1,17 @@
 # User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
 import re
 
+# Usage:
+
+# [<single commands>] [<text modifier>] <prose> [space,stop]
+# [<single commands>] <multi-command>
+
+# [<single commands>] : Chain any number of single commands
+# [<text modifier>]   : Modify prose (caps, snake, camel...)
+# <prose>             : Dictate any textual phrase
+# <multi-command>     : Multi-word command, cannot be chained
+# [space,stop]        : Finish input with space or enter key
+
 # Emacs Commands that are dictated one to one
 EMACS_COMMANDS = [
     "find file",
