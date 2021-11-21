@@ -218,6 +218,8 @@ def process_single_word_macro(macro):
         return [pressKey("control+s")]
     if (macro == "reverse"):
         return [pressKey("control+r")]
+    if (macro == "repeat"):
+        return [pressKey("control+u")]
     return None
 
 def nerd_dictation_macro_process(command):
@@ -252,9 +254,6 @@ def nerd_dictation_macro_process(command):
         for emacs_function in EMACS_COMMANDS:
             if command == emacs_function:
                 return emacs_command("-".join(args))
-        if (args[0] == "control"):
-            if (args[1] == "you"):
-                return [pressKey("control+u")]
         if (args[0] == "command" or args[0] == "commands"):
             return emacs_command(handle_text(text_block, "-"))
         if (args[0] == "mark"):
