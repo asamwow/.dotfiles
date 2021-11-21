@@ -85,6 +85,9 @@ WORD_REPLACE = {
     "curly": "{",
     "slash": "/",
     "colon": ":",
+    "colin": ":",
+    "coin": ":",
+    "cohen": ":",
     "apostrophe": "'",
     "comma": ",",
     "come": ",",
@@ -95,14 +98,23 @@ WORD_REPLACE = {
     "tilda": "~",
     "tick": "`",
     "equals": "=",
+    "sequal": "==",
+    "sequals": "==",
+    "sequel": "==",
+    "sequels": "==",
     "asterisk": "*",
     "carrot": "^",
     "amp": "&",
+    "cn": "&&",
+    "cnn": "&&",
+    "san": "&&",
     "pipe": "|",
+    "cr": "||",
     "at": "@",
     "hash": "#",
     "percent": "%",
     "underscore": "_",
+    "backslash": "\\",
 
     # nato phonetic
     "alpha": "a",
@@ -283,6 +295,11 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
+        if (args[0] == "sea"):
+            if (args[1] == "and"):
+                return [typeText("&&")]
+            if (args[1] == "or" or args[1] == "her"):
+                return [typeText("||")]
         if (args[0] == "other"):
             if (args[1] == "position"):
                 return emacs_command("cua-exchange-point-and-mark")
