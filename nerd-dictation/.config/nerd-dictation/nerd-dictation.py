@@ -67,7 +67,6 @@ WORD_REPLACE = {
     "define": "defun",
 
     # symbols
-    "space": " ",
     "dash": "-",
     "quotes": "\"",
     "boy": "(",
@@ -186,6 +185,8 @@ def process_single_word_macro(macro):
         return [pressKey("control+g")]
     if (macro == "stop"):
         return [pressKey("enter")]
+    if (macro == "space"):
+        return [typeText(" ")]
     if (macro == "copy"):
         return emacs_command("kill-ring-save")
     if (macro == "paste"):
