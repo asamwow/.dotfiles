@@ -309,3 +309,12 @@ sEnter to:")
         )
     ;; )
   )
+
+(defun c-if-statement (expression)
+  (interactive "sEnter boolean expression:")
+  (message "Expression: %s" expression)
+  (progn
+    (insert (format "if (%s) {" expression))
+    (default-indent-new-line)
+    )
+  )
