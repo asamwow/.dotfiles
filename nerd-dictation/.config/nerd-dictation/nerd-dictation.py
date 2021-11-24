@@ -246,6 +246,8 @@ def process_single_word_macro(macro):
         return [pressKey("control+r")]
     if (macro == "repeat"):
         return [pressKey("control+u")]
+    if (macro == "cf" or macro == "senior"):
+        return emacs_command("c-if-statement")
     return None
 
 def nerd_dictation_macro_process(command):
@@ -294,8 +296,7 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
-            args[0] == "cf" or args[0] == "senior"):
+        if (args[0] == "see" and (args[1] == "if" or args[1] == "of")):
             return emacs_command("c-if-statement")
         if (args[0] == "other"):
             if (args[1] == "position"):
