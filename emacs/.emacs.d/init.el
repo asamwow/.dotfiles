@@ -318,3 +318,5 @@ sEnter to:")
     (default-indent-new-line)
     )
   )
+
+(load-file "~/test/test.el")

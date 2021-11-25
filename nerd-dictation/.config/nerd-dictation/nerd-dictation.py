@@ -1,6 +1,8 @@
 # User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
 import re
 
+from test import parse_jarvis
+
 # Usage:
 
 # [<single commands>] [<text modifier>] <prose> [space,stop]
@@ -336,6 +338,9 @@ def nerd_dictation_macro_process(command):
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 pressKey("enter"),
             ]
+    jarvis = parse_jarvis(command)
+    if jarvis != None:
+        return jarvis
     return None
 
 def nerd_dictation_process(text):
