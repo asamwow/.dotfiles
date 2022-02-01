@@ -34,22 +34,13 @@ EMACS_COMMANDS = [
 
 TEXT_REPLACE_REGEX = (
     ("\\b" "and of" "\\b", "end of"),
-    ("\\b" "se[ae] [ae]nd" "\\b", "&&"),
     ("\\b" "se[ae] equal.?" "\\b", "=="),
     ("\\b" "se[ae] not" "\\b", "!="),
     ("\\b" "[kg][ae]t [hae]nd" "\\b", "git add"),
     ("\\b" "key word" "\\b", "keyword"),
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
-    ("\\b" "right boy" "\\b", ")"),
-    ("\\b" "[ea]nd boy" "\\b", ")"),
-    ("\\b" "right bracket" "\\b", "]"),
-    ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
-    ("\\b" "exclamation point" "\\b", "!"),
-    ("\\b" "question mark" "\\b", "?"),
-    ("\\b" "less than" "\\b", "<"),
-    ("\\b" "greater than" "\\b", ">"),
     ("\\b" "d fun" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
@@ -101,17 +92,8 @@ WORD_REPLACE = {
     "sequel": "==",
     "sequels": "==",
     "asterisk": "*",
-    "carrot": "^",
-    "amp": "&",
-    "sand": "&&",
-    "cn": "&&",
-    "cnn": "&&",
-    "san": "&&",
     "pipe": "|",
     "cr": "||",
-    "at": "@",
-    "hash": "#",
-    "percent": "%",
     "underscore": "_",
     "backslash": "\\",
 
@@ -159,20 +141,12 @@ WORD_REPLACE_REGEX = tuple(
 
 def pressKey(key):
     return (
-        "xdotool",
-        "key",
-        key,
+        key
     )
 
 def typeText(text):
     return (
-        "xdotool",
-        "type",
-        "--clearmodifiers",
-        "--delay",
-        "10",
-        "--",
-        text,
+        text
     )
 
 def emacs_command(text):
@@ -191,6 +165,34 @@ def process_single_word_macro(macro):
         return [pressKey("control+a")]
     if (macro == "and" or macro == "end"):
         return [pressKey("control+e")]
+    if (macro == "colon" or macro == "colin" or macro == "coin" or macro == "cohen"):
+        return [pressKey("shift+;")]
+    if (macro == "tilda"):
+        return [pressKey("shift+`")]
+    if (macro == "plus"):
+        return [pressKey("shift+=")]
+    if (macro == "curly"):
+        return [pressKey("shift+[")]
+    if (macro == "quotes"):
+        return [pressKey("shift+'")]
+    if (macro == "at"):
+        return [pressKey("shift+2")]
+    if (macro == "hash"):
+        return [pressKey("shift+3")]
+    if (macro == "dollar"):
+        return [pressKey("shift+4")]
+    if (macro == "percent"):
+        return [pressKey("shift+5")]
+    if (macro == "carrot"):
+        return [pressKey("shift+6")]
+    if (macro == "amp"):
+        return [pressKey("shift+7")]
+    if (macro == "cn" or macro == "cnn" or macro == "san" or macro == "sand"):
+        return [pressKey("shift+7"), pressKey("shift+7")]
+    if (macro == "asterisk"):
+        return [pressKey("shift+8")]
+    if (macro == "boy"):
+        return [pressKey("shift+9")]
     if (macro == "next"):
         return [pressKey("control+n")]
     if (macro == "previous"):
@@ -203,6 +205,9 @@ def process_single_word_macro(macro):
         ]
     if (macro == "lead"):
         return [pressKey("control+c")]
+    if (macro == "execute"):
+        return [pressKey("control+c"),
+                pressKey("control+c")]
     if (macro == "cancel"):
         return [pressKey("control+g")]
     if (macro == "stop"):
@@ -287,6 +292,23 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("-".join(args))
         if (args[0] == "command" or args[0] == "commands"):
             return emacs_command(handle_text(text_block, "-"))
+        if (args[0] == "exclamation"):
+            if args[1]  == "point":
+                return [pressKey("shift+1")]
+        if (args[0] == "question"):
+            if args[1]  == "mark":
+                return [pressKey("shift+/")]
+        if (args[0] == "greater"):
+            if args[1]  == "than":
+                return [pressKey("shift+.")]
+        if (args[0] == "less"):
+            if args[1]  == "than":
+                return [pressKey("shift+,")]
+        if (args[0] == "right"):
+            if args[1]  == "boy":
+                return [pressKey("shift+0")]
+            if (args[1] == "curly"):
+                return [pressKey("shift+]")]
         if (args[0] == "mark"):
             if args[1]  == "point":
                 return emacs_command("cua-set-mark")
