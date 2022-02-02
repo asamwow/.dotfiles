@@ -38,3 +38,5 @@ docker-compose
 bspwm
 sxhkd
 vlc
+python-pip
+xdotool
