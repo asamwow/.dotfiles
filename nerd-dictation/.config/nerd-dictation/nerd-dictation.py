@@ -16,7 +16,6 @@ import re
 EMACS_COMMANDS = [
     "find file",
     "switch buffer",
-    "query replace",
     "newline anywhere",
     "learn replacement",
     "bookmark jump",
@@ -59,7 +58,6 @@ WORD_REPLACE = {
     "kama":",",
     "cancer":"cancel",
     "get": "git",
-    "the": "", # HACK
     "huh": "", # HACK
     "diary": "dired",
     "quad": "4",
@@ -224,6 +222,8 @@ def process_single_word_macro(macro):
         return emacs_command("undo")
     if (macro == "toss"):
         return emacs_command("revert-buffer-no-confirm")
+    if (macro == "replace"):
+        return emacs_command("query-replace")
     if (macro == "kill"):
         return emacs_command("kill-line")
     if (macro == "chomp" or macro == "champ" or macro == "chump"):
@@ -241,7 +241,7 @@ def process_single_word_macro(macro):
         return [pressKey("control+b")]
     if (macro == "forward"):
         return [pressKey("control+f")]
-    if (macro == "com"):
+    if (macro == "com" or macro == "calm"):
         return [pressKey("alt+x")]
     if (macro == "tab" or macro == "indent"):
         return [pressKey("Tab")]
