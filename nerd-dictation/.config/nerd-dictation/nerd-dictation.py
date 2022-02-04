@@ -1,4 +1,4 @@
-# User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
+# User configuration file typically located config/nerd-dictation/nerd-dictation.py`
 import re
 
 # Usage:
@@ -26,7 +26,6 @@ EMACS_COMMANDS = [
     "kill line",
     "other window",
     "other buffer",
-    "save buffer",
 ]
 
 # Replace Multiple Words
@@ -60,6 +59,7 @@ WORD_REPLACE = {
     "get": "git",
     "huh": "", # HACK
     "diary": "dired",
+    "deuce": "2",
     "quad": "4",
     "quand": "4",
     "define": "defun",
@@ -89,10 +89,6 @@ WORD_REPLACE = {
     "sequals": "==",
     "sequel": "==",
     "sequels": "==",
-    "asterisk": "*",
-    "pipe": "|",
-    "cr": "||",
-    "underscore": "_",
     "backslash": "\\",
 
     # nato phonetic
@@ -185,12 +181,18 @@ def process_single_word_macro(macro):
         return [pressKey("shift+6")]
     if (macro == "amp"):
         return [pressKey("shift+7")]
+    if (macro == "cr"):
+        return [pressKey("shift+\\"), pressKey("shift+\\")]
     if (macro == "cn" or macro == "cnn" or macro == "san" or macro == "sand"):
         return [pressKey("shift+7"), pressKey("shift+7")]
-    if (macro == "asterisk"):
+    if (macro == "asterisk" or macro == "star"):
         return [pressKey("shift+8")]
     if (macro == "boy"):
         return [pressKey("shift+9")]
+    if (macro == "underscore"):
+        return [pressKey("shift+-")]
+    if (macro == "pipe"):
+        return [pressKey("shift+\\")]
     if (macro == "next"):
         return [pressKey("control+n")]
     if (macro == "previous"):
@@ -224,6 +226,12 @@ def process_single_word_macro(macro):
         return emacs_command("revert-buffer-no-confirm")
     if (macro == "replace"):
         return emacs_command("query-replace")
+    if (macro == "flop"):
+        return emacs_command("beginning-of-buffer")
+    if (macro == "river"):
+        return emacs_command("end-of-buffer")
+    if (macro == "save"):
+        return emacs_command("save-buffer")
     if (macro == "kill"):
         return emacs_command("kill-line")
     if (macro == "chomp" or macro == "champ" or macro == "chump"):
@@ -309,6 +317,8 @@ def nerd_dictation_macro_process(command):
                 return [pressKey("shift+0")]
             if (args[1] == "curly"):
                 return [pressKey("shift+]")]
+            if (args[1] == "bracket"):
+                return [pressKey("]")]
         if (args[0] == "mark"):
             if args[1]  == "point":
                 return emacs_command("cua-set-mark")
@@ -316,13 +326,18 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
+        if (args[0] == "see" and args[1] == "or"):
+            return [pressKey("shift+\\"), pressKey("shift+\\")]
         if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
             args[0] == "cf" or args[0] == "senior"):
             return emacs_command("c-if-statement")
-        if (args[0] == "other"):
-            if (args[1] == "position"):
+        if (args[0] == "other" or (args[0] == "of" and args[1] == "their")):
+            other_word = args[1]
+            if args[0] == "of" and len(args) > 2:
+                other_word = args[2]
+            if (other_word == "position"):
                 return emacs_command("cua-exchange-point-and-mark")
-            if (args[1] == "client"):
+            if (other_word == "client"):
                 return [pressKey("alt+Tab")]
         if (args[0] == "new"):
             if (args[1] == "line"):
