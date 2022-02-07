@@ -40,3 +40,4 @@ sxhkd
 vlc
 python-pip
 xdotool
+jq

@@ -139,6 +139,8 @@ alias gr="git reset --hard HEAD"
 alias ghead="git diff \"HEAD^\" HEAD"
 alias gl="git log"
 alias gb="git branch"
+alias gfor="git submodule foreach"
+alias copy="xclip -sel c"
 
 ### Bind keys
 #############

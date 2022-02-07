@@ -1,5 +1,4 @@
 yay
-pass-git-helper-git
 bash-pipes
 nerd-fonts-source-code-pro
 mycli
