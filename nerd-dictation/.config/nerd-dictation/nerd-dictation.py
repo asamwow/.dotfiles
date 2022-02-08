@@ -39,7 +39,7 @@ TEXT_REPLACE_REGEX = (
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
     ("\\b" "x ray" "\\b", "x"),
-    ("\\b" "d fun" "\\b", "defun"),
+    ("\\b" "de? fun" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -58,6 +58,8 @@ WORD_REPLACE = {
     "cancer":"cancel",
     "get": "git",
     "huh": "", # HACK
+    "h": "", # HACK
+    "hi": "", # HACK
     "diary": "dired",
     "deuce": "2",
     "quad": "4",
@@ -249,7 +251,7 @@ def process_single_word_macro(macro):
         return [pressKey("control+b")]
     if (macro == "forward"):
         return [pressKey("control+f")]
-    if (macro == "com" or macro == "calm"):
+    if (macro == "com" or macro == "calm" or macro == "command"):
         return [pressKey("alt+x")]
     if (macro == "tab" or macro == "indent"):
         return [pressKey("Tab")]
@@ -259,6 +261,14 @@ def process_single_word_macro(macro):
         return [pressKey("control+r")]
     if (macro == "repeat"):
         return [pressKey("control+u")]
+    if (macro == "transpose"):
+        return [pressKey("alt+t")]
+    if (macro == "cycle"):
+        return [pressKey("alt+y")]
+    if (macro == "box"):
+        return [pressKey("control+enter")]
+    if (macro == "windows"):
+        return [pressKey("f8"), pressKey("alt+Tab")]
     return None
 
 def nerd_dictation_macro_process(command):
@@ -331,10 +341,14 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
             args[0] == "cf" or args[0] == "senior"):
             return emacs_command("c-if-statement")
-        if (args[0] == "other" or (args[0] == "of" and args[1] == "their")):
+        if (args[0] == "other" or
+            (args[0] == "of" and (args[1] == "their" or args[1] == "there")) or
+            args[0] == "her"):
             other_word = args[1]
             if args[0] == "of" and len(args) > 2:
                 other_word = args[2]
+            if (other_word == "buffer"):
+                return emacs_command("other-buffer")
             if (other_word == "position"):
                 return emacs_command("cua-exchange-point-and-mark")
             if (other_word == "client"):
