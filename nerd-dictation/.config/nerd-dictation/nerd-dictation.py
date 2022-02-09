@@ -226,7 +226,7 @@ def process_single_word_macro(macro):
         return emacs_command("cua-cut-region")
     if (macro == "undo" or macro == "fuck"):
         return emacs_command("undo")
-    if (macro == "toss" or macro == "tass" or macro == "tas"):
+    if (macro == "toss" or macro == "tass" or macro == "tas" or macro == "taas"):
         return emacs_command("revert-buffer-no-confirm")
     if (macro == "replace"):
         return emacs_command("query-replace")
@@ -234,7 +234,7 @@ def process_single_word_macro(macro):
         return emacs_command("beginning-of-buffer")
     if (macro == "river"):
         return emacs_command("end-of-buffer")
-    if (macro == "save"):
+    if (macro == "save" or macro == "safe"):
         return emacs_command("save-buffer")
     if (macro == "kill"):
         return emacs_command("kill-line")
@@ -251,7 +251,7 @@ def process_single_word_macro(macro):
         return [pressKey("BackSpace")]
     if (macro == "backward" or macro == "backwards"):
         return [pressKey("control+b")]
-    if (macro == "forward"):
+    if (macro == "forward" or macro == "foreign"):
         return [pressKey("control+f")]
     if (macro == "com" or macro == "calm" or macro == "command"):
         return [pressKey("alt+x")]
@@ -271,6 +271,8 @@ def process_single_word_macro(macro):
         return [pressKey("control+enter")]
     if (macro == "windows"):
         return [pressKey("f8"), pressKey("alt+Tab")]
+    if (macro == "super"):
+        return [pressKey("alt+Tab"), typeText("[sleep]+cd /home/dvorak; make"), pressKey("enter")]
     return None
 
 def nerd_dictation_macro_process(command):
@@ -324,7 +326,7 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if (args[0] == "see" and args[1] == "or"):
+        if ((args[0] == "see" or args[0] == "c" or args[0] == "sea") and args[1] == "or"):
             return [pressKey("shift+\\"), pressKey("shift+\\")]
         if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
             args[0] == "cf" or args[0] == "senior"):
@@ -380,12 +382,14 @@ def nerd_dictation_macro_process(command):
             compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
         middle_macro = process_single_word_macro(args[i])
         if middle_macro != None:
-            if i > 0:
-                compound_macro.append(typeText(" "))
+            if i > 0 and middle_macro[0].split('+')[0] not in ["alt", "control"]:
+                if args[i] != "space" and args[i] != "enter":
+                    compound_macro.append(typeText(" "))
             for cmd in middle_macro:
                 compound_macro.append(cmd)
-            if i < len(args) - 1:
-                compound_macro.append(typeText(" "))
+            if i < len(args) - 1 and middle_macro[0].split('+')[0] not in ["alt", "control"]:
+                if args[i] != "space" and args[i] != "enter":
+                    compound_macro.append(typeText(" "))
             text_block = " ".join(args[i+1:])
             sub_macro = nerd_dictation_macro_process(text_block)
             if sub_macro == None:
