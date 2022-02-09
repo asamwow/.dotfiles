@@ -278,40 +278,12 @@ def nerd_dictation_macro_process(command):
     text_block = ""
     ends_in_stop = False
     ends_in_space = False
-    if (args[0] == "the" or args[0] == "huh") and len(args) > 1:
+    if (args[0] == "huh") and len(args) > 1:
         args = args[1:]
     for i in range(1, len(args)):
-        if args[i] == "stop" and i == len(args)-1:
-            ends_in_stop = True
-        elif args[i] == "space" and i == len(args)-1:
-            ends_in_space = True
-        else:
-            text_block += args[i]
-            if i != len(args)-1:
-                text_block += " "
-    for i, w in enumerate(args):
-        compound_macro = []
-        if i > 0:
-            compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
-        middle_macro = process_single_word_macro(args[i])
-        if middle_macro != None:
-            if i > 0:
-                compound_macro.append(typeText(" "))
-            for cmd in middle_macro:
-                compound_macro.append(cmd)
-            if i < len(args) - 1:
-                compound_macro.append(typeText(" "))
-            text_block = " ".join(args[i+1:])
-            sub_macro = nerd_dictation_macro_process(text_block)
-            if sub_macro == None:
-                sub_macro = [typeText(handle_text(text_block, " "))]
-            for cmd in sub_macro:
-                compound_macro.append(cmd)
-            if ends_in_stop:
-                compound_macro.append(pressKey("enter"))
-            if ends_in_space:
-                compound_macro.append(typeText(" "))
-            return compound_macro
+        text_block += args[i]
+        if i != len(args)-1:
+            text_block += " "
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = " ".join(args[1:])
@@ -402,6 +374,25 @@ def nerd_dictation_macro_process(command):
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 pressKey("enter"),
             ]
+    for i, w in enumerate(args):
+        compound_macro = []
+        if i > 0:
+            compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
+        middle_macro = process_single_word_macro(args[i])
+        if middle_macro != None:
+            if i > 0:
+                compound_macro.append(typeText(" "))
+            for cmd in middle_macro:
+                compound_macro.append(cmd)
+            if i < len(args) - 1:
+                compound_macro.append(typeText(" "))
+            text_block = " ".join(args[i+1:])
+            sub_macro = nerd_dictation_macro_process(text_block)
+            if sub_macro == None:
+                sub_macro = [typeText(handle_text(text_block, " "))]
+            for cmd in sub_macro:
+                compound_macro.append(cmd)
+            return compound_macro
     return None
 
 def nerd_dictation_process(text):
