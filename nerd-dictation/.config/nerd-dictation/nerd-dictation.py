@@ -33,6 +33,7 @@ EMACS_COMMANDS = [
 TEXT_REPLACE_REGEX = (
     ("\\b" "and of" "\\b", "end of"),
     ("\\b" "se[ae] equal.?" "\\b", "=="),
+    ("\\b" "c equal.?" "\\b", "=="),
     ("\\b" "se[ae] not" "\\b", "!="),
     ("\\b" "[kg][ae]t [hae]nd" "\\b", "git add"),
     ("\\b" "key word" "\\b", "keyword"),
@@ -84,6 +85,7 @@ WORD_REPLACE = {
     "karma": ",",
     "semi": ";",
     "dot": ".",
+    "don": ".",
     "tilda": "~",
     "tick": "`",
     "equals": "=",
@@ -167,7 +169,7 @@ def process_single_word_macro(macro):
         return [pressKey("shift+`")]
     if (macro == "plus"):
         return [pressKey("shift+=")]
-    if (macro == "curly"):
+    if (macro == "curly" or macro == "curley"):
         return [pressKey("shift+[")]
     if (macro == "quotes"):
         return [pressKey("shift+'")]
@@ -224,7 +226,7 @@ def process_single_word_macro(macro):
         return emacs_command("cua-cut-region")
     if (macro == "undo" or macro == "fuck"):
         return emacs_command("undo")
-    if (macro == "toss"):
+    if (macro == "toss" or macro == "tass" or macro == "tas"):
         return emacs_command("revert-buffer-no-confirm")
     if (macro == "replace"):
         return emacs_command("query-replace")
@@ -287,18 +289,29 @@ def nerd_dictation_macro_process(command):
             text_block += args[i]
             if i != len(args)-1:
                 text_block += " "
-    compound_macro = process_single_word_macro(args[0])
-    if compound_macro != None:
-        sub_macro = nerd_dictation_macro_process(text_block)
-        if sub_macro == None:
-            sub_macro = [typeText(handle_text(text_block, " "))]
-        for cmd in sub_macro:
-            compound_macro.append(cmd)
-        if ends_in_stop:
-            compound_macro.append(pressKey("enter"))
-        if ends_in_space:
-            compound_macro.append(typeText(" "))
-        return compound_macro
+    for i, w in enumerate(args):
+        compound_macro = []
+        if i > 0:
+            compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
+        middle_macro = process_single_word_macro(args[i])
+        if middle_macro != None:
+            if i > 0:
+                compound_macro.append(typeText(" "))
+            for cmd in middle_macro:
+                compound_macro.append(cmd)
+            if i < len(args) - 1:
+                compound_macro.append(typeText(" "))
+            text_block = " ".join(args[i+1:])
+            sub_macro = nerd_dictation_macro_process(text_block)
+            if sub_macro == None:
+                sub_macro = [typeText(handle_text(text_block, " "))]
+            for cmd in sub_macro:
+                compound_macro.append(cmd)
+            if ends_in_stop:
+                compound_macro.append(pressKey("enter"))
+            if ends_in_space:
+                compound_macro.append(typeText(" "))
+            return compound_macro
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = " ".join(args[1:])
@@ -322,10 +335,13 @@ def nerd_dictation_macro_process(command):
         if (args[0] == "less"):
             if args[1]  == "than":
                 return [pressKey("shift+,")]
+        if (args[0] == "c" or args[0] == "see"):
+            if args[1]  == "and":
+                return [pressKey("shift+7"), pressKey("shift+7")]
         if (args[0] == "right"):
             if args[1]  == "boy":
                 return [pressKey("shift+0")]
-            if (args[1] == "curly"):
+            if (args[1] == "curly" or args[1] == "curley"):
                 return [pressKey("shift+]")]
             if (args[1] == "bracket"):
                 return [pressKey("]")]
