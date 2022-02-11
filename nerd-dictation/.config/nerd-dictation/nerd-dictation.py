@@ -207,14 +207,14 @@ def process_single_word_macro(macro):
             pressKey("control+g"),
             pressKey("control+g"),
         ]
-    if (macro == "lead"):
+    if (macro == "lead" or macro == "read"):
         return [pressKey("control+c")]
     if (macro == "execute"):
         return [pressKey("control+c"),
                 pressKey("control+c")]
     if (macro == "cancel"):
         return [pressKey("control+g")]
-    if (macro == "stop"):
+    if (macro == "stop" or macro == "stomp"):
         return [pressKey("enter")]
     if (macro == "space"):
         return [typeText(" ")]
@@ -236,6 +236,10 @@ def process_single_word_macro(macro):
         return emacs_command("end-of-buffer")
     if (macro == "save" or macro == "safe"):
         return emacs_command("save-buffer")
+    if (macro == "duplicate"):
+        return emacs_command("duplicate-region")
+    if (macro == "punch"):
+        return emacs_command("kill-word")
     if (macro == "kill"):
         return emacs_command("kill-line")
     if (macro == "chomp" or macro == "champ" or macro == "chump"):
@@ -267,12 +271,15 @@ def process_single_word_macro(macro):
         return [pressKey("alt+t")]
     if (macro == "cycle"):
         return [pressKey("alt+y")]
+    if (macro == "delete"):
+        return [pressKey("Delete")]
     if (macro == "box"):
         return [pressKey("control+enter")]
     if (macro == "windows"):
         return [pressKey("f8"), pressKey("alt+Tab")]
     if (macro == "super"):
-        return [pressKey("alt+Tab"), typeText("[sleep]+cd /home/dvorak; make"), pressKey("enter")]
+        return [pressKey("alt+Tab"), typeText("[sleep]+smake"),
+                pressKey("enter"), pressKey("alt+Tab")]
     return None
 
 def nerd_dictation_macro_process(command):
@@ -382,13 +389,19 @@ def nerd_dictation_macro_process(command):
             compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
         middle_macro = process_single_word_macro(args[i])
         if middle_macro != None:
-            if i > 0 and middle_macro[0].split('+')[0] not in ["alt", "control"]:
-                if args[i] != "space" and args[i] != "enter":
+            is_word = True
+            not_words = ["space", "back", "delete", "tab", "stop"]
+            if (middle_macro[0].split('+')[0] in ["alt", "control"] or
+                args[i] in not_words):
+                is_word = False
+            if i > 0 and is_word:
+                if (args[i-1] not in not_words):
                     compound_macro.append(typeText(" "))
             for cmd in middle_macro:
                 compound_macro.append(cmd)
-            if i < len(args) - 1 and middle_macro[0].split('+')[0] not in ["alt", "control"]:
-                if args[i] != "space" and args[i] != "enter":
+            if i < len(args) - 1 and is_word:
+                if (args[i+1] not in not_words):
+                    print(args[i+1])
                     compound_macro.append(typeText(" "))
             text_block = " ".join(args[i+1:])
             sub_macro = nerd_dictation_macro_process(text_block)
