@@ -3,14 +3,14 @@ import re
 
 # Usage:
 
-# [<single commands>] [<text modifier>] <prose> [space,stop]
+# [<single commands>] [<text modifier>] <prose> [space,ha]
 # [<single commands>] <multi-command>
 
 # [<single commands>] : Chain any number of single commands
 # [<text modifier>]   : Modify prose (caps, snake, camel...)
 # <prose>             : Dictate any textual phrase
 # <multi-command>     : Multi-word command, cannot be chained
-# [space,stop]        : Finish input with space or enter key
+# [space,ha]        : Finish input with space or enter key
 
 # Emacs Commands that are dictated one to one
 EMACS_COMMANDS = [
@@ -85,6 +85,7 @@ WORD_REPLACE = {
     "karma": ",",
     "semi": ";",
     "dot": ".",
+    "spot": ".",
     "don": ".",
     "tilda": "~",
     "tick": "`",
@@ -161,7 +162,7 @@ def process_single_word_macro(macro):
         return emacs_command("sp-beginning-of-sexp")
     if (macro == "beginning"):
         return [pressKey("control+a")]
-    if (macro == "and" or macro == "end"):
+    if (macro == "tip"):
         return [pressKey("control+e")]
     if (macro == "colon" or macro == "colin" or macro == "coin" or macro == "cohen"):
         return [pressKey("shift+;")]
@@ -207,14 +208,16 @@ def process_single_word_macro(macro):
             pressKey("control+g"),
             pressKey("control+g"),
         ]
-    if (macro == "lead" or macro == "read"):
+    if (macro == "leader"):
         return [pressKey("control+c")]
     if (macro == "execute"):
         return [pressKey("control+c"),
                 pressKey("control+c")]
     if (macro == "cancel"):
         return [pressKey("control+g")]
-    if (macro == "stop" or macro == "stomp"):
+    if (macro == "haha"):
+        return [pressKey("enter"), pressKey("enter")]
+    if (macro == "ha"):
         return [pressKey("enter")]
     if (macro == "space"):
         return [typeText(" ")]
@@ -246,7 +249,7 @@ def process_single_word_macro(macro):
         return [pressKey("alt+f")]
     if (macro == "poop"):
         return [pressKey("alt+b")]
-    if (macro == "slap"):
+    if (macro == "slap" or macro == "slam"):
         return [pressKey("alt+BackSpace")]
     if (macro == "backpack"):
         return [pressKey("alt+BackSpace"),
@@ -277,6 +280,9 @@ def process_single_word_macro(macro):
         return [pressKey("control+enter")]
     if (macro == "windows"):
         return [pressKey("f8"), pressKey("alt+Tab")]
+    if (macro == "turbo"):
+        return [pressKey("alt+Tab"), typeText("[sleep]+cd /home/dvorak; ./coffee.sh"),
+                pressKey("enter"), pressKey("alt+Tab")]
     if (macro == "super"):
         return [pressKey("alt+Tab"), typeText("[sleep]+smake"),
                 pressKey("enter"), pressKey("alt+Tab")]
@@ -285,7 +291,7 @@ def process_single_word_macro(macro):
 def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
-    ends_in_stop = False
+    ends_in_ha = False
     ends_in_space = False
     if (args[0] == "huh") and len(args) > 1:
         args = args[1:]
@@ -378,7 +384,7 @@ def nerd_dictation_macro_process(command):
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 typeText(" "),
             ]
-        if ends_in_stop:
+        if ends_in_ha:
             return [
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 pressKey("enter"),
@@ -390,7 +396,7 @@ def nerd_dictation_macro_process(command):
         middle_macro = process_single_word_macro(args[i])
         if middle_macro != None:
             is_word = True
-            not_words = ["space", "back", "delete", "tab", "stop"]
+            not_words = ["space", "back", "delete", "tab", "ha"]
             if (middle_macro[0].split('+')[0] in ["alt", "control"] or
                 args[i] in not_words):
                 is_word = False
@@ -401,7 +407,6 @@ def nerd_dictation_macro_process(command):
                 compound_macro.append(cmd)
             if i < len(args) - 1 and is_word:
                 if (args[i+1] not in not_words):
-                    print(args[i+1])
                     compound_macro.append(typeText(" "))
             text_block = " ".join(args[i+1:])
             sub_macro = nerd_dictation_macro_process(text_block)
