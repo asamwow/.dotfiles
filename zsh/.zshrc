@@ -95,52 +95,21 @@ alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
 alias lock='xscreensaver-command -lock'
 alias search='grep -rnwiI'
-alias gitlog='git log --oneline'
+alias gl='git log --oneline -n 10'
 alias remove-all-docker-containers='sudo docker container rm -f `sudo docker container list -aq`'
 alias remove-all-docker-images='sudo docker image rm -f `sudo docker image list -aq`'
-alias merge-silence-cohort='git merge testing/silent-cohort-creation --squash &&
-                            git commit -m "merged silence cohort creation, DO NOT MERGE"'
-alias merge-makefile='git merge testing/makefile --squash &&
-                      git commit -m "merged testing/makefile, DO NOT MERGE"'
-alias merge-dir-locals='git merge testing/emacs-dir-locals --squash &&
-                        git commit -m "merged testing/emacs-dir-locals, DO NOT MERGE"'
-alias merge-my-patches='git merge testing/sams-local-patches --squash &&
-                        git commit -m "merged testing/sams-local-patches, DO NOT MERGE"'
-alias merge-development-essentials='merge-makefile && merge-dir-locals && merge-my-patches'
-alias pull-system-usage='git --git-dir=$HOME/.password-store/.git/ \
-                             --work-tree=$HOME/.password-store/ pull &&
-                         git --git-dir=$HOME/.dotfiles/.git/ \
-                             --work-tree=$HOME/.dotfiles/ pull &&
-                         git --git-dir=$HOME/.agenda/.git/ \
-                             --work-tree=$HOME/.agenda/ pull &&
-                         git --git-dir=$HOME/.ledger/.git/ \
-                             --work-tree=$HOME/.ledger/ pull &&
-                         git --git-dir=$HOME/.contacts/.git/ \
-                             --work-tree=$HOME/.contacts/ pull
-                         git --git-dir=$HOME/.offlineimap/.git/ \
-                             --work-tree=$HOME/.offlineimap/ pull'
-alias view-system-usage='git --git-dir=$HOME/.password-store/.git/ \
-                             --work-tree=$HOME/.password-store/ status &&
-                         git --git-dir=$HOME/.dotfiles/.git/ \
-                             --work-tree=$HOME/.dotfiles/ status &&
-                         git --git-dir=$HOME/.agenda/.git/ \
-                             --work-tree=$HOME/.agenda/ status &&
-                         git --git-dir=$HOME/.ledger/.git/ \
-                             --work-tree=$HOME/.ledger/ status &&
-                         git --git-dir=$HOME/.contacts/.git/ \
-                             --work-tree=$HOME/.contacts/ status
-                         git --git-dir=$HOME/.offlineimap/.git/ \
-                             --work-tree=$HOME/.offlineimap/ status'
 alias gitpush="git push -u origin HEAD"
+alias gitpushf="git push -u origin HEAD --force-with-lease"
 alias gitsubmodules="git submodule update --init --recursive"
 alias gs="git status"
 alias gd="git diff"
 alias gr="git reset --hard HEAD"
+alias grl="git reset --hard 'HEAD^'"
 alias ghead="git diff \"HEAD^\" HEAD"
-alias gl="git log"
 alias gb="git branch"
 alias gfor="git submodule foreach"
 alias copy="xclip -sel c"
+alias smake="cd ~ && make"
 
 ### Bind keys
 #############
@@ -163,7 +132,8 @@ bindkey '^H'      backward-delete-word
 bindkey '^['      delete-word
 bindkey '^X'      kill-region
 bindkey '^V'      yank
-
+bindkey '^[[3;5~' delete-word
+bindkey '^[[3;3~' delete-word
 # Completion Styles
 #############
 zstyle ':completion::complete:*' use-cache on

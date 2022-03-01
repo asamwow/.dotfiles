@@ -3,8 +3,7 @@
 ;;; package management
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
+                         ("melpa" . "http://melpa.org/packages/")))
 (package-initialize)
 (eval-when-compile
   (require 'use-package)
@@ -14,16 +13,12 @@
 
 ;;; packages
 (use-package org
-  :ensure org-plus-contrib
+  :pin gnu
   :init (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
   (setq org-support-shift-select t)
   (setq org-clock-persist 'history))
-(use-package org-contacts
-  :ensure nil
-  :after org
-  :custom (org-contacts-files '("~/.contacts/contacts.org")))
 (use-package org-capture
   :ensure nil
   :after org)
@@ -120,6 +115,8 @@
 (setq-default fill-column 80)
 (setq explicit-shell-file-name "/bin/zsh")
 (setq ring-bell-function 'ignore)
+(setcdr (assoc 'file org-link-frame-setup) 'find-file)
+(setq org-confirm-babel-evaluate nil)
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -173,6 +170,8 @@
 ;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
                                                          (python . t)
+                                                         (lisp . t)
+                                                         (sql . t)
                                                          (shell . t)))
 
 ;;; latex
@@ -194,16 +193,17 @@
             :filter-return 'my-shorten-vc-mode-line)
 
 ;;; delete trailing whitespaces on save and use unix line endings
-(defun delete-carrage-returns ()
+(defun my-clean-file ()
   (interactive)
-  (save-excursion
-    (goto-char 0)
-    (while (search-forward "\r" nil :noerror)
-      (replace-match ""))))
+  (if (or (eq major-mode 'lisp-mode) (eq major-mode 'org-mode))
+      (progn
+        (delete-trailing-whitespace)
+        (save-excursion
+          (goto-char 0)
+          (while (search-forward "\r" nil :noerror)
+        (replace-match ""))))))
 (add-hook 'before-save-hook
-          'delete-trailing-whitespace)
-(add-hook 'before-save-hook
-          'delete-carrage-returns)
+          'my-clean-file)
 
 ;;; auto-commit macro
 (defun autocommit-schedule-commit (dn shouldPush commitMessage)
@@ -318,3 +318,23 @@ sEnter to:")
     (default-indent-new-line)
     )
   )
+
+(defun duplicate-region ()
+  (interactive)
+  (beginning-of-line)
+  (er/expand-region 1)
+  (kill-ring-save (mark) (point))
+  (previous-line)
+  (end-of-line)
+  (default-indent-new-line)
+  (yank)
+  )
+
+(defun mark-between-empty-lines ()
+  (interactive)
+  (search-backward-regexp "^$")
+  (next-line)
+  (set-mark-command nil)
+  (search-forward-regexp "^$")
+  )
+
