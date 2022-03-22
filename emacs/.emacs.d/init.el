@@ -19,16 +19,6 @@
   (global-set-key (kbd "C-c c") 'org-capture)
   (setq org-support-shift-select t)
   (setq org-clock-persist 'history))
-(use-package org-capture
-  :ensure nil
-  :after org)
-(use-package org-alert
-  :init (setq alert-default-style 'libnotify)
-  (setq org-alert-interval 900))
-(use-package graphene
-  :init (setq graphene-default-font "SauceCodePro Nerd Font Mono-18")
-  (setq graphene-variable-pitch-font "xos4 Terminus-18")
-  (setq graphene-fixed-pitch-font "xos4 Terminus-18"))
 (use-package speed-type)
 (use-package password-store)
 (use-package auth-source-pass
@@ -90,7 +80,7 @@
 (use-package vue-mode)
 (use-package expand-region)
 (use-package google-this)
-;; (use-package org-tempo)
+(use-package smex)
 
 ;; only use plant uml if you have the jar
 (let ((plantumljarpath (format "%s/Downloads/plantuml.jar" (getenv "HOME"))))
@@ -104,6 +94,8 @@
 
 ;;; set global defaults
 (menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 (cua-mode 1)
 (global-visual-line-mode 0)
 (setq-default truncate-lines t)
@@ -117,6 +109,12 @@
 (setq ring-bell-function 'ignore)
 (setcdr (assoc 'file org-link-frame-setup) 'find-file)
 (setq org-confirm-babel-evaluate nil)
+(setq garbage-collection-messages t)
+(add-to-list 'default-frame-alist
+             '(font . "SauceCodePro Nerd Font Mono-14"))
+(ido-mode 1)
+(global-set-key (kbd "M-x") 'smex)
+
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -137,7 +135,8 @@
 (add-hook 'python-mode-hook #'custom-python-hook)
 (defun custom-org-hook ()
   (custom-coding-hook)
-  (auto-fill-mode 1))
+  (auto-fill-mode 1)
+  (global-set-key (kbd "C-c C-<tab>") 'company-complete))
 (add-hook 'org-mode-hook #'custom-org-hook)
 (defun custom-message-hook ()
   (flyspell-mode 1))
