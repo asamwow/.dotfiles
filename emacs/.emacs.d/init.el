@@ -45,7 +45,6 @@
   :init (global-set-key (kbd "C-c i") 'clang-format-region)
   (global-set-key (kbd "C-c u") 'clang-format-buffer))
 (use-package glsl-mode)
-(use-package pandoc-mode)
 (use-package pdf-tools
   :load-path "/home/asamwow/.emacs.d/pdf-tools/lisp"
   :magic ("%PDF" . pdf-view-mode)
@@ -76,11 +75,8 @@
   (diminish 'visual-line-mode)
   (diminish 'column-enforce-mode)
   (diminish 'abbrev-mode))
-(use-package js2-mode)
-(use-package vue-mode)
 (use-package expand-region)
 (use-package google-this)
-(use-package smex)
 
 ;; only use plant uml if you have the jar
 (let ((plantumljarpath (format "%s/Downloads/plantuml.jar" (getenv "HOME"))))
@@ -88,9 +84,6 @@
       (use-package plantuml-mode
         :init (setq plantuml-jar-path plantumljarpath)
         (setq plantuml-default-exec-mode 'jar))))
-
-(add-to-list 'load-path "/home/asamwow/csharp-mode/")
-(require 'csharp-mode)
 
 ;;; set global defaults
 (menu-bar-mode -1)
@@ -113,8 +106,8 @@
 (add-to-list 'default-frame-alist
              '(font . "SauceCodePro Nerd Font Mono-14"))
 (ido-mode 1)
-(global-set-key (kbd "M-x") 'smex)
-
+(blink-cursor-mode 0)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -126,8 +119,6 @@
   (rainbow-delimiters-mode 1)
   (aggressive-indent-mode 0))
 (add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
-(add-hook 'js2-mode-hook #'custom-coding-hook)
-(add-hook 'javascript-mode-hook #'custom-coding-hook)
 (add-hook 'ledger-mode-hook #'custom-coding-hook)
 (defun custom-python-hook ()
   (custom-coding-hook)
@@ -177,19 +168,6 @@
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
 (put 'scroll-left 'disabled nil)
-
-;;; javascript
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . javascript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . javascript-mode))
-
-;;; Shorten Git in modeline
-(defun my-shorten-vc-mode-line (string)
-  (cond ((string-prefix-p "Git" string)
-         (concat " " (substring string 4 (min 23 (length string)))))
-        (t string)))
-(advice-add 'vc-git-mode-line-string
-            :filter-return 'my-shorten-vc-mode-line)
 
 ;;; delete trailing whitespaces on save and use unix line endings
 (defun my-clean-file ()
@@ -263,51 +241,6 @@ scheduled for the given dir."
 (defun find-file-from-home () (interactive)
   (cd "~/")
   (call-interactively 'find-file))
-
-(defun learn-replacement (from to)
-  (interactive "sEnter from:
-sEnter to:")
-  (message "From: %s, To: %s" from to)
-  ;; (if (y-or-n-p (format "permently repl \"%s\"->\"%s\"?" from to))
-      (progn
-        (bookmark-jump "nerd-dictation.py")
-        (revert-buffer-no-confirm)
-        (beginning-of-buffer)
-        (if (not ( search " " from))
-            (progn
-              (search-forward "WORD_REPLACE = {")
-              (newline)
-              (c-indent-line-or-region)
-              (insert (format "\"%s\":\"%s\"," from to))
-              )
-          (progn
-            (search-forward "TEXT_REPLACE_REGEX = (")
-            (newline)
-            (c-indent-line-or-region)
-            (insert (format "(\"\\\\b\" \"%s\" \"\\\\b\", \"%s\")," from to))
-            )
-          )
-        (save-buffer)
-        )
-    ;; )
-  )
-
-(defun learn-emacs-command (command)
-  (interactive "sEnter command:")
-  (message "Command: %s" command)
-  ;; (if (y-or-n-p (format "permently learn \"%s\"?" command))
-      (progn
-        (bookmark-jump "nerd-dictation.py")
-        (revert-buffer-no-confirm)
-        (beginning-of-buffer)
-        (search-forward "EMACS_COMMANDS = [")
-        (newline)
-        (c-indent-line-or-region)
-        (insert (format "\"%s\"," command))
-        (save-buffer)
-        )
-    ;; )
-  )
 
 (defun c-if-statement (expression)
   (interactive "sEnter boolean expression:")
