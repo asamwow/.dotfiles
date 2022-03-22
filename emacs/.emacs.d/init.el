@@ -182,44 +182,6 @@
 (add-hook 'before-save-hook
           'my-clean-file)
 
-;;; auto-commit macro
-(defun autocommit-schedule-commit (dn shouldPush commitMessage)
-  "Schedule an autocommit (and push) if one is not already
-scheduled for the given dir."
-  (message (concat "Committing files in " dn))
-  (shell-command (concat "cd " dn " && git commit -m '" commitMessage "'"))
-  (cond ((string= shouldPush "t")
-         (message (concat "pushing files in " dn))
-         (shell-command (concat "cd " dn " && git push -u origin master")))))
-(defun commit-and-push-file(commitMessage)
-  "'git add' the modified file and schedule a commit and push in the idle loop."
-  (let ((fn (buffer-file-name)))
-    (message "git adding %s" fn)
-    (shell-command (concat "git add " fn))
-    (autocommit-schedule-commit (file-name-directory fn) "t" commitMessage)))
-(defun commit-file (commitMessage)
-  "'git add' the modified file and schedule a commit and push in the idle loop."
-  (let ((fn (buffer-file-name)))
-    (message "git adding %s" fn)
-    (shell-command (concat "git add " fn))
-    (autocommit-schedule-commit (file-name-directory fn) "nil" commitMessage)))
-(defun autocommit-file ()
-  "'git add' the modified file and schedule a commit and push in the idle loop."
-  (interactive)
-  (commit-file "auto-commit"))
-(defun autocommit-and-push-file()
-  "'git add' the modified file and schedule a commit and push in the idle loop."
-  (interactive)
-  (commit-and-push-file "auto-commit-and-push"))
-(defun commit-file-prompt ()
-  "promps user for commit message"
-  (interactive)
-  (commit-file (read-string "Enter Commit Message: ")))
-(defun commit-and-push-file-prompt ()
-  "promps user for commit message"
-  (interactive)
-  (commit-and-push-file (read-string "Enter Commit Message: ")))
-
 ;;; increment number at point
 (defun increment-number-at-point ()
   (interactive)
@@ -270,3 +232,24 @@ scheduled for the given dir."
   (search-forward-regexp "^$")
   )
 
+(defun evaluate-definition ()
+  (interactive)
+  (end-of-defun)
+  (eval-last-sexp nil)
+  )
+
+(defun evaluate-lisp ()
+  (interactive)
+  (eval-last-sexp nil)
+  )
+
+(defun make-executable ()
+  (interactive)
+  (shell-command (format "chmod +x %s" (buffer-file-name)))
+  )
+(defun make-file ()
+  (interactive)
+  (shell-command (format "make %s" (buffer-file-name)))
+  )
+
+(load-file "~/stratagem.el")
