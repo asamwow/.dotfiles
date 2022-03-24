@@ -27,6 +27,7 @@ setopt   correctall autocd recexact longlistjobs
 setopt   autoresume histignoredups pushdsilent
 setopt   autopushd pushdminus extendedglob rcquotes mailwarning
 unsetopt bgnice autoparamslash
+unsetopt nomatch
 
 ### Autoload zsh modules when they are referenced
 #################################################
@@ -48,17 +49,12 @@ HOSTNAME="`hostname`"
 LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
 PASSWORD_STORE_DIR=$HOME/.password-store
 EDITOR="emacs -nw"
-DEFAULT_USER="asamwow"
 ASPNETCORE_ENVIRONMENT="Development"
-WEB_CLIENT_GIT="https://gitlab.com/hvh/client-access-web-dashboards.git"
-PATTERNS_GIT="https://gitlab.com/hvh/hvh-pattern-library.git"
-HVH_UTILS_GIT="https://gitlab.com/hvh/hvh-utils.git"
 DOTNET_ROOT="$HOME/.dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
 MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
 PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
 XDG_CONFIG_HOME="$HOME/.config"
-
 
 ### Load colors
 ###############
@@ -90,6 +86,7 @@ alias set-cpu-frequency='sudo cpupower frequency-set -f 1.40GHz'
 alias drivesync='ruby drivesync/drivesync.rb'
 alias pac='sudo pacman'
 alias sys='sudo systemctl'
+alias syu='systemctl --user'
 alias zshrc='emacs -nw ~/.zshrc'
 alias brightness='xbacklight -set'
 alias pipes='pipes -f 20 -r 2000 -B -t 1'
@@ -110,6 +107,7 @@ alias gb="git branch"
 alias gfor="git submodule foreach"
 alias copy="xclip -sel c"
 alias smake="cd ~ && make"
+alias gsearch="git grep --recurse-submodules"
 
 ### Bind keys
 #############
@@ -134,8 +132,19 @@ bindkey '^X'      kill-region
 bindkey '^V'      yank
 bindkey '^[[3;5~' delete-word
 bindkey '^[[3;3~' delete-word
-# Completion Styles
+
+### GPG AGENT
 #############
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+export GNUPGHOME="$HOME/.gnupg"
+
+# Completion Styles
+###################
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
 
@@ -211,42 +220,7 @@ zstyle ':completion:*:ssh:*' group-order \
    hosts-domain hosts-host users hosts-ipaddr
 zstyle '*' single-ignored show
 
-### Source plugins
-##################
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/stratagem.sh
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-
-#bcpl
-export BCPLROOT=/home/sam/Downloads/bcpl/BCPL/cintcode
-export BCPLHDRS=/home/sam/Downloads/bcpl/BCPL/cintcode/g
-export BCPLPATH=/home/sam/Downloads/bcpl/BCPL/cintcode/cin
-export BCPL64ROOT=/home/sam/Downloads/bcpl/BCPL/cintcode
-export BCPL64PATH=/home/sam/Downloads/bcpl/BCPL/cintcode/cin64
-export BCPL64HDRS=/home/sam/Downloads/bcpl/BCPL/cintcode/g
-export PATH=$PATH:$BCPLROOT/bin
-
-# Hide Default user information, because I know who I am
-# prompt_context() {
-#   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-#      prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
-#   fi
-# }
-
-# prompt_context() {
-#   # Custom (Random emoji)
-#   emojis=("⚡️" "🔥" "💀" "👑" "😎" "🐸" "🐵" "🦄" "🌈" "🍻" "🚀" "💡" "🎉" "🔑" "🇹🇭" "🚦" "🌙")
-#   RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
-#   prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
-# }
-
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
-
-export GPG_TTY=$(tty)
-gpg-connect-agent updatestartuptty /bye >/dev/null
-
-export GNUPGHOME="$HOME/.gnupg"
