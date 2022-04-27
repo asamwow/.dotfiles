@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("nerd-dictation.py"
+(("UnityController.cs"
+ (filename . "~/boundaries-server/Controllers/UnityController.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("(elisp) Top"
+ (front-context-string . "\nEmacs Lisp\n****")
+ (rear-context-string . "ion,  Up: (dir)\n")
+ (position . 1110)
+ (filename . "/usr/share/info/elisp")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("nerd-dictation.py"
  (filename . "~/.dotfiles/nerd-dictation/.config/nerd-dictation/nerd-dictation.py")
  (front-context-string . "# User configura")
  (rear-context-string)

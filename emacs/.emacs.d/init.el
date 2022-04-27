@@ -83,6 +83,7 @@
   (if (file-exists-p plantumljarpath)
       (use-package plantuml-mode
         :init (setq plantuml-jar-path plantumljarpath)
+        :init (setq org-plantuml-jar-path plantumljarpath)
         (setq plantuml-default-exec-mode 'jar))))
 
 ;;; set global defaults
@@ -159,6 +160,7 @@
 
 ;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
+                                                         (plantuml . t)
                                                          (python . t)
                                                          (lisp . t)
                                                          (sql . t)
@@ -252,4 +254,4 @@
   (shell-command (format "make %s" (buffer-file-name)))
   )
 
-(load-file "~/stratagem.el")
+(load-file "~/jarvis/integration-test.el")

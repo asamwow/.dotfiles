@@ -415,6 +415,9 @@ def nerd_dictation_macro_process(command):
             for cmd in sub_macro:
                 compound_macro.append(cmd)
             return compound_macro
+    # jarvis = parse_jarvis(command)
+    # if jarvis != None:
+    #     return jarvis
     return None
 
 def nerd_dictation_process(text):

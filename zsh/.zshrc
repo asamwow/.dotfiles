@@ -52,7 +52,6 @@ EDITOR="emacs -nw"
 ASPNETCORE_ENVIRONMENT="Development"
 DOTNET_ROOT="$HOME/.dotnet"
 DOTNET_BASE="${DOTNET_ROOT}/sdk/2.2.402/"
-MSBuildSDKsPath="${DOTNET_BASE}Sdks/"
 PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
 XDG_CONFIG_HOME="$HOME/.config"
 
@@ -108,6 +107,8 @@ alias gfor="git submodule foreach"
 alias copy="xclip -sel c"
 alias smake="cd ~ && make"
 alias gsearch="git grep --recurse-submodules"
+alias s="./say.py"
+alias taler="~/deployment/bin/WIP/taler-local"
 
 ### Bind keys
 #############
