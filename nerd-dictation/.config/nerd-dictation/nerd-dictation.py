@@ -1,21 +1,24 @@
-# User configuration file typically located config/nerd-dictation/nerd-dictation.py`
+# User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
 import re
+
+from test import parse_jarvis
 
 # Usage:
 
-# [<single commands>] [<text modifier>] <prose> [space,ha]
+# [<single commands>] [<text modifier>] <prose> [space,stop]
 # [<single commands>] <multi-command>
 
 # [<single commands>] : Chain any number of single commands
 # [<text modifier>]   : Modify prose (caps, snake, camel...)
 # <prose>             : Dictate any textual phrase
 # <multi-command>     : Multi-word command, cannot be chained
-# [space,ha]        : Finish input with space or enter key
+# [space,stop]        : Finish input with space or enter key
 
 # Emacs Commands that are dictated one to one
 EMACS_COMMANDS = [
     "find file",
     "switch buffer",
+    "query replace",
     "newline anywhere",
     "learn replacement",
     "bookmark jump",
@@ -26,21 +29,30 @@ EMACS_COMMANDS = [
     "kill line",
     "other window",
     "other buffer",
+    "save buffer",
 ]
 
 # Replace Multiple Words
 
 TEXT_REPLACE_REGEX = (
     ("\\b" "and of" "\\b", "end of"),
+    ("\\b" "se[ae] [ae]nd" "\\b", "&&"),
     ("\\b" "se[ae] equal.?" "\\b", "=="),
-    ("\\b" "c equal.?" "\\b", "=="),
     ("\\b" "se[ae] not" "\\b", "!="),
     ("\\b" "[kg][ae]t [hae]nd" "\\b", "git add"),
     ("\\b" "key word" "\\b", "keyword"),
     ("\\b" "for each" "\\b", "foreach"),
     ("\\b" "new line" "\\b", "newline"),
+    ("\\b" "right boy" "\\b", ")"),
+    ("\\b" "[ea]nd boy" "\\b", ")"),
+    ("\\b" "right bracket" "\\b", "]"),
+    ("\\b" "right curly" "\\b", "}"),
     ("\\b" "x ray" "\\b", "x"),
-    ("\\b" "de? fun" "\\b", "defun"),
+    ("\\b" "exclamation point" "\\b", "!"),
+    ("\\b" "question mark" "\\b", "?"),
+    ("\\b" "less than" "\\b", "<"),
+    ("\\b" "greater than" "\\b", ">"),
+    ("\\b" "d fun" "\\b", "defun"),
 )
 TEXT_REPLACE_REGEX = tuple(
     (re.compile(match), replacement)
@@ -58,11 +70,9 @@ WORD_REPLACE = {
     "kama":",",
     "cancer":"cancel",
     "get": "git",
+    "the": "", # HACK
     "huh": "", # HACK
-    "h": "", # HACK
-    "hi": "", # HACK
     "diary": "dired",
-    "deuce": "2",
     "quad": "4",
     "quand": "4",
     "define": "defun",
@@ -85,8 +95,6 @@ WORD_REPLACE = {
     "karma": ",",
     "semi": ";",
     "dot": ".",
-    "spot": ".",
-    "don": ".",
     "tilda": "~",
     "tick": "`",
     "equals": "=",
@@ -94,6 +102,19 @@ WORD_REPLACE = {
     "sequals": "==",
     "sequel": "==",
     "sequels": "==",
+    "asterisk": "*",
+    "carrot": "^",
+    "amp": "&",
+    "sand": "&&",
+    "cn": "&&",
+    "cnn": "&&",
+    "san": "&&",
+    "pipe": "|",
+    "cr": "||",
+    "at": "@",
+    "hash": "#",
+    "percent": "%",
+    "underscore": "_",
     "backslash": "\\",
 
     # nato phonetic
@@ -140,12 +161,20 @@ WORD_REPLACE_REGEX = tuple(
 
 def pressKey(key):
     return (
-        key
+        "xdotool",
+        "key",
+        key,
     )
 
 def typeText(text):
     return (
-        text
+        "xdotool",
+        "type",
+        "--clearmodifiers",
+        "--delay",
+        "10",
+        "--",
+        text,
     )
 
 def emacs_command(text):
@@ -162,42 +191,8 @@ def process_single_word_macro(macro):
         return emacs_command("sp-beginning-of-sexp")
     if (macro == "beginning"):
         return [pressKey("control+a")]
-    if (macro == "tip"):
+    if (macro == "and" or macro == "end"):
         return [pressKey("control+e")]
-    if (macro == "colon" or macro == "colin" or macro == "coin" or macro == "cohen"):
-        return [pressKey("shift+;")]
-    if (macro == "tilda"):
-        return [pressKey("shift+`")]
-    if (macro == "plus"):
-        return [pressKey("shift+=")]
-    if (macro == "curly" or macro == "curley"):
-        return [pressKey("shift+[")]
-    if (macro == "quotes"):
-        return [pressKey("shift+'")]
-    if (macro == "at"):
-        return [pressKey("shift+2")]
-    if (macro == "hash"):
-        return [pressKey("shift+3")]
-    if (macro == "dollar"):
-        return [pressKey("shift+4")]
-    if (macro == "percent"):
-        return [pressKey("shift+5")]
-    if (macro == "carrot"):
-        return [pressKey("shift+6")]
-    if (macro == "amp"):
-        return [pressKey("shift+7")]
-    if (macro == "cr"):
-        return [pressKey("shift+\\"), pressKey("shift+\\")]
-    if (macro == "cn" or macro == "cnn" or macro == "san" or macro == "sand"):
-        return [pressKey("shift+7"), pressKey("shift+7")]
-    if (macro == "asterisk" or macro == "star"):
-        return [pressKey("shift+8")]
-    if (macro == "boy"):
-        return [pressKey("shift+9")]
-    if (macro == "underscore"):
-        return [pressKey("shift+-")]
-    if (macro == "pipe"):
-        return [pressKey("shift+\\")]
     if (macro == "next"):
         return [pressKey("control+n")]
     if (macro == "previous"):
@@ -208,16 +203,11 @@ def process_single_word_macro(macro):
             pressKey("control+g"),
             pressKey("control+g"),
         ]
-    if (macro == "leader"):
+    if (macro == "lead"):
         return [pressKey("control+c")]
-    if (macro == "execute"):
-        return [pressKey("control+c"),
-                pressKey("control+c")]
     if (macro == "cancel"):
         return [pressKey("control+g")]
-    if (macro == "haha"):
-        return [pressKey("enter"), pressKey("enter")]
-    if (macro == "ha"):
+    if (macro == "stop"):
         return [pressKey("enter")]
     if (macro == "space"):
         return [typeText(" ")]
@@ -229,27 +219,15 @@ def process_single_word_macro(macro):
         return emacs_command("cua-cut-region")
     if (macro == "undo" or macro == "fuck"):
         return emacs_command("undo")
-    if (macro == "toss" or macro == "tass" or macro == "tas" or macro == "taas"):
+    if (macro == "toss"):
         return emacs_command("revert-buffer-no-confirm")
-    if (macro == "replace"):
-        return emacs_command("query-replace")
-    if (macro == "flop"):
-        return emacs_command("beginning-of-buffer")
-    if (macro == "river"):
-        return emacs_command("end-of-buffer")
-    if (macro == "save" or macro == "safe"):
-        return emacs_command("save-buffer")
-    if (macro == "duplicate"):
-        return emacs_command("duplicate-region")
-    if (macro == "punch"):
-        return emacs_command("kill-word")
     if (macro == "kill"):
         return emacs_command("kill-line")
     if (macro == "chomp" or macro == "champ" or macro == "chump"):
         return [pressKey("alt+f")]
     if (macro == "poop"):
         return [pressKey("alt+b")]
-    if (macro == "slap" or macro == "slam"):
+    if (macro == "slap"):
         return [pressKey("alt+BackSpace")]
     if (macro == "backpack"):
         return [pressKey("alt+BackSpace"),
@@ -258,9 +236,9 @@ def process_single_word_macro(macro):
         return [pressKey("BackSpace")]
     if (macro == "backward" or macro == "backwards"):
         return [pressKey("control+b")]
-    if (macro == "forward" or macro == "foreign"):
+    if (macro == "forward"):
         return [pressKey("control+f")]
-    if (macro == "com" or macro == "calm" or macro == "command"):
+    if (macro == "com"):
         return [pressKey("alt+x")]
     if (macro == "tab" or macro == "indent"):
         return [pressKey("Tab")]
@@ -270,35 +248,38 @@ def process_single_word_macro(macro):
         return [pressKey("control+r")]
     if (macro == "repeat"):
         return [pressKey("control+u")]
-    if (macro == "transpose"):
-        return [pressKey("alt+t")]
-    if (macro == "cycle"):
-        return [pressKey("alt+y")]
-    if (macro == "delete"):
-        return [pressKey("Delete")]
-    if (macro == "box"):
-        return [pressKey("control+enter")]
-    if (macro == "windows"):
-        return [pressKey("f8"), pressKey("alt+Tab")]
-    if (macro == "turbo"):
-        return [pressKey("alt+Tab"), typeText("[sleep]+cd /home/dvorak; ./coffee.sh"),
-                pressKey("enter"), pressKey("alt+Tab")]
-    if (macro == "super"):
-        return [pressKey("alt+Tab"), typeText("[sleep]+smake"),
-                pressKey("enter"), pressKey("alt+Tab")]
+    if (macro == "cf" or macro == "senior"):
+        return emacs_command("c-if-statement")
     return None
 
 def nerd_dictation_macro_process(command):
     args = command.split(" ")
     text_block = ""
-    ends_in_ha = False
+    ends_in_stop = False
     ends_in_space = False
-    if (args[0] == "huh") and len(args) > 1:
+    if (args[0] == "the" or args[0] == "huh") and len(args) > 1:
         args = args[1:]
     for i in range(1, len(args)):
-        text_block += args[i]
-        if i != len(args)-1:
-            text_block += " "
+        if args[i] == "stop" and i == len(args)-1:
+            ends_in_stop = True
+        elif args[i] == "space" and i == len(args)-1:
+            ends_in_space = True
+        else:
+            text_block += args[i]
+            if i != len(args)-1:
+                text_block += " "
+    compound_macro = process_single_word_macro(args[0])
+    if compound_macro != None:
+        sub_macro = nerd_dictation_macro_process(text_block)
+        if sub_macro == None:
+            sub_macro = [typeText(handle_text(text_block, " "))]
+        for cmd in sub_macro:
+            compound_macro.append(cmd)
+        if ends_in_stop:
+            compound_macro.append(pressKey("enter"))
+        if ends_in_space:
+            compound_macro.append(typeText(" "))
+        return compound_macro
     if (len(args) > 1):
         if (args[0] == "quote"):
             text_block = " ".join(args[1:])
@@ -310,28 +291,6 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("-".join(args))
         if (args[0] == "command" or args[0] == "commands"):
             return emacs_command(handle_text(text_block, "-"))
-        if (args[0] == "exclamation"):
-            if args[1]  == "point":
-                return [pressKey("shift+1")]
-        if (args[0] == "question"):
-            if args[1]  == "mark":
-                return [pressKey("shift+/")]
-        if (args[0] == "greater"):
-            if args[1]  == "than":
-                return [pressKey("shift+.")]
-        if (args[0] == "less"):
-            if args[1]  == "than":
-                return [pressKey("shift+,")]
-        if (args[0] == "c" or args[0] == "see"):
-            if args[1]  == "and":
-                return [pressKey("shift+7"), pressKey("shift+7")]
-        if (args[0] == "right"):
-            if args[1]  == "boy":
-                return [pressKey("shift+0")]
-            if (args[1] == "curly" or args[1] == "curley"):
-                return [pressKey("shift+]")]
-            if (args[1] == "bracket"):
-                return [pressKey("]")]
         if (args[0] == "mark"):
             if args[1]  == "point":
                 return emacs_command("cua-set-mark")
@@ -339,22 +298,12 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if ((args[0] == "see" or args[0] == "c" or args[0] == "sea") and args[1] == "or"):
-            return [pressKey("shift+\\"), pressKey("shift+\\")]
-        if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
-            args[0] == "cf" or args[0] == "senior"):
+        if (args[0] == "see" and (args[1] == "if" or args[1] == "of")):
             return emacs_command("c-if-statement")
-        if (args[0] == "other" or
-            (args[0] == "of" and (args[1] == "their" or args[1] == "there")) or
-            args[0] == "her"):
-            other_word = args[1]
-            if args[0] == "of" and len(args) > 2:
-                other_word = args[2]
-            if (other_word == "buffer"):
-                return emacs_command("other-buffer")
-            if (other_word == "position"):
+        if (args[0] == "other"):
+            if (args[1] == "position"):
                 return emacs_command("cua-exchange-point-and-mark")
-            if (other_word == "client"):
+            if (args[1] == "client"):
                 return [pressKey("alt+Tab")]
         if (args[0] == "new"):
             if (args[1] == "line"):
@@ -384,40 +333,14 @@ def nerd_dictation_macro_process(command):
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 typeText(" "),
             ]
-        if ends_in_ha:
+        if ends_in_stop:
             return [
                 typeText(handle_text(args[0] + " " + text_block, " ")),
                 pressKey("enter"),
             ]
-    for i, w in enumerate(args):
-        compound_macro = []
-        if i > 0:
-            compound_macro = [typeText(handle_text(" ".join(args[:i]), " "))]
-        middle_macro = process_single_word_macro(args[i])
-        if middle_macro != None:
-            is_word = True
-            not_words = ["space", "back", "delete", "tab", "ha"]
-            if (middle_macro[0].split('+')[0] in ["alt", "control"] or
-                args[i] in not_words):
-                is_word = False
-            if i > 0 and is_word:
-                if (args[i-1] not in not_words):
-                    compound_macro.append(typeText(" "))
-            for cmd in middle_macro:
-                compound_macro.append(cmd)
-            if i < len(args) - 1 and is_word:
-                if (args[i+1] not in not_words):
-                    compound_macro.append(typeText(" "))
-            text_block = " ".join(args[i+1:])
-            sub_macro = nerd_dictation_macro_process(text_block)
-            if sub_macro == None:
-                sub_macro = [typeText(handle_text(text_block, " "))]
-            for cmd in sub_macro:
-                compound_macro.append(cmd)
-            return compound_macro
-    # jarvis = parse_jarvis(command)
-    # if jarvis != None:
-    #     return jarvis
+    jarvis = parse_jarvis(command)
+    if jarvis != None:
+        return jarvis
     return None
 
 def nerd_dictation_process(text):
