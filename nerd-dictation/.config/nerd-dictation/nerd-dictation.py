@@ -1,8 +1,6 @@
 # User configuration file typically located at `~/.config/nerd-dictation/nerd-dictation.py`
 import re
 
-from test import parse_jarvis
-
 # Usage:
 
 # [<single commands>] [<text modifier>] <prose> [space,stop]
