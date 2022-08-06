@@ -3,14 +3,14 @@ import re
 
 # Usage:
 
-# [<single commands>] [<text modifier>] <prose> [space,stop]
+# [<single commands>] [<text modifier>] <prose> [space,ha]
 # [<single commands>] <multi-command>
 
 # [<single commands>] : Chain any number of single commands
 # [<text modifier>]   : Modify prose (caps, snake, camel...)
 # <prose>             : Dictate any textual phrase
 # <multi-command>     : Multi-word command, cannot be chained
-# [space,stop]        : Finish input with space or enter key
+# [space,ha]        : Finish input with space or enter key
 
 # Emacs Commands that are dictated one to one
 EMACS_COMMANDS = [
@@ -35,6 +35,7 @@ EMACS_COMMANDS = [
 TEXT_REPLACE_REGEX = (
     ("\\b" "and of" "\\b", "end of"),
     ("\\b" "se[ae] [ae]nd" "\\b", "&&"),
+    ("\\b" "c [ae]nd" "\\b", "&&"),
     ("\\b" "se[ae] equal.?" "\\b", "=="),
     ("\\b" "c equal.?" "\\b", "=="),
     ("\\b" "se[ae] not" "\\b", "!="),
@@ -69,6 +70,7 @@ WORD_REPLACE = {
     "kama":",",
     "cancer":"cancel",
     "get": "git",
+    "the": "", # HACK
     "huh": "", # HACK
     "h": "", # HACK
     "hi": "", # HACK
@@ -285,6 +287,8 @@ def nerd_dictation_macro_process(command):
     ends_in_space = False
     if (args[0] == "huh") and len(args) > 1:
         args = args[1:]
+    if (args[0] == "the") and len(args) > 1:
+        args = args[1:]
     for i in range(1, len(args)):
         text_block += args[i]
         if i != len(args)-1:
@@ -307,8 +311,6 @@ def nerd_dictation_macro_process(command):
                 return emacs_command("mark-whole-sexp")
             if (args[1] == "and"):
                 return emacs_command("mark-sexp")
-        if ((args[0] == "see" or args[0] == "c" or args[0] == "sea") and args[1] == "or"):
-            return [pressKey("shift+\\"), pressKey("shift+\\")]
         if (args[0] == "see" and (args[1] == "if" or args[1] == "of") or
             args[0] == "cf" or args[0] == "senior"):
             return emacs_command("c-if-statement")
@@ -365,7 +367,7 @@ def nerd_dictation_macro_process(command):
         if middle_macro != None:
             is_word = True
             not_words = ["space", "back", "delete", "tab", "ha"]
-            if (middle_macro[0].split('+')[0] in ["alt", "control"] or
+            if (middle_macro[0][2].split('+')[0] in ["alt", "control"] or
                 args[i] in not_words):
                 is_word = False
             if i > 0 and is_word:
