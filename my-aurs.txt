@@ -5,3 +5,4 @@ mycli
 pgcli
 neofetch
 font-manager
+libicu63
