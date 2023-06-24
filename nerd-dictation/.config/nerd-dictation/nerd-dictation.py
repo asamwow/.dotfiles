@@ -109,7 +109,7 @@ WORD_REPLACE = {
     "sequels": "==",
     "asterisk": "*",
     "carrot": "^",
-    "amp": "&",
+    # "amp": "&",
     "sand": "&&",
     "cn": "&&",
     "cnn": "&&",

@@ -1,8 +1,48 @@
-;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("UnityController.cs"
+(("MemoryWorldsService.cs"
+ (filename . "~/CastlesServer/Services/MemoryWorldsService.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("WorldController.cs"
+ (filename . "~/CastlesServer/Controllers/WorldController.cs")
+ (front-context-string . ";\n      }\n\n#if !")
+ (rear-context-string . "rn vm.ToBase64()")
+ (position . 2415))
+("README.org"
+ (filename . "~/qmk_firmware/keyboards/keebio/iris/keymaps/samuel/README.org")
+ (front-context-string . "#+Title: Samuel'")
+ (rear-context-string)
+ (position . 1))
+("HomeController.cs"
+ (filename . "~/CastlesServer/Controllers/HomeController.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("World.cs"
+ (filename . "~/CastlesModels/World.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("GameManager.cs"
+ (filename . "~/CastlesUnity/Assets/Scripts/GameManager.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("Trainee.cshtml"
+ (filename . "~/vosktrainer/Views/Shared/Trainee.cshtml")
+ (front-context-string . "@model TraineeVi")
+ (rear-context-string)
+ (position . 1))
+("kaldi-ws"
+ (filename . "~/kaldi/egs/mini_librispeech/s5/")
+ (front-context-string . "align_train.sh\n ")
+ (rear-context-string . "09 Aug 14 08:36 ")
+ (position . 249))
+("UnityController.cs"
  (filename . "~/boundaries-server/Controllers/UnityController.cs")
  (front-context-string . "using System;\nus")
  (rear-context-string)
@@ -25,10 +65,10 @@
  (rear-context-string)
  (position . 1))
 ("Index.cshtml"
- (filename . "~/boundaries-server/Views/Home/Index.cshtml")
- (front-context-string . "                ")
- (rear-context-string . "           <li>\n")
- (position . 1449))
+ (filename . "~/CastlesServer/Views/Home/Index.cshtml")
+ (front-context-string . "@{\n    ViewData[")
+ (rear-context-string)
+ (position . 1))
 ("EntropicEditorViewModel.cs"
  (filename . "~/boundaries-server/Models/EntropicEditorViewModel.cs")
  (front-context-string . "using System;\nus")

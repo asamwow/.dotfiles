@@ -103,12 +103,13 @@
 (setq ring-bell-function 'ignore)
 (setcdr (assoc 'file org-link-frame-setup) 'find-file)
 (setq org-confirm-babel-evaluate nil)
-(setq garbage-collection-messages t)
+(setq garbage-collection-messages nil)
 (add-to-list 'default-frame-alist
              '(font . "SauceCodePro Nerd Font Mono-14"))
 (ido-mode 1)
 (blink-cursor-mode 0)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
+(add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -174,13 +175,18 @@
 ;;; delete trailing whitespaces on save and use unix line endings
 (defun my-clean-file ()
   (interactive)
-  (if (or (eq major-mode 'lisp-mode) (eq major-mode 'org-mode))
+  ;; (if (or (eq major-mode 'lisp-mode) (eq major-mode 'org-mode))
       (progn
-        (delete-trailing-whitespace)
         (save-excursion
+          (if (and (not (eq major-mode 'makefile-gmake-mode))
+                   (not (eq major-mode 'fundamental-mode)))
+                   (progn
+                     (untabify (point-min) (point-max))
+                     (delete-trailing-whitespace)
+                   ))
           (goto-char 0)
           (while (search-forward "\r" nil :noerror)
-        (replace-match ""))))))
+            (replace-match "")))))
 (add-hook 'before-save-hook
           'my-clean-file)
 
@@ -253,5 +259,21 @@
   (interactive)
   (shell-command (format "make %s" (buffer-file-name)))
   )
+
+(defun switch-and-run-unity ()
+  (interactive)
+  (save-buffer)
+  (shell-command-to-string "\
+xdotool keydown alt; \
+sleep 0.25;\
+xdotool key Tab;\
+sleep 0.25;\
+xdotool keyup alt;\
+sleep 4;\
+xdotool keydown control;\
+xdotool key p;\
+xdotool keyup control")
+  )
+(global-set-key (kbd "C-c s") 'switch-and-run-unity)
 
 (load-file "~/jarvis/integration-test.el")
