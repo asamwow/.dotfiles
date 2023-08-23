@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("MemoryWorldsService.cs"
+(("Castles.org"
+ (filename . "~/CastlesModels/Castles.org")
+ (front-context-string . "#+TITLE: Keys to")
+ (rear-context-string)
+ (position . 1))
+("Structure.cs"
+ (filename . "~/CastlesModels/Structure.cs")
+ (front-context-string . "using System;\nus")
+ (rear-context-string)
+ (position . 1))
+("Settings.ini"
+ (filename . "~/.config/unity3d/castles_life/CastlesUnity/Settings.ini")
+ (front-context-string . "[Graphics]\nViewD")
+ (rear-context-string)
+ (position . 1))
+("MemoryWorldsService.cs"
  (filename . "~/CastlesServer/Services/MemoryWorldsService.cs")
  (front-context-string . "using System;\nus")
  (rear-context-string)

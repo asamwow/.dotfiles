@@ -50,12 +50,9 @@
   :magic ("%PDF" . pdf-view-mode)
   :config (pdf-tools-install :no-query))
 (use-package csharp-mode)
-(use-package ledger-mode
-  :mode "\\.ledger\\'")
 (use-package omnisharp
 :init (eval-after-load 'company
 '(add-to-list 'company-backends 'company-omnisharp))
-(add-hook 'csharp-mode-hook #'company-mode)
 (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
 (setq omnisharp-debug t))
 (use-package git-timemachine)
@@ -69,7 +66,6 @@
 (use-package diminish
   :config
   (diminish 'flycheck-mode)
-  (diminish 'company-mode)
   (diminish 'eldoc-mode)
   (diminish 'smartparens-mode)
   (diminish 'visual-line-mode)
@@ -109,7 +105,7 @@
 (ido-mode 1)
 (blink-cursor-mode 0)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
-(add-to-list 'auto-mode-alist '("\\.cshtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.cshtml\\'" . html-mode))
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
@@ -121,7 +117,6 @@
   (rainbow-delimiters-mode 1)
   (aggressive-indent-mode 0))
 (add-hook 'emacs-lisp-mode-hook #'custom-coding-hook)
-(add-hook 'ledger-mode-hook #'custom-coding-hook)
 (defun custom-python-hook ()
   (custom-coding-hook)
   (aggressive-indent-mode 0))
@@ -160,8 +155,7 @@
 (global-set-key (kbd "<RET>") 'default-indent-new-line)
 
 ;;; babel
-(org-babel-do-load-languages 'org-babel-load-languages '((ledger . t)
-                                                         (plantuml . t)
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)
                                                          (python . t)
                                                          (lisp . t)
                                                          (sql . t)
@@ -170,7 +164,6 @@
 ;;; latex
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
-(put 'scroll-left 'disabled nil)
 
 ;;; delete trailing whitespaces on save and use unix line endings
 (defun my-clean-file ()
@@ -189,6 +182,8 @@
             (replace-match "")))))
 (add-hook 'before-save-hook
           'my-clean-file)
+(add-hook 'after-save-hook
+          'auto-tangle-bodies)
 
 ;;; increment number at point
 (defun increment-number-at-point ()
@@ -240,6 +235,19 @@
   (search-forward-regexp "^$")
   )
 
+(defun scope-region ()
+  (interactive)
+  (search-backward-regexp "^$")
+  (newline)
+  (insert "{")
+  (next-line)
+  (set-mark-command nil)
+  (search-forward-regexp "^$")
+  (newline)
+  (previous-line)
+  (insert "}")
+  )
+
 (defun evaluate-definition ()
   (interactive)
   (end-of-defun)
@@ -260,6 +268,16 @@
   (shell-command (format "make %s" (buffer-file-name)))
   )
 
+
+(defun logs ()
+  (interactive)
+  (find-file "/home/dvorak/.config/unity3d/castles.life/CastlesUnity/Player.log")
+  (auto-revert-tail-mode 1)
+  (end-of-buffer)
+  (text-scale-adjust -2)
+  (keyboard-quit)
+  )
+
 (defun switch-and-run-unity ()
   (interactive)
   (save-buffer)
@@ -276,4 +294,11 @@ xdotool keyup control")
   )
 (global-set-key (kbd "C-c s") 'switch-and-run-unity)
 
-(load-file "~/jarvis/integration-test.el")
+(put 'scroll-left 'disabled nil)
+
+(defun auto-tangle-bodies ()
+  (interactive)
+  (if (string-match ".*\.body.*" (buffer-name))
+      (org-babel-tangle-file "~/CastlesModels/Castles.org")
+  )
+)
