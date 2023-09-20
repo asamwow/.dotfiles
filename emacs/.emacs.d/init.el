@@ -49,12 +49,12 @@
   :load-path "/home/asamwow/.emacs.d/pdf-tools/lisp"
   :magic ("%PDF" . pdf-view-mode)
   :config (pdf-tools-install :no-query))
-(use-package csharp-mode)
-(use-package omnisharp
-:init (eval-after-load 'company
-'(add-to-list 'company-backends 'company-omnisharp))
-(setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
-(setq omnisharp-debug t))
+;; (use-package csharp-mode)
+;; (use-package omnisharp
+;; :init (eval-after-load 'company
+;; '(add-to-list 'company-backends 'company-omnisharp))
+;; (setq omnisharp-server-executable-path "/home/asamwow/.emacs.d/omnisharp/run")
+;; (setq omnisharp-debug t))
 (use-package git-timemachine)
 (use-package undo-tree)
 (use-package aggressive-indent
