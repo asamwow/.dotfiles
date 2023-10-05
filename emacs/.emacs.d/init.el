@@ -106,6 +106,7 @@
 (blink-cursor-mode 0)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (add-to-list 'auto-mode-alist '("\\.cshtml\\'" . html-mode))
+(setq magit-show-long-lines-warning nil)
 
 ;;; minor mode hooks
 (defun custom-text-hook ()
